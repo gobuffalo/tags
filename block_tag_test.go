@@ -36,6 +36,13 @@ func Test_BlockTag_String(t *testing.T) {
 	r.Equal(`<div>hi there!</div>`, tag.String())
 }
 
+func Test_BlockTag_String_NoBody(t *testing.T) {
+	r := require.New(t)
+
+	tag := tags.NewBlockTag("div", tags.Options{})
+	r.Equal(`<div></div>`, tag.String())
+}
+
 func Test_BlockTag_String_WithOpts(t *testing.T) {
 	r := require.New(t)
 

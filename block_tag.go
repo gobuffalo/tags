@@ -13,7 +13,9 @@ type BlockTag struct {
 func (b BlockTag) String() string {
 	bb := &bytes.Buffer{}
 	bb.WriteString(b.Tag.String())
-	bb.WriteString(fmt.Sprintf("%s", b.Body))
+	if b.Body != nil {
+		bb.WriteString(fmt.Sprintf("%s", b.Body))
+	}
 	bb.WriteString("</")
 	bb.WriteString(b.Name)
 	bb.WriteString(">")

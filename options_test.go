@@ -15,9 +15,7 @@ func Test_Options_String(t *testing.T) {
 		"class": "foo bar baz",
 	}
 	s := o.String()
-	r.Contains(s, `value="Mark"`)
-	r.Contains(s, `id="foo-bar"`)
-	r.Contains(s, `class="foo bar baz"`)
+	r.Equal(`class="foo bar baz" id="foo-bar" value="Mark"`, s)
 }
 
 func Test_Options_String_Escaped(t *testing.T) {

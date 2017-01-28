@@ -2,6 +2,7 @@ package tags
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -15,5 +16,6 @@ func (o Options) String() string {
 		tmp[1] = fmt.Sprintf("\"%s\"", esc(v))
 		out = append(out, strings.Join(tmp, "="))
 	}
+	sort.Strings(out)
 	return strings.Join(out, " ")
 }
