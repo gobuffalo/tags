@@ -1,16 +1,18 @@
-package tags
+package form
 
 import (
 	"bytes"
 	"fmt"
 	"strings"
+
+	"github.com/markbates/tags"
 )
 
 const authToken = "authenticity_token"
 
 type Form struct {
-	*BlockTag
-	subTags []*Tag
+	*tags.BlockTag
+	subTags []*tags.Tag
 }
 
 func (f Form) String() string {
@@ -25,15 +27,15 @@ func (f Form) String() string {
 	return f.BlockTag.String()
 }
 
-func NewForm(opts Options) *Form {
+func New(opts tags.Options) *Form {
 	if opts["method"] == nil {
 		opts["method"] = "POST"
 	}
 	form := &Form{
-		BlockTag: NewBlockTag("form", opts),
+		BlockTag: tags.NewBlockTag("form", opts),
 	}
 	if form.Options[authToken] != nil {
-		at := New("input", Options{
+		at := tags.New("input", tags.Options{
 			"value": form.Options[authToken],
 			"type":  "hidden",
 			"name":  authToken,
@@ -45,7 +47,7 @@ func NewForm(opts Options) *Form {
 	m := strings.ToUpper(form.Options["method"].(string))
 	if m != "POST" && m != "GET" {
 		form.Options["method"] = "POST"
-		mt := New("input", Options{
+		mt := tags.New("input", tags.Options{
 			"value": m,
 			"type":  "hidden",
 			"name":  "_method",

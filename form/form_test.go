@@ -1,16 +1,17 @@
-package tags_test
+package form_test
 
 import (
 	"testing"
 
 	"github.com/markbates/tags"
+	"github.com/markbates/tags/form"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_NewForm(t *testing.T) {
 	r := require.New(t)
 
-	f := tags.NewForm(tags.Options{
+	f := form.New(tags.Options{
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
@@ -20,7 +21,7 @@ func Test_NewForm(t *testing.T) {
 func Test_NewForm_With_AuthenticityToken(t *testing.T) {
 	r := require.New(t)
 
-	f := tags.NewForm(tags.Options{
+	f := form.New(tags.Options{
 		"action":             "/users/1",
 		"authenticity_token": 12345,
 	})
@@ -31,7 +32,7 @@ func Test_NewForm_With_AuthenticityToken(t *testing.T) {
 func Test_NewForm_With_NotPostMethod(t *testing.T) {
 	r := require.New(t)
 
-	f := tags.NewForm(tags.Options{
+	f := form.New(tags.Options{
 		"action": "/users/1",
 		"method": "put",
 	})
