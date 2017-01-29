@@ -3,6 +3,7 @@ package form
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"strings"
 
 	"github.com/markbates/tags"
@@ -25,6 +26,10 @@ func (f Form) String() string {
 	}
 	f.Body = bb.String()
 	return f.BlockTag.String()
+}
+
+func (f Form) HTML() template.HTML {
+	return template.HTML(f.String())
 }
 
 func New(opts tags.Options) *Form {

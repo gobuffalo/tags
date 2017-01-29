@@ -1,6 +1,7 @@
 package form
 
 import (
+	"html/template"
 	"reflect"
 	"strings"
 
@@ -21,6 +22,10 @@ func (s SelectTag) String() string {
 	}
 	s.BlockTag.Body = strings.Join(so, "")
 	return s.BlockTag.String()
+}
+
+func (s SelectTag) HTML() template.HTML {
+	return template.HTML(s.String())
 }
 
 func NewSelectTag(opts tags.Options) *SelectTag {

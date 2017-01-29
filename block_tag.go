@@ -3,6 +3,7 @@ package tags
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 )
 
 type BlockTag struct {
@@ -20,6 +21,10 @@ func (b BlockTag) String() string {
 	bb.WriteString(b.Name)
 	bb.WriteString(">")
 	return bb.String()
+}
+
+func (b BlockTag) HTML() template.HTML {
+	return template.HTML(b.String())
 }
 
 func NewBlockTag(name string, opts Options) *BlockTag {

@@ -30,6 +30,10 @@ func (t Tag) String() string {
 	return bb.String()
 }
 
+func (t Tag) HTML() template.HTML {
+	return template.HTML(t.String())
+}
+
 func New(name string, opts Options) *Tag {
 	tag := &Tag{
 		Name:    name,
