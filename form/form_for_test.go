@@ -1,0 +1,51 @@
+package form_test
+
+import (
+	"testing"
+
+	"github.com/markbates/tags"
+	"github.com/markbates/tags/form"
+	"github.com/stretchr/testify/require"
+)
+
+type Talk struct {
+}
+
+func Test_NewFormFor(t *testing.T) {
+	r := require.New(t)
+
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+	})
+	r.Equal("form", f.Name)
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"></form>`, f.String())
+}
+
+func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {
+	r := require.New(t)
+
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action":             "/users/1",
+		"authenticity_token": 12345,
+	})
+	r.Equal("form", f.Name)
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="authenticity_token" type="hidden" value="12345"></form>`, f.String())
+}
+
+func Test_NewFormFor_With_NotPostMethod(t *testing.T) {
+	r := require.New(t)
+
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+		"method": "put",
+	})
+	r.Equal("form", f.Name)
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="_method" type="hidden" value="PUT"></form>`, f.String())
+}
+
+func Test_FormFor_Label(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{})
+	l := f.Label("Name", tags.Options{})
+	r.Equal(`<label>Name</label>`, l.String())
+}

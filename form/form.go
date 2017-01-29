@@ -32,6 +32,11 @@ func (f Form) HTML() template.HTML {
 	return template.HTML(f.String())
 }
 
+func (f Form) Label(value string, opts tags.Options) *tags.BlockTag {
+	opts["value"] = value
+	return tags.NewBlockTag("label", opts)
+}
+
 func New(opts tags.Options) *Form {
 	if opts["method"] == nil {
 		opts["method"] = "POST"

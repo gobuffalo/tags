@@ -39,3 +39,10 @@ func Test_NewForm_With_NotPostMethod(t *testing.T) {
 	r.Equal("form", f.Name)
 	r.Equal(`<form action="/users/1" method="POST"><input name="_method" type="hidden" value="PUT"></form>`, f.String())
 }
+
+func Test_Form_Label(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	l := f.Label("Name", tags.Options{})
+	r.Equal(`<label>Name</label>`, l.String())
+}
