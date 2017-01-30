@@ -77,16 +77,16 @@ you will get output similar to this:
 
     <div class="col-md-6">
       <div class="form-group">
-        <select class=" form-control" name="TalkFormatID" value="0">
-          <option value="0">Talk</option>
+        <select class=" form-control" name="TalkFormatID">
+          <option value="0" selected>Talk</option>
           <option value="1">Lightning Talk</option>
           <option value="2">Workshop</option>
           <option value="3">Other</option>
         </select>
       </div>
       <div class="form-group">
-        <select class=" form-control" name="AudienceLevel" value="All">
-          <option value="All">All</option>
+        <select class=" form-control" name="AudienceLevel">
+          <option value="All" selected>All</option>
           <option value="Beginner">Beginner</option>
           <option value="Intermediate">Intermediate</option>
           <option value="Advanced">Advanced</option>
@@ -181,8 +181,8 @@ you will get output similar to this:
     <div class="col-md-6">
       <div class="form-group">
       <label>TalkFormatID</label>
-        <select class="form-control" id="talk-TalkFormatID" name="TalkFormatID" value="0">
-          <option value="0">Talk</option>
+        <select class="form-control" id="talk-TalkFormatID" name="TalkFormatID">
+          <option value="0" selected>Talk</option>
           <option value="1">Lightning Talk</option>
           <option value="2">Workshop</option>
           <option value="3">Other</option>
@@ -190,8 +190,8 @@ you will get output similar to this:
       </div>
       <div class="form-group">
         <label>AudienceLevel</label>
-        <select class=" form-control" id="talk-AudienceLevel" name="AudienceLevel" value="All">
-          <option value="All">All</option>
+        <select class=" form-control" id="talk-AudienceLevel" name="AudienceLevel">
+          <option value="All" selected>All</option>
           <option value="Beginner">Beginner</option>
           <option value="Intermediate">Intermediate</option>
           <option value="Advanced">Advanced</option>
