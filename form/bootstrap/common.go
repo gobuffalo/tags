@@ -1,12 +1,17 @@
 package bootstrap
 
-import "github.com/gobuffalo/tags"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/gobuffalo/tags"
+)
 
 func buildOptions(opts tags.Options) {
 	if opts["class"] == nil {
 		opts["class"] = ""
 	}
-	opts["class"] = opts["class"].(string) + " form-control"
+	opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"], "form-control")}, " ")
 	delete(opts, "hide_label")
 }
 
