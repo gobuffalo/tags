@@ -6,6 +6,7 @@ import (
 	"html/template"
 
 	"github.com/gobuffalo/velvet"
+	"github.com/markbates/pop/nulls"
 )
 
 type Body interface{}
@@ -48,6 +49,8 @@ func (t Tag) String() string {
 				bb.Write([]byte(tb.HTML()))
 			case fmt.Stringer:
 				bb.WriteString(tb.String())
+			case nulls.String:
+				bb.WriteString(tb.String)
 			default:
 				bb.WriteString(fmt.Sprint(tb))
 			}
