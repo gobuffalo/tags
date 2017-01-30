@@ -1,12 +1,12 @@
 package form
 
 import (
-	"database/sql/driver"
 	"fmt"
 	"reflect"
 
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
+	"github.com/markbates/pop/nulls"
 )
 
 type FormFor struct {
@@ -76,9 +76,8 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 	i := fn.Interface()
-	if dv, ok := i.(driver.Valuer); ok {
-		v, _ := dv.Value()
-		return v
+	if dv, ok := i.(nulls.String); ok {
+		return dv.String
 	}
 	return i
 }
