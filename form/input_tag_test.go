@@ -12,5 +12,5 @@ func Test_Form_InputTag(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	i := f.InputTag(tags.Options{})
-	r.Equal(`<input type="text">`, i.String())
+	r.Equal(`<input type="text" />`, i.String())
 }

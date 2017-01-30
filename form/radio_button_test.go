@@ -12,7 +12,7 @@ func Test_Form_RadioButton(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ct := f.RadioButton(tags.Options{})
-	r.Equal(`<label><input type="radio"> </label>`, ct.String())
+	r.Equal(`<label><input type="radio" /> </label>`, ct.String())
 }
 
 func Test_Form_RadioButton_WithValue(t *testing.T) {
@@ -21,7 +21,7 @@ func Test_Form_RadioButton_WithValue(t *testing.T) {
 	ct := f.RadioButton(tags.Options{
 		"value": 1,
 	})
-	r.Equal(`<label><input type="radio" value="1"> </label>`, ct.String())
+	r.Equal(`<label><input type="radio" value="1" /> </label>`, ct.String())
 }
 
 func Test_Form_RadioButton_WithValueSelected(t *testing.T) {
@@ -31,7 +31,7 @@ func Test_Form_RadioButton_WithValueSelected(t *testing.T) {
 		"value":   1,
 		"checked": "1",
 	})
-	r.Equal(`<label><input type="radio" value="1" checked> </label>`, ct.String())
+	r.Equal(`<label><input type="radio" value="1" checked /> </label>`, ct.String())
 }
 
 func Test_Form_RadioButton_WithLabel(t *testing.T) {
@@ -41,5 +41,5 @@ func Test_Form_RadioButton_WithLabel(t *testing.T) {
 		"value": 1,
 		"label": "check me",
 	})
-	r.Equal(`<label><input type="radio" value="1"> check me</label>`, ct.String())
+	r.Equal(`<label><input type="radio" value="1" /> check me</label>`, ct.String())
 }

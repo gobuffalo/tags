@@ -18,18 +18,18 @@ func Test_NewFormFor(t *testing.T) {
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" id="talk-form" method="POST"></form>`, f.String())
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST" />`, f.String())
 }
 
 func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {
 	r := require.New(t)
 
 	f := form.NewFormFor(Talk{}, tags.Options{
-		"action":             "/users/1",
-		"authenticity_token": 12345,
+		"action": "/users/1",
 	})
+	f.SetAuthenticityToken("12345")
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="authenticity_token" type="hidden" value="12345"></form>`, f.String())
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="authenticity_token" type="hidden" value="12345" /></form>`, f.String())
 }
 
 func Test_NewFormFor_With_NotPostMethod(t *testing.T) {
@@ -40,7 +40,7 @@ func Test_NewFormFor_With_NotPostMethod(t *testing.T) {
 		"method": "put",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="_method" type="hidden" value="PUT"></form>`, f.String())
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"><input name="_method" type="hidden" value="PUT" /></form>`, f.String())
 }
 
 func Test_FormFor_Label(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"github.com/markbates/tags"
 )
 
-func (f Form) RadioButton(opts tags.Options) *tags.BlockTag {
+func (f Form) RadioButton(opts tags.Options) *tags.Tag {
 	opts["type"] = "radio"
 
 	var label string
@@ -17,7 +17,7 @@ func (f Form) RadioButton(opts tags.Options) *tags.BlockTag {
 	}
 
 	ct := f.InputTag(opts)
-	tag := tags.NewBlockTag("label", tags.Options{
+	tag := tags.New("label", tags.Options{
 		"body": strings.Join([]string{ct.String(), label}, " "),
 	})
 	return tag

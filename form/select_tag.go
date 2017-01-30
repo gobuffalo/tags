@@ -3,25 +3,22 @@ package form
 import (
 	"html/template"
 	"reflect"
-	"strings"
 
 	"github.com/markbates/tags"
 )
 
 type SelectTag struct {
-	*tags.BlockTag
+	*tags.Tag
 	SelectedValue interface{}
 	SelectOptions SelectOptions
 }
 
 func (s SelectTag) String() string {
-	so := make([]string, len(s.SelectOptions))
 	for _, x := range s.SelectOptions {
 		x.SelectedValue = s.SelectedValue
-		so = append(so, x.String())
+		s.Body = append(s.Body, x.String())
 	}
-	s.BlockTag.Body = strings.Join(so, "")
-	return s.BlockTag.String()
+	return s.Tag.String()
 }
 
 func (s SelectTag) HTML() template.HTML {
@@ -34,7 +31,7 @@ func NewSelectTag(opts tags.Options) *SelectTag {
 	delete(opts, "selected")
 
 	st := &SelectTag{
-		BlockTag:      tags.NewBlockTag("select", opts),
+		Tag:           tags.New("select", opts),
 		SelectOptions: so,
 		SelectedValue: selected,
 	}

@@ -2,14 +2,28 @@ package tags
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
+
+	"github.com/gobuffalo/velvet"
 )
+
+type Body interface{}
 
 type Tag struct {
 	Name     string
 	Options  Options
 	Selected bool
 	Checked  bool
+	Body     []Body
+}
+
+func (t *Tag) Append(b ...Body) {
+	t.Body = append(t.Body, b...)
+}
+
+func (t *Tag) Prepend(b ...Body) {
+	t.Body = append(b, t.Body...)
 }
 
 func (t Tag) String() string {
@@ -26,7 +40,24 @@ func (t Tag) String() string {
 	if t.Checked {
 		bb.WriteString(" checked")
 	}
-	bb.WriteString(">")
+	if len(t.Body) > 0 {
+		bb.WriteString(">")
+		for _, b := range t.Body {
+			switch tb := b.(type) {
+			case velvet.HTMLer:
+				bb.Write([]byte(tb.HTML()))
+			case fmt.Stringer:
+				bb.WriteString(tb.String())
+			default:
+				bb.WriteString(fmt.Sprint(tb))
+			}
+		}
+		bb.WriteString("</")
+		bb.WriteString(t.Name)
+		bb.WriteString(">")
+		return bb.String()
+	}
+	bb.WriteString(" />")
 	return bb.String()
 }
 
@@ -38,6 +69,10 @@ func New(name string, opts Options) *Tag {
 	tag := &Tag{
 		Name:    name,
 		Options: opts,
+	}
+	if tag.Options["body"] != nil {
+		tag.Body = []Body{tag.Options["body"]}
+		delete(tag.Options, "body")
 	}
 
 	if tag.Options["selected"] != nil {

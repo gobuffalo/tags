@@ -15,18 +15,18 @@ func Test_NewForm(t *testing.T) {
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" method="POST"></form>`, f.String())
+	r.Equal(`<form action="/users/1" method="POST" />`, f.String())
 }
 
 func Test_NewForm_With_AuthenticityToken(t *testing.T) {
 	r := require.New(t)
 
 	f := form.New(tags.Options{
-		"action":             "/users/1",
-		"authenticity_token": 12345,
+		"action": "/users/1",
 	})
+	f.SetAuthenticityToken("12345")
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" method="POST"><input name="authenticity_token" type="hidden" value="12345"></form>`, f.String())
+	r.Equal(`<form action="/users/1" method="POST"><input name="authenticity_token" type="hidden" value="12345" /></form>`, f.String())
 }
 
 func Test_NewForm_With_NotPostMethod(t *testing.T) {
@@ -37,7 +37,7 @@ func Test_NewForm_With_NotPostMethod(t *testing.T) {
 		"method": "put",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" method="POST"><input name="_method" type="hidden" value="PUT"></form>`, f.String())
+	r.Equal(`<form action="/users/1" method="POST"><input name="_method" type="hidden" value="PUT" /></form>`, f.String())
 }
 
 func Test_Form_Label(t *testing.T) {

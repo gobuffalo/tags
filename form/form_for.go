@@ -38,7 +38,7 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 	}
 }
 
-func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.BlockTag {
+func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	return f.Form.CheckboxTag(opts)
 }
@@ -48,7 +48,7 @@ func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	return f.Form.InputTag(opts)
 }
 
-func (f FormFor) RadioButton(field string, opts tags.Options) *tags.BlockTag {
+func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	return f.Form.RadioButton(opts)
 }
@@ -58,7 +58,7 @@ func (f FormFor) SelectTag(field string, opts tags.Options) *SelectTag {
 	return f.Form.SelectTag(opts)
 }
 
-func (f FormFor) TextArea(field string, opts tags.Options) *tags.BlockTag {
+func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	return f.Form.TextArea(opts)
 }
