@@ -169,19 +169,19 @@ you will get output similar to this:
     <div class="col-md-12">
       <div class="form-group">
         <label>Title</label>
-        <input class="form-control" id="talk-Title" label="Title" name="Title" type="text" value="*testing.T">
+        <input class="form-control" id="talk-Title" name="Title" type="text" value="My Title">
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <textarea class="form-control" id="talk-Abstract" label="Abstract" name="Abstract">some data here</textarea>
+        <textarea class="form-control" id="talk-Abstract" name="Abstract">some data here</textarea>
       </div>
     </div>
 
     <div class="col-md-6">
       <div class="form-group">
       <label>TalkFormatID</label>
-        <select class="form-control" id="talk-TalkFormatID" label="TalkFormatID" name="TalkFormatID" value="0">
+        <select class="form-control" id="talk-TalkFormatID" name="TalkFormatID" value="0">
           <option value="0">Talk</option>
           <option value="1">Lightning Talk</option>
           <option value="2">Workshop</option>
@@ -190,7 +190,7 @@ you will get output similar to this:
       </div>
       <div class="form-group">
         <label>AudienceLevel</label>
-        <select class=" form-control" id="talk-AudienceLevel" label="AudienceLevel" name="AudienceLevel" value="All">
+        <select class=" form-control" id="talk-AudienceLevel" name="AudienceLevel" value="All">
           <option value="All">All</option>
           <option value="Beginner">Beginner</option>
           <option value="Intermediate">Intermediate</option>
@@ -202,14 +202,14 @@ you will get output similar to this:
     <div class="col-md-12">
       <div class="form-group">
         <label>Description</label>
-        <textarea class=" form-control" id="talk-Description" label="Description" name="Description" rows="10">some data here</textarea>
+        <textarea class=" form-control" id="talk-Description" name="Description" rows="10">some data here</textarea>
       </div>
     </div>
 
     <div class="col-md-12">
       <div class="form-group">
         <label>Notes</label>
-        <textarea class=" form-control" id="talk-Notes" label="Notes" name="Notes" rows="10">some data here</textarea>
+        <textarea class=" form-control" id="talk-Notes" name="Notes" rows="10">some data here</textarea>
       </div>
     </div>
   </div>

@@ -20,6 +20,7 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		div.Prepend(tags.New("label", tags.Options{
 			"body": opts["label"],
 		}))
+		delete(opts, "label")
 	}
 
 	buildOptions(opts)
