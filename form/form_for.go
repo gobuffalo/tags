@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
-	"github.com/markbates/tags"
 )
 
 type FormFor struct {

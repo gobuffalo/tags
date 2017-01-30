@@ -3,8 +3,8 @@ package form_test
 import (
 	"testing"
 
-	"github.com/markbates/tags"
-	"github.com/markbates/tags/form"
+	"github.com/gobuffalo/tags"
+	"github.com/gobuffalo/tags/form"
 	"github.com/stretchr/testify/require"
 )
 

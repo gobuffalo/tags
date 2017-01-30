@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/markbates/tags"
+	"github.com/gobuffalo/tags"
 )
 
 func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {

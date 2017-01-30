@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"html/template"
 
+	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/velvet"
-	"github.com/markbates/tags"
 )
 
 func FormHelper(help velvet.HelperContext) (template.HTML, error) {

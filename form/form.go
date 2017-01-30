@@ -3,7 +3,7 @@ package form
 import (
 	"strings"
 
-	"github.com/markbates/tags"
+	"github.com/gobuffalo/tags"
 )
 
 type Form struct {

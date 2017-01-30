@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/markbates/tags"
+	"github.com/gobuffalo/tags"
 )
 
 func (f Form) RadioButton(opts tags.Options) *tags.Tag {

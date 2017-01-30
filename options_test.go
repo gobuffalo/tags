@@ -3,7 +3,7 @@ package tags_test
 import (
 	"testing"
 
-	"github.com/markbates/tags"
+	"github.com/gobuffalo/tags"
 	"github.com/stretchr/testify/require"
 )
 

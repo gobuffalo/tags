@@ -1,6 +1,6 @@
 package bootstrap
 
-import "github.com/markbates/tags"
+import "github.com/gobuffalo/tags"
 
 func buildOptions(opts tags.Options) {
 	if opts["class"] == nil {

@@ -3,9 +3,9 @@ package bootstrap
 import (
 	"html/template"
 
+	"github.com/gobuffalo/tags"
+	"github.com/gobuffalo/tags/form"
 	"github.com/gobuffalo/velvet"
-	"github.com/markbates/tags"
-	"github.com/markbates/tags/form"
 )
 
 type FormFor struct {

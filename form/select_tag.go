@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"reflect"
 
-	"github.com/markbates/tags"
+	"github.com/gobuffalo/tags"
 )
 
 type SelectTag struct {
