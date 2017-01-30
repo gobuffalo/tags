@@ -17,15 +17,14 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 
 	useLabel := opts["hide_label"] == nil
 	if useLabel && opts["label"] != nil {
-		label := tags.New("label", tags.Options{
+		div.Prepend(tags.New("label", tags.Options{
 			"body": opts["label"],
-		})
-		div.Body = append(div.Body, label)
+		}))
 	}
 
 	buildOptions(opts)
 
-	div.Body = append(div.Body, fn(opts))
+	div.Append(fn(opts))
 
 	return div
 }

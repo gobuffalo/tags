@@ -16,7 +16,7 @@ type SelectTag struct {
 func (s SelectTag) String() string {
 	for _, x := range s.SelectOptions {
 		x.SelectedValue = s.SelectedValue
-		s.Body = append(s.Body, x.String())
+		s.Append(x)
 	}
 	return s.Tag.String()
 }
