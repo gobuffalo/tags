@@ -16,7 +16,7 @@ type SelectTag struct {
 func (s SelectTag) String() string {
 	for _, x := range s.SelectOptions {
 		x.SelectedValue = s.SelectedValue
-		s.Append(x)
+		s.Append(x.String())
 	}
 	return s.Tag.String()
 }
@@ -27,8 +27,8 @@ func (s SelectTag) HTML() template.HTML {
 
 func NewSelectTag(opts tags.Options) *SelectTag {
 	so := parseSelectOptions(opts)
-	selected := opts["selected"]
-	delete(opts, "selected")
+	selected := opts["value"]
+	delete(opts, "value")
 
 	st := &SelectTag{
 		Tag:           tags.New("select", opts),

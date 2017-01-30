@@ -37,7 +37,7 @@ func Test_SelectTag_WithSelectOptions_Selected(t *testing.T) {
 			{Value: 3, Label: "three"},
 			{Value: 2, Label: "two"},
 		},
-		"selected": "3",
+		"value": "3",
 	})
 	s := st.String()
 	r.Contains(s, `<option value="3" selected>three</option>`)
@@ -66,7 +66,7 @@ func Test_SelectTag_WithMap_Selected(t *testing.T) {
 			"three": 3,
 			"two":   2,
 		},
-		"selected": 3,
+		"value": 3,
 	})
 	s := st.String()
 	r.Contains(s, `<option value="3" selected>three</option>`)
@@ -88,8 +88,8 @@ func Test_SelectTag_WithSlice_Selected(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	st := f.SelectTag(tags.Options{
-		"options":  []string{"one", "two"},
-		"selected": "two",
+		"options": []string{"one", "two"},
+		"value":   "two",
 	})
 	s := st.String()
 	r.Contains(s, `<option value="one">one</option>`)
