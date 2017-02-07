@@ -12,7 +12,7 @@ func Test_Form_RadioButton(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ct := f.RadioButton(tags.Options{})
-	r.Equal(`<label><input type="radio" /> </label>`, ct.String())
+	r.Equal(`<label><input type="radio" checked /> </label>`, ct.String())
 }
 
 func Test_Form_RadioButton_WithValue(t *testing.T) {

@@ -11,35 +11,28 @@ import (
 func Test_Form_CheckboxTag(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	ct := f.CheckboxTag(tags.Options{})
-	r.Equal(`<label><input type="checkbox" /> </label>`, ct.String())
+	ct := f.CheckboxTag(tags.Options{"name": "Chubby"})
+	r.Equal(`<label><input name="Chubby" type="hidden" value="false" /><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_WithValue(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{
-		"value": 1,
+		"value":     1,
+		"checked":   "1",
+		"unchecked": "2",
+		"name":      "Chubby",
 	})
-	r.Equal(`<label><input type="checkbox" value="1" /> </label>`, ct.String())
-}
-
-func Test_Form_CheckboxTag_WithValueSelected(t *testing.T) {
-	r := require.New(t)
-	f := form.New(tags.Options{})
-	ct := f.CheckboxTag(tags.Options{
-		"value":   1,
-		"checked": "1",
-	})
-	r.Equal(`<label><input type="checkbox" value="1" checked /> </label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="hidden" value="2" /><input name="Chubby" type="checkbox" value="1" checked /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_WithLabel(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{
-		"value": 1,
-		"label": "check me",
+		"label": " check me",
+		"name":  "Chubby",
 	})
-	r.Equal(`<label><input type="checkbox" value="1" /> check me</label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="hidden" value="false" /><input name="Chubby" type="checkbox" value="true" /> check me</label>`, ct.String())
 }

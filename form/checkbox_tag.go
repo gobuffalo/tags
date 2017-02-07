@@ -2,7 +2,7 @@ package form
 
 import (
 	"fmt"
-	"strings"
+	"html/template"
 
 	"github.com/gobuffalo/tags"
 )
@@ -10,15 +10,43 @@ import (
 func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 	opts["type"] = "checkbox"
 
-	var label string
-	if opts["label"] != nil {
-		label = fmt.Sprint(opts["label"])
-		delete(opts, "label")
+	value := opts["value"]
+	delete(opts, "value")
+
+	checked := opts["checked"]
+	delete(opts, "checked")
+	if checked == nil {
+		checked = "true"
+	}
+	opts["value"] = checked
+
+	unchecked := opts["unchecked"]
+	delete(opts, "unchecked")
+	if unchecked == nil {
+		unchecked = "false"
 	}
 
+	hl := opts["hide_label"]
+	delete(opts, "hide_label")
+
+	tag := tags.New("label", tags.Options{})
+
 	ct := f.InputTag(opts)
-	tag := tags.New("label", tags.Options{
-		"body": strings.Join([]string{ct.String(), label}, " "),
-	})
+	ct.Checked = template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+	tag.Append(ct)
+
+	if opts["name"] != nil {
+		tag.Prepend(tags.New("input", tags.Options{
+			"type":  "hidden",
+			"name":  opts["name"],
+			"value": unchecked,
+		}))
+	}
+
+	if opts["label"] != nil && hl == nil {
+		label := fmt.Sprint(opts["label"])
+		delete(opts, "label")
+		tag.Append(label)
+	}
 	return tag
 }

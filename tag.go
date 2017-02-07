@@ -6,7 +6,6 @@ import (
 	"html/template"
 
 	"github.com/gobuffalo/velvet"
-	"github.com/markbates/pop/nulls"
 )
 
 type Body interface{}
@@ -25,6 +24,10 @@ func (t *Tag) Append(b ...Body) {
 
 func (t *Tag) Prepend(b ...Body) {
 	t.Body = append(b, t.Body...)
+}
+
+type interfacer interface {
+	Interface() interface{}
 }
 
 func (t Tag) String() string {
@@ -49,8 +52,8 @@ func (t Tag) String() string {
 				bb.Write([]byte(tb.HTML()))
 			case fmt.Stringer:
 				bb.WriteString(tb.String())
-			case nulls.String:
-				bb.WriteString(tb.String)
+			case interfacer:
+				bb.WriteString(fmt.Sprint(tb.Interface()))
 			default:
 				bb.WriteString(fmt.Sprint(tb))
 			}
@@ -81,11 +84,6 @@ func New(name string, opts Options) *Tag {
 	if tag.Options["selected"] != nil {
 		tag.Selected = template.HTMLEscaper(opts["value"]) == template.HTMLEscaper(opts["selected"])
 		delete(tag.Options, "selected")
-	}
-
-	if tag.Options["checked"] != nil {
-		tag.Checked = template.HTMLEscaper(opts["value"]) == template.HTMLEscaper(opts["checked"])
-		delete(tag.Options, "checked")
 	}
 
 	return tag

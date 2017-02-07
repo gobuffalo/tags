@@ -1,7 +1,9 @@
 package bootstrap
 
 import (
+	"fmt"
 	"html/template"
+	"strings"
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
@@ -13,8 +15,29 @@ type FormFor struct {
 }
 
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
-	opts["label"] = field
+	label := field
+	if opts["label"] != nil {
+		label = fmt.Sprint(opts["label"])
+	}
+	hl := opts["hide_label"]
+	delete(opts, "label")
 	return divWrapper(opts, func(o tags.Options) tags.Body {
+		if o["class"] != nil {
+			cls := strings.Split(o["class"].(string), " ")
+			ncls := make([]string, 0, len(cls))
+			for _, c := range cls {
+				if c != "form-control" {
+					ncls = append(ncls, c)
+				}
+			}
+			o["class"] = strings.Join(ncls, " ")
+		}
+		if label != "" {
+			o["label"] = label
+		}
+		if hl != nil {
+			o["hide_label"] = hl
+		}
 		return f.FormFor.CheckboxTag(field, o)
 	})
 }
