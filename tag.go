@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-
-	"github.com/gobuffalo/velvet"
 )
 
 type Body interface{}
@@ -30,6 +28,10 @@ type interfacer interface {
 	Interface() interface{}
 }
 
+type htmler interface {
+	HTML() template.HTML
+}
+
 func (t Tag) String() string {
 	bb := &bytes.Buffer{}
 	bb.WriteString("<")
@@ -48,7 +50,7 @@ func (t Tag) String() string {
 		bb.WriteString(">")
 		for _, b := range t.Body {
 			switch tb := b.(type) {
-			case velvet.HTMLer:
+			case htmler:
 				bb.Write([]byte(tb.HTML()))
 			case fmt.Stringer:
 				bb.WriteString(tb.String())
