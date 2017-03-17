@@ -55,7 +55,12 @@ func (t Tag) String() string {
 			case fmt.Stringer:
 				bb.WriteString(tb.String())
 			case interfacer:
-				bb.WriteString(fmt.Sprint(tb.Interface()))
+				val := tb.Interface()
+				if tb.Interface() == nil {
+					val = ""
+				}
+
+				bb.WriteString(fmt.Sprint(val))
 			default:
 				bb.WriteString(fmt.Sprint(tb))
 			}
