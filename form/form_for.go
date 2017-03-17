@@ -75,6 +75,11 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
+
+	if fn.IsValid() == false {
+		return ""
+	}
+
 	i := fn.Interface()
 	if dv, ok := i.(nulls.String); ok {
 		return dv.String
