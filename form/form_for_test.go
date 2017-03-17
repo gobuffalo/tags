@@ -49,3 +49,10 @@ func Test_FormFor_Label(t *testing.T) {
 	l := f.Label("Name", tags.Options{})
 	r.Equal(`<label>Name</label>`, l.String())
 }
+
+func Test_FormFor_FieldDoesntExist(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{})
+	l := f.InputTag("IDontExist", tags.Options{})
+	r.Equal(`<input id=\"talk-IDontExist\" name=\"IDontExist\" type=\"text\" value=\"\" />`, l.String())
+}
