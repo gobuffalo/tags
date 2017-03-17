@@ -20,6 +20,12 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		"class": "form-group",
 	})
 
+	if opts["label"] == nil {
+		opts["label"] = opts["tags-field"]
+	}
+
+	delete(opts, "tags-field")
+
 	useLabel := opts["hide_label"] == nil
 	if useLabel && opts["label"] != nil {
 		div.Prepend(tags.New("label", tags.Options{
