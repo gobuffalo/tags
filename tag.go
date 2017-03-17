@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-
-	"github.com/markbates/pop/nulls"
 )
 
 type Body interface{}
@@ -54,9 +52,6 @@ func (t Tag) String() string {
 			switch tb := b.(type) {
 			case htmler:
 				bb.Write([]byte(tb.HTML()))
-			case nulls.String:
-				body := b.(nulls.String)
-				bb.WriteString(body.String)
 			case fmt.Stringer:
 				bb.WriteString(tb.String())
 			case interfacer:
