@@ -42,7 +42,6 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	opts["tags-field"] = field
-
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.InputTag(field, opts)
 	})
