@@ -41,28 +41,28 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 }
 
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
-	opts["label"] = field
+	opts["tags-field"] = field
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.InputTag(field, opts)
 	})
 }
 
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
-	opts["label"] = field
+	opts["tags-field"] = field
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.RadioButton(field, opts)
 	})
 }
 
 func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
-	opts["label"] = field
+	opts["tags-field"] = field
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.SelectTag(field, opts)
 	})
 }
 
 func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
-	opts["label"] = field
+	opts["tags-field"] = field
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.TextArea(field, opts)
 	})
