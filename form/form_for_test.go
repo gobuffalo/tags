@@ -54,5 +54,5 @@ func Test_FormFor_FieldDoesntExist(t *testing.T) {
 	r := require.New(t)
 	f := form.NewFormFor(Talk{}, tags.Options{})
 	l := f.InputTag("IDontExist", tags.Options{})
-	r.Equal(`<input id=\"talk-IDontExist\" name=\"IDontExist\" type=\"text\" value=\"\" />`, l.String())
+	r.Equal(`<input id="talk-IDontExist" name="IDontExist" type="text" value="" />`, l.String())
 }
