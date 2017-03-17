@@ -2,12 +2,10 @@ package bootstrap
 
 import (
 	"fmt"
-	"html/template"
 	"strings"
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
-	"github.com/gobuffalo/velvet"
 )
 
 type FormFor struct {
@@ -72,10 +70,4 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 
 func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 	return &FormFor{form.NewFormFor(model, opts)}
-}
-
-func FormForHelper(model interface{}, help velvet.HelperContext) (template.HTML, error) {
-	return form.Helper(help, func(opts tags.Options) form.Helperable {
-		return NewFormFor(model, opts)
-	})
 }
