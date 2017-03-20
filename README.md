@@ -10,17 +10,14 @@ Easily build HTML tags in Go! This package is especially useful when using [http
 
 ```go
 r = render.New(render.Options{
-	HTMLLayout:     "application.html",
-	CacheTemplates: ENV == "production",
-	FileResolverFunc: func() resolvers.FileResolver {
-		return &resolvers.RiceBox{Box: rice.MustFindBox("../templates")}
-	},
-	Helpers: map[string]interface{}{
+	HTMLLayout:   "application.html",
+	TemplatesBox: packr.NewBox("../templates"),
+	Helpers: render.Helpers{
 		// import the helpers you want:
-		"form":               form.FormHelper,
-		"form_for":           form.FormForHelper,
-		"bootstrap_form":     bootstrap.FormHelper,
-		"bootstrap_form_for": bootstrap.FormForHelper,
+		"form":               plush.FormHelper,
+		"form_for":           plush.FormForHelper,
+		"bootstrap_form":     plush.BootstrapFormHelper,
+		"bootstrap_form_for": plush.BootstrapFormForHelper,
 	},
 })
 ```
