@@ -10,17 +10,14 @@ Easily build HTML tags in Go! This package is especially useful when using [http
 
 ```go
 r = render.New(render.Options{
-	HTMLLayout:     "application.html",
-	CacheTemplates: ENV == "production",
-	FileResolverFunc: func() resolvers.FileResolver {
-		return &resolvers.RiceBox{Box: rice.MustFindBox("../templates")}
-	},
-	Helpers: map[string]interface{}{
+	HTMLLayout:   "application.html",
+	TemplatesBox: packr.NewBox("../templates"),
+	Helpers: render.Helpers{
 		// import the helpers you want:
-		"form":               form.FormHelper,
-		"form_for":           form.FormForHelper,
-		"bootstrap_form":     bootstrap.FormHelper,
-		"bootstrap_form_for": bootstrap.FormForHelper,
+		"form":               plush.FormHelper,
+		"form_for":           plush.FormForHelper,
+		"bootstrap_form":     plush.BootstrapFormHelper,
+		"bootstrap_form_for": plush.BootstrapFormForHelper,
 	},
 })
 ```
@@ -31,30 +28,31 @@ The `form.Form` type can be used to generate HTML forms.
 
 So given this template:
 
-```handlebars
-{{#form action="/talks/3" method="PUT"}}
+```erb
+<%= form({action:"/talks/3", method: "PUT"}) { %>
 <div class="row">
   <div class="col-md-12">
-    {{f.InputTag name="Title" value=talk.Title }}
+    <%= f.InputTag({name:"Title", value: talk.Title }) %>
   </div>
+  
   <div class="col-md-6">
-    {{f.TextArea value=talk.Abstract hide_label=true}}
+    <%= f.TextArea({value: talk.Abstract, hide_label: true }) %>
   </div>
 
   <div class="col-md-6">
-    {{f.SelectTag name="TalkFormatID" value=talk.TalkFormatID options=talk_formats }}
-    {{f.SelectTag name="AudienceLevel" value=talk.AudienceLevel options=audience_levels}}
+    <%= f.SelectTag({name: "TalkFormatID", value: talk.TalkFormatID, options: talk_formats}) %>
+    <%= f.SelectTag({name: "AudienceLevel", value: talk.AudienceLevel, options: audience_levels }) %>
   </div>
 
   <div class="col-md-12">
-    {{f.TextArea name="Description" value=talk.Description rows=10}}
+    <%= f.TextArea({name: "Description", value: talk.Description, rows: 10}) %>
+  </div>
+  <div class="col-md-12">
+    <%= f.TextArea({notes:"Notes", value: talk.Notes, rows: 10 }) %>
   </div>
 
-  <div class="col-md-12">
-    {{f.TextArea notes="Notes" value=talk.Notes rows=10 }}
-  </div>
 </div>
-{{/form}}
+<% } %>
 ```
 
 you will get output similar to this:
@@ -133,30 +131,32 @@ type Talk struct {
 
 and this template:
 
-```handlebars
-{{#form_for talk action="/talks" method="PUT"}}
+```erb
+<%= form_for( talk, {action:"/talks", method: "PUT"}) { %>
+
 <div class="row">
   <div class="col-md-12">
-    {{f.InputTag "Title" }}
+    <%= f.InputTag("Title") %>
   </div>
   <div class="col-md-6">
-    {{f.TextArea "Abstract" hide_label=true}}
+    <%= f.TextArea("Abstract", {hide_label: true}) %>
   </div>
 
+
   <div class="col-md-6">
-    {{f.SelectTag "TalkFormatID" options=talk_formats }}
-    {{f.SelectTag "AudienceLevel" options=audience_levels}}
+    <%= f.SelectTag("TalkFormatID", {options: talk_formats}) %>
+    <%= f.SelectTag("AudienceLevel", , {options: audience_levels}) %>
   </div>
 
   <div class="col-md-12">
-    {{f.TextArea "Description" rows=10}}
+    <%= f.TextArea("Description", {rows: 10}) %>
   </div>
 
   <div class="col-md-12">
-    {{f.TextArea "Notes" rows=10 }}
+    <%= f.TextArea("Notes", {rows: 10}) %>
   </div>
 </div>
-{{/form_for}}
+<% } %>
 ```
 
 you will get output similar to this:
