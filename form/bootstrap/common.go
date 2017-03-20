@@ -16,8 +16,19 @@ func buildOptions(opts tags.Options) {
 }
 
 func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.Tag {
+	divClass := "form-group"
+	hasErrors := false
+	errors := []string{}
+
+	if opts["errors"] != nil && len(opts["errors"].([]string)) > 0 {
+		divClass = "form-group has-error"
+		hasErrors = true
+		errors = opts["errors"].([]string)
+		delete(opts, "errors")
+	}
+
 	div := tags.New("div", tags.Options{
-		"class": "form-group",
+		"class": divClass,
 	})
 
 	if opts["label"] == nil {
@@ -37,6 +48,16 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	buildOptions(opts)
 
 	div.Append(fn(opts))
+
+	if hasErrors {
+		for _, err := range errors {
+			div.Append(tags.New("span", tags.Options{
+				"class": "help-block",
+				"body":  err,
+			}))
+		}
+
+	}
 
 	return div
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
 	"github.com/markbates/pop/nulls"
+	"github.com/markbates/validate"
 )
 
 type FormFor struct {
@@ -15,6 +16,7 @@ type FormFor struct {
 	name       string
 	dashedName string
 	reflection reflect.Value
+	Errors     *validate.Errors
 }
 
 func NewFormFor(model interface{}, opts tags.Options) *FormFor {
@@ -29,12 +31,18 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 		opts["id"] = fmt.Sprintf("%s-form", dashedName)
 	}
 
+	errors := validate.NewErrors()
+	if opts["errors"] != nil {
+		errors = opts["errors"].(*validate.Errors)
+	}
+
 	return &FormFor{
 		Form:       New(opts),
 		Model:      model,
 		name:       name,
 		dashedName: dashedName,
 		reflection: rv,
+		Errors:     errors,
 	}
 }
 
