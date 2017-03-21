@@ -54,6 +54,30 @@ func Test_InputError(t *testing.T) {
 	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
 }
 
+func Test_InputError_Map(t *testing.T) {
+	r := require.New(t)
+
+	errors := map[string][]string{
+		"name": {"Name shoud be AJ."},
+	}
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+}
+
+func Test_InputError_InvalidMap(t *testing.T) {
+	r := require.New(t)
+
+	errors := map[string]string{
+		"name": "Name shoud be AJ.",
+	}
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+}
+
 func Test_InputMultipleError(t *testing.T) {
 	r := require.New(t)
 
