@@ -47,7 +47,7 @@ func Test_InputError(t *testing.T) {
 	r := require.New(t)
 
 	errors := validate.NewErrors()
-	errors.Add("Name", "Name shoud be AJ.")
+	errors.Add("name", "Name shoud be AJ.")
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
@@ -58,8 +58,8 @@ func Test_InputMultipleError(t *testing.T) {
 	r := require.New(t)
 
 	errors := validate.NewErrors()
-	errors.Add("Name", "Name shoud be AJ.")
-	errors.Add("Name", "Name shoud start with A.")
+	errors.Add("name", "Name shoud be AJ.")
+	errors.Add("name", "Name shoud start with A.")
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
@@ -70,7 +70,7 @@ func Test_CheckBoxError(t *testing.T) {
 	r := require.New(t)
 
 	errors := validate.NewErrors()
-	errors.Add("Name", "Name shoud be AJ.")
+	errors.Add("name", "Name shoud be AJ.")
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})

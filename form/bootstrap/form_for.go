@@ -6,6 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
+	"github.com/markbates/validate/validators"
 )
 
 type FormFor struct {
@@ -13,7 +14,6 @@ type FormFor struct {
 }
 
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
-
 	label := field
 	if opts["label"] != nil {
 		label = fmt.Sprint(opts["label"])
@@ -21,7 +21,8 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	hl := opts["hide_label"]
 	delete(opts, "label")
 
-	if err := f.Errors.Get(field); err != nil {
+	fieldKey := validators.GenerateKey(field)
+	if err := f.Errors.Get(fieldKey); err != nil {
 		opts["errors"] = err
 	}
 
@@ -76,8 +77,8 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 
 func (f FormFor) buildOptions(field string, opts tags.Options) tags.Options {
 	opts["tags-field"] = field
-
-	if err := f.Errors.Get(field); err != nil {
+	fieldName := validators.GenerateKey(field)
+	if err := f.Errors.Get(fieldName); err != nil {
 		opts["errors"] = err
 	}
 

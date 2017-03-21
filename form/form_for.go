@@ -3,6 +3,7 @@ package form
 import (
 	"fmt"
 	"reflect"
+	"sync"
 
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
@@ -31,10 +32,8 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 		opts["id"] = fmt.Sprintf("%s-form", dashedName)
 	}
 
-	errors := validate.NewErrors()
-	if opts["errors"] != nil {
-		errors = opts["errors"].(*validate.Errors)
-	}
+	errors := loadErrors(opts)
+	delete(opts, "errors")
 
 	return &FormFor{
 		Form:       New(opts),
@@ -44,6 +43,25 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 		reflection: rv,
 		Errors:     errors,
 	}
+}
+
+func loadErrors(opts tags.Options) *validate.Errors {
+	errors := validate.NewErrors()
+	if opts["errors"] != nil {
+		switch t := opts["errors"].(type) {
+		default:
+			fmt.Printf("Unexpected errors type %T, please\n", t) // %T prints whatever type t has
+		case map[string][]string:
+			errors = &validate.Errors{
+				Errors: opts["errors"].(map[string][]string),
+				Lock:   new(sync.RWMutex),
+			}
+		case *validate.Errors:
+			errors = opts["errors"].(*validate.Errors)
+		}
+	}
+
+	return errors
 }
 
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
