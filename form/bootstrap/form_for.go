@@ -6,6 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
+	"github.com/markbates/validate/validators"
 )
 
 type FormFor struct {
@@ -19,6 +20,12 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	}
 	hl := opts["hide_label"]
 	delete(opts, "label")
+
+	fieldKey := validators.GenerateKey(field)
+	if err := f.Errors.Get(fieldKey); err != nil {
+		opts["errors"] = err
+	}
+
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		if o["class"] != nil {
 			cls := strings.Split(o["class"].(string), " ")
@@ -41,31 +48,41 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 }
 
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
-	opts["tags-field"] = field
+	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.InputTag(field, opts)
 	})
 }
 
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
-	opts["tags-field"] = field
+	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.RadioButton(field, opts)
 	})
 }
 
 func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
-	opts["tags-field"] = field
+	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.SelectTag(field, opts)
 	})
 }
 
 func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
-	opts["tags-field"] = field
+	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.TextArea(field, opts)
 	})
+}
+
+func (f FormFor) buildOptions(field string, opts tags.Options) tags.Options {
+	opts["tags-field"] = field
+	fieldName := validators.GenerateKey(field)
+	if err := f.Errors.Get(fieldName); err != nil {
+		opts["errors"] = err
+	}
+
+	return opts
 }
 
 func NewFormFor(model interface{}, opts tags.Options) *FormFor {

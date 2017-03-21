@@ -5,6 +5,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form/bootstrap"
+	"github.com/markbates/validate"
 	"github.com/stretchr/testify/require"
 )
 
@@ -40,4 +41,62 @@ func Test_CheckBox(t *testing.T) {
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
 	r.Equal(`<div class="form-group"><label><input name="Name" type="hidden" value="false" /><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label></div>`, l.String())
+}
+
+func Test_InputError(t *testing.T) {
+	r := require.New(t)
+
+	errors := validate.NewErrors()
+	errors.Add("name", "Name shoud be AJ.")
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+}
+
+func Test_InputError_Map(t *testing.T) {
+	r := require.New(t)
+
+	errors := map[string][]string{
+		"name": {"Name shoud be AJ."},
+	}
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+}
+
+func Test_InputError_InvalidMap(t *testing.T) {
+	r := require.New(t)
+
+	errors := map[string]string{
+		"name": "Name shoud be AJ.",
+	}
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+}
+
+func Test_InputMultipleError(t *testing.T) {
+	r := require.New(t)
+
+	errors := validate.NewErrors()
+	errors.Add("name", "Name shoud be AJ.")
+	errors.Add("name", "Name shoud start with A.")
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span><span class="help-block">Name shoud start with A.</span></div>`, l.String())
+}
+
+func Test_CheckBoxError(t *testing.T) {
+	r := require.New(t)
+
+	errors := validate.NewErrors()
+	errors.Add("name", "Name shoud be AJ.")
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label><input name="Name" type="hidden" value="false" /><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
 }
