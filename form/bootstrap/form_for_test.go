@@ -16,6 +16,13 @@ func Test_InputFieldLabel(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
 }
 
+func Test_InputFieldLabel_Humanized(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ LongName string }{}, tags.Options{})
+	l := f.InputTag("LongName", tags.Options{})
+	r.Equal(`<div class="form-group"><label>Long Name</label><input class=" form-control" id="-LongName" name="LongName" type="text" value="" /></div>`, l.String())
+}
+
 func Test_InputFieldSchema(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct {
