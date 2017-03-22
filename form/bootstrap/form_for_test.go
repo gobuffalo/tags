@@ -16,6 +16,16 @@ func Test_InputFieldLabel(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
 }
 
+func Test_InputFieldSchema(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct {
+		Name string `schema:"notName"`
+	}{}, tags.Options{})
+
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+}
+
 func Test_SelectLabel(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
