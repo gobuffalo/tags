@@ -21,6 +21,17 @@ func Test_NewFormFor(t *testing.T) {
 	r.Equal(`<form action="/users/1" id="talk-form" method="POST" />`, f.String())
 }
 
+func Test_FormFor_InputValue(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+	})
+
+	l := f.InputTag("Name", tags.Options{"value": "Something"})
+
+	r.Equal(`<input id="talk-Name" name="Name" type="text" value="Something" />`, l.String())
+}
+
 func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {
 	r := require.New(t)
 

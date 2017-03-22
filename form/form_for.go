@@ -90,7 +90,11 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 }
 
 func (f FormFor) buildOptions(field string, opts tags.Options) {
-	opts["value"] = f.value(field)
+
+	if opts["value"] == nil {
+		opts["value"] = f.value(field)
+	}
+
 	if opts["name"] == nil {
 		opts["name"] = field
 
