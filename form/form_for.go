@@ -97,6 +97,14 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 
 	if opts["name"] == nil {
 		opts["name"] = field
+
+		rf, _ := reflect.TypeOf(f.Model).FieldByName(field)
+		schemaName := string(rf.Tag.Get("schema"))
+
+		if schemaName != "" {
+			opts["name"] = schemaName
+		}
+
 	}
 	if opts["id"] == nil {
 		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, field)
