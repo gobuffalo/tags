@@ -96,16 +96,9 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 
 	if opts["name"] == nil {
-		opts["name"] = field
-
-		rf, _ := reflect.TypeOf(f.Model).FieldByName(field)
-		schemaName := string(rf.Tag.Get("schema"))
-
-		if schemaName != "" {
-			opts["name"] = schemaName
-		}
-
+		opts["name"] = f.findSchemaNameFor(field)
 	}
+
 	if opts["id"] == nil {
 		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, field)
 	}
@@ -123,4 +116,22 @@ func (f FormFor) value(field string) interface{} {
 		return dv.String
 	}
 	return i
+}
+
+func (f FormFor) findSchemaNameFor(field string) string {
+	schemaName := field
+	ty := reflect.TypeOf(f.Model)
+
+	if ty.Kind() == reflect.Ptr {
+		ty = ty.Elem()
+	}
+
+	rf, _ := ty.FieldByName(field)
+
+	schemaDefined := string(rf.Tag.Get("schema"))
+	if schemaDefined != "" && schemaDefined != "-" {
+		schemaName = schemaDefined
+	}
+
+	return schemaName
 }
