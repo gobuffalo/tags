@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gobuffalo/tags"
+	"github.com/markbates/inflect"
 )
 
 func buildOptions(opts tags.Options) {
@@ -31,8 +32,8 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		"class": divClass,
 	})
 
-	if opts["label"] == nil {
-		opts["label"] = opts["tags-field"]
+	if opts["label"] == nil && opts["tags-field"] != nil {
+		opts["label"] = inflect.Titleize(opts["tags-field"].(string))
 	}
 
 	delete(opts, "tags-field")
