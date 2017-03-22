@@ -43,6 +43,16 @@ func Test_InputFieldSchema_FieldNotPresent(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Other</label><input class=" form-control" id="-Other" name="Other" type="text" value="" /></div>`, l.String())
 }
 
+func Test_InputFieldSchema_FieldDash(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct {
+		Name string `schema:"-"`
+	}{}, tags.Options{})
+
+	l := f.InputTag("Name", tags.Options{})
+	r.Equal(`<div class="form-group"><label>Name</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+}
+
 func Test_SelectLabel(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
