@@ -12,7 +12,7 @@ func Test_Form_CheckboxTag(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{"name": "Chubby"})
-	r.Equal(`<label><input name="Chubby" type="hidden" value="false" /><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_WithValue(t *testing.T) {
@@ -34,5 +34,5 @@ func Test_Form_CheckboxTag_WithLabel(t *testing.T) {
 		"label": " check me",
 		"name":  "Chubby",
 	})
-	r.Equal(`<label><input name="Chubby" type="hidden" value="false" /><input name="Chubby" type="checkbox" value="true" /> check me</label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="true" /> check me</label>`, ct.String())
 }

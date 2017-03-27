@@ -22,9 +22,6 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 
 	unchecked := opts["unchecked"]
 	delete(opts, "unchecked")
-	if unchecked == nil {
-		unchecked = "false"
-	}
 
 	hl := opts["hide_label"]
 	delete(opts, "hide_label")
@@ -36,11 +33,13 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 	tag.Append(ct)
 
 	if opts["name"] != nil {
-		tag.Prepend(tags.New("input", tags.Options{
-			"type":  "hidden",
-			"name":  opts["name"],
-			"value": unchecked,
-		}))
+		if unchecked != nil {
+			tag.Prepend(tags.New("input", tags.Options{
+				"type":  "hidden",
+				"name":  opts["name"],
+				"value": unchecked,
+			}))
+		}
 	}
 
 	if opts["label"] != nil && hl == nil {

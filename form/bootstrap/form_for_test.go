@@ -77,7 +77,7 @@ func Test_CheckBox(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label><input name="Name" type="hidden" value="false" /><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label></div>`, l.String())
+	r.Equal(`<div class="form-group"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label></div>`, l.String())
 }
 
 func Test_InputError(t *testing.T) {
@@ -135,5 +135,5 @@ func Test_CheckBoxError(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label><input name="Name" type="hidden" value="false" /><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
 }
