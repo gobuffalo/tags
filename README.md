@@ -256,6 +256,6 @@ Produces:
 
 And similary with the form.SelectOptions slice:
 
-```html
+```erb
 <%= f.SelectTag("TalkFormatID", {options: talkFormats, value: 2}) %>
 ```
