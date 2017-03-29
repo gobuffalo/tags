@@ -215,3 +215,45 @@ you will get output similar to this:
   </div>
 </form>
 ```
+
+### Select Tag
+
+To build your `<select>` tags insife forms Tags provide 2 convenient ways to add your `<select>` options, you could:
+
+```erb
+<%= f.SelectTag("TalkFormatID", {options: talkFormats}) %>
+```
+
+Where talk_formats is a `form.SelectOptions` slice or it could be a `map[string]interface{}`, given this last one something like:
+
+```erb
+<%= f.SelectTag("TalkFormatID", {options: {"one": 1, "two": 2}}) %>
+```
+
+Will work to define your select options on the fly.
+
+#### Selected
+
+Tags will add the selected attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, p.e:
+
+```erb
+<%= f.SelectTag("TalkFormatID", {options: {"one": 1, "two": 2}, value: 2}) %>
+```
+
+Produces:
+
+```html
+<div class="form-group">
+  <label>TalkFormatID</label>
+  <select class="form-control" id="talk-TalkFormatID" name="TalkFormatID">
+    <option value="1">one</option>
+    <option value="2" selected>two</option>
+  </select>
+</div>
+```
+
+And similary with the form.SelectOptions slice:
+
+```html
+<%= f.SelectTag("TalkFormatID", {options: talkFormats, value: 2}) %>
+```
