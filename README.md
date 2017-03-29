@@ -218,23 +218,25 @@ you will get output similar to this:
 
 ### Select Tag
 
-To build your `<select>` tags insife forms Tags provide 2 convenient ways to add your `<select>` options, you could:
+To build your `<select>` tags inside forms Tags provide 2 convenient ways to add your `<select>` options, you could:
 
 ```erb
 <%= f.SelectTag("TalkFormatID", {options: talkFormats}) %>
 ```
 
-Where talk_formats is a `form.SelectOptions` slice or it could be a `map[string]interface{}`, given this last one something like:
+Where talkFormats is a `form.SelectOptions` slice or it could be a `map[string]interface{}`. 
+
+Given this last one (and the Plush power) something like:
 
 ```erb
 <%= f.SelectTag("TalkFormatID", {options: {"one": 1, "two": 2}}) %>
 ```
 
-Will work to define your select options on the fly.
+Will work to define your select options on the view.
 
 #### Selected
 
-Tags will add the selected attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, p.e:
+Tags will add the `selected` attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, so you don't have to look for the option that has equal value than the selected one manually, p.e:
 
 ```erb
 <%= f.SelectTag("TalkFormatID", {options: {"one": 1, "two": 2}, value: 2}) %>
