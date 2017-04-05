@@ -239,7 +239,7 @@ Which (given the Plush power) allows us to define the options map inside the vie
 
 #### Selectable Interface
 
-Another alternative for the select options is to pass a list of structs that meet `form.Selectable` interface.
+Another alternative for the select options is to pass a list of structs that meet the `form.Selectable` interface.
 
 Which consist of two functions:
 
