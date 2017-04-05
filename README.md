@@ -251,7 +251,7 @@ type Selectable interface {
 }
 ```
 
-By implementing this interface tags will call `SelectValue` and `SelectLabel` to get the option Value and Label from the struct instance.
+By implementing this interface tags will call `SelectValue` and `SelectLabel` to get the option Value and Label from implementer.
 
 #### Selected
 
