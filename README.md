@@ -237,6 +237,22 @@ Which will use the same value for the `value` attribute and the body of the opti
 
 Which (given the Plush power) allows us to define the options map inside the view.
 
+#### Selectable Interface
+
+Another alternative for the select options is to pass a list of structs that meet `form.Selectable` interface.
+
+Which consist in two functions:
+
+```go
+//Selectable allows any struct to become an option in the select tag.
+type Selectable interface {
+	SelectValue() interface{}
+	SelectLabel() string
+}
+```
+
+By implementing this interface tags will call `SelectValue` and `SelectLabel` to get the option Value and Label from the struct instance.
+
 #### Selected
 
 Tags will add the `selected` attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, so you don't have to look for the option that has equal value than the selected one manually, p.e:
