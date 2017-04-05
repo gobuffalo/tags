@@ -95,3 +95,31 @@ func Test_SelectTag_WithSlice_Selected(t *testing.T) {
 	r.Contains(s, `<option value="one">one</option>`)
 	r.Contains(s, `<option value="two" selected>two</option>`)
 }
+
+func Test_SelectTag_WithSlice_Selectable(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"options": []SelectableModel{
+			{"John", "1"},
+			{"Peter", "2"},
+		},
+		"value": "1",
+	})
+	s := st.String()
+	r.Contains(s, `<option value="1" selected>John</option>`)
+	r.Contains(s, `<option value="2">Peter</option>`)
+}
+
+type SelectableModel struct {
+	Name string
+	ID   string
+}
+
+func (sm SelectableModel) SelectLabel() string {
+	return sm.Name
+}
+
+func (sm SelectableModel) SelectValue() interface{} {
+	return sm.ID
+}

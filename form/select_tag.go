@@ -62,8 +62,16 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 	so := SelectOptions{}
 	switch rv.Kind() {
 	case reflect.Slice, reflect.Array:
+		selectableType := reflect.TypeOf((*Selectable)(nil)).Elem()
+
 		for i := 0; i < rv.Len(); i++ {
 			x := rv.Index(i).Interface()
+
+			if rv.Index(i).Type().Implements(selectableType) {
+				so = append(so, SelectOption{Value: x.(Selectable).SelectValue(), Label: x.(Selectable).SelectLabel()})
+				continue
+			}
+
 			so = append(so, SelectOption{Value: x, Label: x})
 		}
 	case reflect.Map:
