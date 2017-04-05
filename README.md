@@ -242,7 +242,7 @@ Which (given the Plush power) allows us to define the options map inside the vie
 Tags will add the `selected` attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, so you don't have to look for the option that has equal value than the selected one manually, p.e:
 
 ```erb
-<%= f.SelectTag("TalkFormatID", {options: {"one": 1, "two": 2}, value: 2}) %>
+<%= f.SelectTag("TalkFormatID", {options: ["one": 1, "two": 2], value: 2}) %>
 ```
 
 Produces:
