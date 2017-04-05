@@ -241,7 +241,7 @@ Which (given the Plush power) allows us to define the options map inside the vie
 
 Another alternative for the select options is to pass a list of structs that meet `form.Selectable` interface.
 
-Which consist in two functions:
+Which consist of two functions:
 
 ```go
 //Selectable allows any struct to become an option in the select tag.
