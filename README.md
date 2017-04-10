@@ -1,7 +1,5 @@
 # tags [![Build Status](https://travis-ci.org/gobuffalo/tags.svg?branch=master)](https://travis-ci.org/gobuffalo/tags)
 
-**This package is experimental - use at your own risk!**
-
 Easily build HTML tags in Go! This package is especially useful when using [http://gobuffalo.io](http://gobuffalo.io).
 
 ## Form Building w/ Buffalo
