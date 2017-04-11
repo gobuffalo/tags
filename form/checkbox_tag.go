@@ -34,7 +34,7 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 
 	if opts["name"] != nil {
 		if unchecked != nil {
-			tag.Prepend(tags.New("input", tags.Options{
+			tag.Append(tags.New("input", tags.Options{
 				"type":  "hidden",
 				"name":  opts["name"],
 				"value": unchecked,

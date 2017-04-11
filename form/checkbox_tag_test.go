@@ -24,7 +24,7 @@ func Test_Form_CheckboxTag_WithValue(t *testing.T) {
 		"unchecked": "2",
 		"name":      "Chubby",
 	})
-	r.Equal(`<label><input name="Chubby" type="hidden" value="2" /><input name="Chubby" type="checkbox" value="1" checked /></label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="1" checked /><input name="Chubby" type="hidden" value="2" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_WithLabel(t *testing.T) {
