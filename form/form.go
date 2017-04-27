@@ -28,6 +28,11 @@ func New(opts tags.Options) *Form {
 		opts["method"] = "POST"
 	}
 
+	if opts["multipart"] != nil {
+		opts["enctype"] = "multipart/form-data"
+		delete(opts, "multipart")
+	}
+
 	form := &Form{
 		Tag: tags.New("form", opts),
 	}
