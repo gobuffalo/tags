@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"time"
 )
 
 type Body interface{}
@@ -86,6 +87,22 @@ func New(name string, opts Options) *Tag {
 	if tag.Options["body"] != nil {
 		tag.Body = []Body{tag.Options["body"]}
 		delete(tag.Options, "body")
+	}
+
+	if tag.Options["value"] != nil {
+		val := tag.Options["value"]
+
+		format := tag.Options["time-format"]
+		if format == nil || format.(string) == "" {
+			format = "2006-01-02"
+		}
+
+		delete(tag.Options, "time-format")
+
+		switch val.(type) {
+		case time.Time:
+			tag.Options["value"] = val.(time.Time).Format(format.(string))
+		}
 	}
 
 	if tag.Options["selected"] != nil {
