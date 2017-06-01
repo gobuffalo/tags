@@ -92,15 +92,14 @@ func New(name string, opts Options) *Tag {
 	if tag.Options["value"] != nil {
 		val := tag.Options["value"]
 
-		format := tag.Options["time-format"]
-		if format == nil || format.(string) == "" {
-			format = "2006-01-02"
-		}
-
-		delete(tag.Options, "time-format")
-
 		switch val.(type) {
 		case time.Time:
+			format := tag.Options["format"]
+			if format == nil || format.(string) == "" {
+				format = "2006-01-02"
+			}
+
+			delete(tag.Options, "format")
 			tag.Options["value"] = val.(time.Time).Format(format.(string))
 		}
 	}
