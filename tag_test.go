@@ -41,8 +41,8 @@ func Test_Tag_WithTimeValue(t *testing.T) {
 
 	for format, expected := range cases {
 		tag := tags.New("input", tags.Options{
-			"value":       time.Time{},
-			"time-format": format,
+			"value":  time.Time{},
+			"format": format,
 		})
 
 		r.Equal(fmt.Sprintf(`<input value="%v" />`, expected), tag.String())
