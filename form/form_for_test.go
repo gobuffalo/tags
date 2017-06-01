@@ -2,6 +2,7 @@ package form_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
@@ -9,6 +10,7 @@ import (
 )
 
 type Talk struct {
+	Date time.Time `format:"01-02-2006"`
 }
 
 func Test_NewFormFor(t *testing.T) {
@@ -30,6 +32,19 @@ func Test_FormFor_InputValue(t *testing.T) {
 	l := f.InputTag("Name", tags.Options{"value": "Something"})
 
 	r.Equal(`<input id="talk-Name" name="Name" type="text" value="Something" />`, l.String())
+}
+
+func Test_FormFor_InputValueFormat(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+	})
+
+	l := f.InputTag("Date", tags.Options{})
+	r.Equal(`<input id="talk-Date" name="Date" type="text" value="01-01-0001" />`, l.String())
+
+	l = f.InputTag("Date", tags.Options{"format": "01/02"})
+	r.Equal(`<input id="talk-Date" name="Date" type="text" value="01/01" />`, l.String())
 }
 
 func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {

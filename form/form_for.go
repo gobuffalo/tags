@@ -71,7 +71,32 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
+	f.addFormatTag(field, opts)
+
 	return f.Form.InputTag(opts)
+}
+
+func (f FormFor) addFormatTag(field string, opts tags.Options) {
+	if opts["format"] != nil {
+		return
+	}
+
+	toff := reflect.TypeOf(f.Model)
+	if toff.Kind() == reflect.Ptr {
+		toff = toff.Elem()
+	}
+
+	if toff.Kind() == reflect.Struct {
+		fi, found := toff.FieldByName(field)
+
+		if !found {
+			return
+		}
+
+		if format, ok := fi.Tag.Lookup("format"); ok && format != "" {
+			opts["format"] = format
+		}
+	}
 }
 
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
