@@ -144,7 +144,6 @@ func (f FormFor) value(field string) interface{} {
 }
 
 func (f FormFor) findFieldNameFor(field string) string {
-	fieldName := field
 	ty := reflect.TypeOf(f.Model)
 
 	if ty.Kind() == reflect.Ptr {
@@ -155,13 +154,13 @@ func (f FormFor) findFieldNameFor(field string) string {
 
 	formDefined := string(rf.Tag.Get("form"))
 	if formDefined != "" && formDefined != "-" {
-		fieldName = formDefined
+		return formDefined
 	}
 
 	schemaDefined := string(rf.Tag.Get("schema"))
 	if schemaDefined != "" && schemaDefined != "-" {
-		fieldName = schemaDefined
+		return schemaDefined
 	}
 
-	return fieldName
+	return field
 }

@@ -33,6 +33,26 @@ func Test_InputFieldSchema(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
 }
 
+func Test_InputFieldFormInsteadOfSchema(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct {
+		Name string `form:"notName"`
+	}{}, tags.Options{})
+
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+}
+
+func Test_InputFieldFormAndSchema(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct {
+		Name string `form:"notName" schema:"name"`
+	}{}, tags.Options{})
+
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+}
+
 func Test_InputFieldSchema_FieldNotPresent(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct {
