@@ -121,7 +121,7 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 
 	if opts["name"] == nil {
-		opts["name"] = f.findSchemaNameFor(field)
+		opts["name"] = f.findFieldNameFor(field)
 	}
 
 	if opts["id"] == nil {
@@ -143,8 +143,8 @@ func (f FormFor) value(field string) interface{} {
 	return i
 }
 
-func (f FormFor) findSchemaNameFor(field string) string {
-	schemaName := field
+func (f FormFor) findFieldNameFor(field string) string {
+	fieldName := field
 	ty := reflect.TypeOf(f.Model)
 
 	if ty.Kind() == reflect.Ptr {
@@ -153,10 +153,15 @@ func (f FormFor) findSchemaNameFor(field string) string {
 
 	rf, _ := ty.FieldByName(field)
 
-	schemaDefined := string(rf.Tag.Get("schema"))
-	if schemaDefined != "" && schemaDefined != "-" {
-		schemaName = schemaDefined
+	formDefined := string(rf.Tag.Get("form"))
+	if formDefined != "" && formDefined != "-" {
+		fieldName = formDefined
 	}
 
-	return schemaName
+	schemaDefined := string(rf.Tag.Get("schema"))
+	if schemaDefined != "" && schemaDefined != "-" {
+		fieldName = schemaDefined
+	}
+
+	return fieldName
 }
