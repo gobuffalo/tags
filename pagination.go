@@ -11,7 +11,7 @@ import (
 
 func Pagination(pagination *pop.Paginator, opts Options) (*Tag, error) {
 	// return an empty div if there is only 1 page
-	if pagination.TotalPages == 1 {
+	if pagination.TotalPages <= 1 {
 		return New("div", Options{}), nil
 	}
 	var path string
