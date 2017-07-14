@@ -1,13 +1,13 @@
 package form
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"reflect"
 	"sync"
 
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
-	"github.com/markbates/pop/nulls"
 	"github.com/markbates/validate"
 )
 
@@ -137,8 +137,14 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	i := fn.Interface()
-	if dv, ok := i.(nulls.String); ok {
-		return dv.String
+	if dv, ok := i.(driver.Valuer); ok {
+		value, _ := dv.Value()
+
+		if value == nil {
+			return ""
+		}
+
+		return fmt.Sprintf("%v", value)
 	}
 	return i
 }
