@@ -7,7 +7,6 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
-	"github.com/markbates/pop/nulls"
 	"github.com/markbates/validate"
 )
 
@@ -129,6 +128,10 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 }
 
+type interfacer interface {
+	Interface() interface{}
+}
+
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 
@@ -137,8 +140,8 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	i := fn.Interface()
-	if dv, ok := i.(nulls.String); ok {
-		return dv.String
+	if dv, ok := i.(interfacer); ok {
+		return dv.Interface()
 	}
 	return i
 }
