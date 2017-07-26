@@ -1,6 +1,7 @@
 package form
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"reflect"
 	"sync"
@@ -140,8 +141,17 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	i := fn.Interface()
-	if dv, ok := i.(interfacer); ok {
-		return dv.Interface()
+	switch t := i.(type) {
+	case driver.Valuer:
+		value, _ := t.Value()
+
+		if value == nil {
+			return ""
+		}
+
+		return fmt.Sprintf("%v", value)
+	case interfacer:
+		return fmt.Sprintf("%v", t.Interface())
 	}
 	return i
 }

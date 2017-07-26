@@ -2,8 +2,10 @@ package tags
 
 import (
 	"bytes"
+	"database/sql/driver"
 	"fmt"
 	"html/template"
+	"reflect"
 	"time"
 )
 
@@ -101,6 +103,24 @@ func New(name string, opts Options) *Tag {
 
 			delete(tag.Options, "format")
 			tag.Options["value"] = val.(time.Time).Format(format.(string))
+		default:
+
+			r := reflect.ValueOf(val)
+			if r.IsValid() == false {
+				tag.Options["value"] = ""
+			}
+
+			i := r.Interface()
+			if dv, ok := i.(driver.Valuer); ok {
+				value, _ := dv.Value()
+
+				if value == nil {
+					tag.Options["value"] = ""
+				}
+
+				tag.Options["value"] = fmt.Sprintf("%v", value)
+			}
+
 		}
 	}
 

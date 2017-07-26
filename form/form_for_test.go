@@ -6,6 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
+	"github.com/markbates/pop/nulls"
 	"github.com/stretchr/testify/require"
 )
 
@@ -81,4 +82,29 @@ func Test_FormFor_FieldDoesntExist(t *testing.T) {
 	f := form.NewFormFor(Talk{}, tags.Options{})
 	l := f.InputTag("IDontExist", tags.Options{})
 	r.Equal(`<input id="talk-IDontExist" name="IDontExist" type="text" value="" />`, l.String())
+}
+
+func Test_FormFor_NullableField(t *testing.T) {
+	r := require.New(t)
+	model := struct {
+		Name       string
+		CreditCard nulls.String
+		Floater    nulls.Float64
+		Other      nulls.Bool
+	}{
+		CreditCard: nulls.NewString("Hello"),
+	}
+
+	f := form.NewFormFor(model, tags.Options{})
+
+	cases := map[string][]string{
+		"CreditCard": {`<input id="-CreditCard" name="CreditCard" type="text" value="Hello" />`},
+		"Floater":    {`<input id="-Floater" name="Floater" type="text" value="" />`},
+		"Other":      {`<input id="-Other" name="Other" type="text" value="" />`},
+	}
+
+	for field, html := range cases {
+		l := f.InputTag(field, tags.Options{})
+		r.Equal(html[0], l.String())
+	}
 }
