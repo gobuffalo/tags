@@ -2,14 +2,30 @@ package tags
 
 import (
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
 
-	"github.com/markbates/pop"
+	"github.com/fatih/structs"
 	"github.com/pkg/errors"
 )
 
-func Pagination(pagination *pop.Paginator, opts Options) (*Tag, error) {
+type Paginator struct {
+	// Current page you're on
+	Page int `json:"page"`
+	// Number of results you want per page
+	PerPage int `json:"per_page"`
+	// Page * PerPage (ex: 2 * 20, Offset == 40)
+	Offset int `json:"offset"`
+	// Total potential records matching the query
+	TotalEntriesSize int `json:"total_entries_size"`
+	// Total records returns, will be <= PerPage
+	CurrentEntriesSize int `json:"current_entries_size"`
+	// Total pages
+	TotalPages int `json:"total_pages"`
+}
+
+func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	// return an empty div if there is only 1 page
 	if pagination.TotalPages <= 1 {
 		return New("div", Options{}), nil
@@ -66,7 +82,58 @@ func Pagination(pagination *pop.Paginator, opts Options) (*Tag, error) {
 	return t, nil
 }
 
-func pageLI(text string, page int, path string, pagination *pop.Paginator) (*Tag, error) {
+func Pagination(pagination interface{}, opts Options) (*Tag, error) {
+	if p, ok := pagination.(Paginator); ok {
+		return p.Tag(opts)
+	}
+	rv := reflect.ValueOf(pagination)
+	if rv.Kind() == reflect.Ptr {
+		rv = rv.Elem()
+	}
+
+	if rv.Kind() != reflect.Struct {
+		return nil, errors.Errorf("can't build a Paginator from %T", pagination)
+	}
+
+	s := structs.New(rv.Interface())
+
+	p := Paginator{
+		Page:    1,
+		PerPage: 20,
+	}
+
+	if f, ok := s.FieldOk("Page"); ok {
+		p.Page = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("PerPage"); ok {
+		p.PerPage = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("Offset"); ok {
+		p.Offset = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
+		p.TotalEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
+		p.TotalEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("CurrentEntriesSize"); ok {
+		p.CurrentEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalPages"); ok {
+		p.TotalPages = f.Value().(int)
+	}
+
+	return p.Tag(opts)
+}
+
+func pageLI(text string, page int, path string, pagination Paginator) (*Tag, error) {
 
 	lio := Options{}
 	if page == pagination.Page {

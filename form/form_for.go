@@ -134,6 +134,10 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 }
 
+type interfacer interface {
+	Interface() interface{}
+}
+
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 
@@ -142,14 +146,17 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	i := fn.Interface()
-	if dv, ok := i.(driver.Valuer); ok {
-		value, _ := dv.Value()
+	switch t := i.(type) {
+	case driver.Valuer:
+		value, _ := t.Value()
 
 		if value == nil {
 			return ""
 		}
 
 		return fmt.Sprintf("%v", value)
+	case interfacer:
+		return fmt.Sprintf("%v", t.Interface())
 	}
 	return i
 }
