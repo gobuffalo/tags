@@ -114,6 +114,10 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 	return f.Form.TextArea(opts)
 }
 
+func (f FormFor) SubmitTag(opts tags.Options) *tags.Tag {
+	return f.Form.SubmitTag(opts)
+}
+
 func (f FormFor) buildOptions(field string, opts tags.Options) {
 
 	if opts["value"] == nil {

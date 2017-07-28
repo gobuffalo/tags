@@ -75,6 +75,16 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+//SubmitTag returns a tag for input type submit without wrapping
+func (f FormFor) SubmitTag(opts tags.Options) *tags.Tag {
+	return f.FormFor.SubmitTag(opts)
+}
+
+//NewFormFor builds a form for a passed model
+func NewFormFor(model interface{}, opts tags.Options) *FormFor {
+	return &FormFor{form.NewFormFor(model, opts)}
+}
+
 func (f FormFor) buildOptions(field string, opts tags.Options) tags.Options {
 	opts["tags-field"] = field
 	fieldName := validators.GenerateKey(field)
@@ -83,8 +93,4 @@ func (f FormFor) buildOptions(field string, opts tags.Options) tags.Options {
 	}
 
 	return opts
-}
-
-func NewFormFor(model interface{}, opts tags.Options) *FormFor {
-	return &FormFor{form.NewFormFor(model, opts)}
 }
