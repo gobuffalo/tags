@@ -11,7 +11,7 @@ import (
 func Test_Form_SubmitTag(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	i := f.SubmitTag(tags.Options{"value": "Send"})
+	i := f.SubmitTag("Send", tags.Options{"class": "btn btn-primary"})
 
-	r.Equal(`<input type="submit" value="Send" />`, i.String())
+	r.Equal(`<input class="btn btn-primary" type="submit" value="Send" />`, i.String())
 }

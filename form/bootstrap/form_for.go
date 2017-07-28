@@ -76,8 +76,8 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 }
 
 //SubmitTag returns a tag for input type submit without wrapping
-func (f FormFor) SubmitTag(opts tags.Options) *tags.Tag {
-	return f.FormFor.SubmitTag(opts)
+func (f FormFor) SubmitTag(value string, opts tags.Options) *tags.Tag {
+	return f.FormFor.SubmitTag(value, opts)
 }
 
 //NewFormFor builds a form for a passed model
