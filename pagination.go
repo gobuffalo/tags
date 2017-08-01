@@ -41,6 +41,16 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	opts["class"] = strings.Join([]string{opts["class"].(string), "pagination"}, " ")
 	t := New("ul", opts)
 
+	wing := 5
+	if w, ok := opts["wingLength"]; ok {
+		wing = w.(int)
+		delete(opts, "wingLength")
+	}
+	barLength := wing*2 + 1
+	center := wing + 1
+	loopStart := 1
+	loopEnd := pagination.TotalPages
+
 	showPrev := true
 	if b, ok := opts["showPrev"].(bool); ok {
 		showPrev = b
@@ -49,15 +59,42 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	if showPrev {
 		page := pagination.Page - 1
 		li, err := pageLI("&laquo;", page, path, pagination)
-
 		if err != nil {
 			return t, errors.WithStack(err)
 		}
 		t.Append(li)
 	}
 
-	for i := 1; i < pagination.TotalPages+1; i++ {
+	if pagination.TotalPages > barLength {
+		loopEnd = barLength - 2       // range 1 ~ center
+		if pagination.Page > center { /// range center
+			loopStart = pagination.Page - wing + 2
+			loopEnd = loopStart + barLength - 5
+			li, err := pageLI("1", 1, path, pagination)
+			if err != nil {
+				return t, errors.WithStack(err)
+			}
+			t.Append(li)
+			t.Append(pageLIDummy())
+		}
+		if pagination.Page > (pagination.TotalPages - wing - 1) {
+			loopEnd = pagination.TotalPages
+			loopStart = pagination.TotalPages - barLength + 3
+		}
+	}
+
+	for i := loopStart; i <= loopEnd; i++ {
 		li, err := pageLI(strconv.Itoa(i), i, path, pagination)
+		if err != nil {
+			return t, errors.WithStack(err)
+		}
+		t.Append(li)
+	}
+
+	if pagination.TotalPages > loopEnd {
+		t.Append(pageLIDummy())
+		label := strconv.Itoa(pagination.TotalPages)
+		li, err := pageLI(label, pagination.TotalPages, path, pagination)
 		if err != nil {
 			return t, errors.WithStack(err)
 		}
@@ -162,4 +199,11 @@ func pageLI(text string, page int, path string, pagination Paginator) (*Tag, err
 		return li, errors.WithStack(err)
 	}
 	return li, nil
+}
+
+func pageLIDummy() *Tag {
+	li := New("li", Options{"class": "disabled"})
+	a := New("a", Options{"body": "..."})
+	li.Append(a)
+	return li
 }
