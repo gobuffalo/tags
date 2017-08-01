@@ -12,7 +12,7 @@ func Test_SelectTag(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	s := f.SelectTag(tags.Options{})
-	r.Equal(`<select />`, s.String())
+	r.Equal(`<select></select>`, s.String())
 }
 
 func Test_SelectTag_WithSelectOptions(t *testing.T) {

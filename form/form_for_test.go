@@ -21,7 +21,7 @@ func Test_NewFormFor(t *testing.T) {
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" id="talk-form" method="POST" />`, f.String())
+	r.Equal(`<form action="/users/1" id="talk-form" method="POST"></form>`, f.String())
 }
 
 func Test_FormFor_InputValue(t *testing.T) {

@@ -15,7 +15,7 @@ func Test_NewForm(t *testing.T) {
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
-	r.Equal(`<form action="/users/1" method="POST" />`, f.String())
+	r.Equal(`<form action="/users/1" method="POST"></form>`, f.String())
 }
 
 func Test_NewForm_With_AuthenticityToken(t *testing.T) {
