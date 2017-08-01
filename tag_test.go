@@ -17,9 +17,16 @@ func Test_Tag(t *testing.T) {
 
 func Test_Tag_WithName(t *testing.T) {
 	r := require.New(t)
+	tag := tags.New("br", tags.Options{})
+	r.Equal("br", tag.Name)
+	r.Equal(`<br />`, tag.String())
+}
+
+func Test_Tag_NonVoid(t *testing.T) {
+	r := require.New(t)
 	tag := tags.New("div", tags.Options{})
 	r.Equal("div", tag.Name)
-	r.Equal(`<div />`, tag.String())
+	r.Equal(`<div></div>`, tag.String())
 }
 
 func Test_Tag_WithValue(t *testing.T) {

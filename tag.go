@@ -6,8 +6,12 @@ import (
 	"fmt"
 	"html/template"
 	"reflect"
+	"strings"
 	"time"
 )
+
+// void tags https://www.w3.org/TR/html5/syntax.html#void-elements
+const voidTags = " area base br col embed hr img input keygen link meta param source track wbr "
 
 type Body interface{}
 
@@ -69,6 +73,12 @@ func (t Tag) String() string {
 			}
 		}
 		bb.WriteString("</")
+		bb.WriteString(t.Name)
+		bb.WriteString(">")
+		return bb.String()
+	}
+	if !strings.Contains(voidTags, " "+t.Name+" ") {
+		bb.WriteString("></")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
 		return bb.String()
