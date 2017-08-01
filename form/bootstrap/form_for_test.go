@@ -77,7 +77,7 @@ func Test_SelectLabel(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.SelectTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><select class=" form-control" id="-Name" name="Name" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label>Custom</label><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
 func Test_RadioButton(t *testing.T) {
