@@ -276,3 +276,39 @@ And similary with the form.SelectOptions slice:
 ```erb
 <%= f.SelectTag("TalkFormatID", {options: talkFormats, value: 2}) %>
 ```
+
+### Checkbox Tag
+
+Tags provide a convenient way to build an HTML <input> element with type="checkbox":
+
+```erb
+<%= f.CheckboxTag("IsPublic") %>
+```
+
+That produces:
+
+```html
+<div class="form-group">
+  <label>
+    <input class="" id="talk-IsPublic" name="IsPublic" type="checkbox" value="true" checked="">
+    IsPublic
+  </label>
+</div>
+```
+
+You can easily change the label content with
+
+```erb
+<%= f.CheckboxTag("IsPublic", {label: " Is the talk public?"}) %>
+```
+
+That produces:
+
+```html
+<div class="form-group">
+  <label>
+    <input class="" id="post-IsPublic" name="IsPublic" type="checkbox" value="true" checked="">
+     Is the Talk public?
+  </label>
+</div>
+```
