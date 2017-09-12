@@ -157,3 +157,30 @@ func Test_CheckBoxError(t *testing.T) {
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
 	r.Equal(`<div class="form-group has-error"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" />Custom</label><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
 }
+
+type Person struct {
+	Name    string
+	Address Address
+}
+
+type Address struct {
+	City  string
+	State string
+}
+
+func Test_FormFor_Nested_Struct(t *testing.T) {
+	r := require.New(t)
+	p := Person{
+		Name: "Mark",
+		Address: Address{
+			City:  "Boston",
+			State: "MA",
+		},
+	}
+
+	f := bootstrap.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Address.State", tags.Options{})
+
+	exp := `<div class="form-group"><label>Address State</label><input class=" form-control" id="person-Address.State" name="Address.State" type="text" value="MA" /></div>`
+	r.Equal(exp, tag.String())
+}

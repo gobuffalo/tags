@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/gobuffalo/tags"
@@ -142,7 +143,19 @@ func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 
 	if fn.IsValid() == false {
-		return ""
+		dots := strings.Split(field, ".")
+		if len(dots) == 1 {
+			return ""
+		}
+		fn = f.reflection.FieldByName(dots[0])
+		if fn.IsValid() {
+			ff := NewFormFor(fn.Interface(), f.Options)
+			return ff.value(strings.Join(dots[1:], "."))
+		}
+	}
+
+	fn = reflect.Indirect(fn)
+	if fn.Kind() == reflect.Struct {
 	}
 
 	i := fn.Interface()
