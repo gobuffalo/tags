@@ -312,3 +312,24 @@ That produces:
   </label>
 </div>
 ```
+
+
+### Pagination Tag
+
+Tags provides a pagination tag that will do the work of building pagination elements based on parameters you pass as arguments to it, it receives a `tags.Paginator` and `tags.Options`, you can use tags pagination like:
+
+```go
+t, err := tags.Pagination(pagination, opts)
+...
+```
+
+Or you can use the `paginator` helper Buffalo has built in, which allows pagination to be used inside your templates.
+
+Pagination allows to customize its content/behavior with the following options:
+
+- class (defaults "")
+- WingLength
+- showPrev
+- showNext
+- NextContent (defaults &raquo;)
+- PreviousContent (defaults &laquo;)
