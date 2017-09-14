@@ -108,3 +108,30 @@ func Test_FormFor_NullableField(t *testing.T) {
 		r.Equal(html[0], l.String())
 	}
 }
+
+type Person struct {
+	Name    string
+	Address Address
+}
+
+type Address struct {
+	City  string
+	State string
+}
+
+func Test_FormFor_Nested_Struct(t *testing.T) {
+	r := require.New(t)
+	p := Person{
+		Name: "Mark",
+		Address: Address{
+			City:  "Boston",
+			State: "MA",
+		},
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Address.State", tags.Options{})
+
+	exp := `<input id="person-Address.State" name="Address.State" type="text" value="MA" />`
+	r.Equal(exp, tag.String())
+}

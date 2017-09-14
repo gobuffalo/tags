@@ -33,7 +33,10 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	})
 
 	if opts["label"] == nil && opts["tags-field"] != nil {
-		opts["label"] = inflect.Titleize(opts["tags-field"].(string))
+		if tf, ok := opts["tags-field"].(string); ok {
+			tf = strings.Join(strings.Split(tf, "."), " ")
+			opts["label"] = inflect.Titleize(tf)
+		}
 	}
 
 	delete(opts, "tags-field")
