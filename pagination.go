@@ -58,7 +58,12 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	}
 	if showPrev {
 		page := pagination.Page - 1
-		li, err := pageLI("&laquo;", page, path, pagination)
+		prevContent := "&laquo;"
+		if opts["previousContent"] != nil {
+			prevContent = opts["previousContent"].(string)
+		}
+
+		li, err := pageLI(prevContent, page, path, pagination)
 		if err != nil {
 			return t, errors.WithStack(err)
 		}
@@ -108,7 +113,12 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	}
 	if showNext {
 		page := pagination.Page + 1
-		li, err := pageLI("&raquo;", page, path, pagination)
+		nextContent := "&raquo;"
+		if opts["nextContent"] != nil {
+			nextContent = opts["nextContent"].(string)
+		}
+
+		li, err := pageLI(nextContent, page, path, pagination)
 
 		if err != nil {
 			return t, errors.WithStack(err)
