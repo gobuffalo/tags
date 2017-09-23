@@ -139,6 +139,10 @@ type interfacer interface {
 	Interface() interface{}
 }
 
+type tagValuer interface {
+	TagValue() string
+}
+
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 
@@ -160,6 +164,8 @@ func (f FormFor) value(field string) interface{} {
 
 	i := fn.Interface()
 	switch t := i.(type) {
+	case tagValuer:
+		return t.TagValue()
 	case driver.Valuer:
 		value, _ := t.Value()
 
