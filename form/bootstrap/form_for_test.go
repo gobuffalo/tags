@@ -30,7 +30,7 @@ func Test_InputFieldSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldFormInsteadOfSchema(t *testing.T) {
@@ -40,7 +40,7 @@ func Test_InputFieldFormInsteadOfSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldFormAndSchema(t *testing.T) {
@@ -50,7 +50,7 @@ func Test_InputFieldFormAndSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldSchema_FieldNotPresent(t *testing.T) {
