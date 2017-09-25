@@ -1,10 +1,12 @@
 package form_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
+	"github.com/satori/go.uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -111,6 +113,41 @@ func Test_SelectTag_WithSlice_Selectable(t *testing.T) {
 	r.Contains(s, `<option value="2">Peter</option>`)
 }
 
+func Test_SelectTag_WithUUID_Selected(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	jid := uuid.NewV4()
+	pid := uuid.NewV4()
+	st := f.SelectTag(tags.Options{
+		"options": []SelectableUUIDModel{
+			{"John", jid},
+			{"Peter", pid},
+		},
+		"value": pid,
+	})
+	s := st.String()
+	r.Contains(s, fmt.Sprintf(`<option value="%s">John</option>`, jid))
+	r.Contains(s, fmt.Sprintf(`<option value="%s" selected>Peter</option>`, pid))
+}
+
+func Test_SelectTag_WithUUID_Selected_withBlank(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	jid := uuid.NewV4()
+	pid := uuid.NewV4()
+	st := f.SelectTag(tags.Options{
+		"options": []SelectableUUIDModel{
+			{"John", jid},
+			{"Peter", pid},
+		},
+		"value":       pid,
+		"allow_blank": true,
+	})
+	s := st.String()
+	r.Contains(s, fmt.Sprintf(`<option value="%s">John</option>`, jid))
+	r.Contains(s, fmt.Sprintf(`<option value="%s" selected>Peter</option>`, pid))
+}
+
 type SelectableModel struct {
 	Name string
 	ID   string
@@ -121,5 +158,18 @@ func (sm SelectableModel) SelectLabel() string {
 }
 
 func (sm SelectableModel) SelectValue() interface{} {
+	return sm.ID
+}
+
+type SelectableUUIDModel struct {
+	Name string
+	ID   uuid.UUID
+}
+
+func (sm SelectableUUIDModel) SelectLabel() string {
+	return sm.Name
+}
+
+func (sm SelectableUUIDModel) SelectValue() interface{} {
 	return sm.ID
 }

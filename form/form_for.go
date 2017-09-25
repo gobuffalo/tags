@@ -10,6 +10,7 @@ import (
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
 	"github.com/markbates/validate"
+	"github.com/satori/go.uuid"
 )
 
 type FormFor struct {
@@ -131,7 +132,7 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 
 	if opts["id"] == nil {
-		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, field)
+		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, opts["name"])
 	}
 }
 
@@ -149,6 +150,9 @@ func (f FormFor) value(field string) interface{} {
 	if fn.IsValid() == false {
 		dots := strings.Split(field, ".")
 		if len(dots) == 1 {
+			if !strings.HasSuffix(field, "ID") {
+				return f.value(field + "ID")
+			}
 			return ""
 		}
 		fn = f.reflection.FieldByName(dots[0])
@@ -159,11 +163,11 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	fn = reflect.Indirect(fn)
-	if fn.Kind() == reflect.Struct {
-	}
 
 	i := fn.Interface()
 	switch t := i.(type) {
+	case uuid.UUID:
+		return t.String()
 	case tagValuer:
 		return t.TagValue()
 	case driver.Valuer:
@@ -187,7 +191,13 @@ func (f FormFor) findFieldNameFor(field string) string {
 		ty = ty.Elem()
 	}
 
-	rf, _ := ty.FieldByName(field)
+	rf, ok := ty.FieldByName(field)
+	if !ok {
+		if rf, ok = ty.FieldByName(field + "ID"); !ok {
+			return field
+		}
+		field = field + "ID"
+	}
 
 	formDefined := string(rf.Tag.Get("form"))
 	if formDefined != "" && formDefined != "-" {
