@@ -74,8 +74,13 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	f.addFormatTag(field, opts)
-
 	return f.Form.InputTag(opts)
+}
+
+func (f FormFor) DateTimeTag(field string, opts tags.Options) *tags.Tag {
+	f.buildOptions(field, opts)
+	f.addFormatTag(field, opts)
+	return f.Form.DateTimeTag(opts)
 }
 
 func (f FormFor) addFormatTag(field string, opts tags.Options) {
