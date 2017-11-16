@@ -219,6 +219,12 @@ Which will use the same value for the `value` attribute and the body of the opti
 
 Which (given the Plush power) allows us to define the options map inside the view.
 
+#### Styling Select
+```erb
+<%= f.SelectTag("TalkFormatID",{options:talkFormats class: "foo", style: "text-align: right", onchange:"GetFormats()"}) %>
+```
+Which will style the Select and also bind javascript functions
+
 #### Selectable Interface
 
 Another alternative for the select options is to pass a list of structs that meet the `form.Selectable` interface.
