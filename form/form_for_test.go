@@ -35,6 +35,17 @@ func Test_FormFor_InputValue(t *testing.T) {
 	r.Equal(`<input id="talk-Name" name="Name" type="text" value="Something" />`, l.String())
 }
 
+func Test_FormFor_File(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+	})
+
+	l := f.FileTag("Name", tags.Options{"value": "Something"})
+
+	r.Equal(`<input id="talk-Name" name="Name" type="file" value="Something" />`, l.String())
+}
+
 func Test_FormFor_InputValueFormat(t *testing.T) {
 	r := require.New(t)
 	f := form.NewFormFor(Talk{}, tags.Options{

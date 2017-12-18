@@ -54,6 +54,13 @@ func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
+	opts = f.buildOptions(field, opts)
+	return divWrapper(opts, func(o tags.Options) tags.Body {
+		return f.FormFor.FileTag(field, opts)
+	})
+}
+
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
