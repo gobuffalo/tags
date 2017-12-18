@@ -6,6 +6,9 @@ func (f Form) InputTag(opts tags.Options) *tags.Tag {
 	if opts["type"] == nil {
 		opts["type"] = "text"
 	}
+	if opts["type"] == "file" {
+		f.Options["enctype"] = "multipart/form-data"
+	}
 	return tags.New("input", opts)
 }
 
