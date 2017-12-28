@@ -28,6 +28,10 @@ func (s SelectTag) HTML() template.HTML {
 func NewSelectTag(opts tags.Options) *SelectTag {
 	so := parseSelectOptions(opts)
 	selected := opts["value"]
+
+	if s, ok := selected.(Selectable); ok {
+		selected = s.SelectValue()
+	}
 	delete(opts, "value")
 
 	st := &SelectTag{
