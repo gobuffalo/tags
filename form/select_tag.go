@@ -27,7 +27,7 @@ func (s SelectTag) HTML() template.HTML {
 
 func NewSelectTag(opts tags.Options) *SelectTag {
 	so := parseSelectOptions(opts)
-	selected := opts["value"]
+	selected := parseSelectValue(opts["value"])
 	delete(opts, "value")
 
 	st := &SelectTag{
@@ -96,4 +96,21 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 		}
 	}
 	return so
+}
+
+func parseSelectValue(x interface{}) interface{} {
+	rv := reflect.ValueOf(x)
+	if rv.Kind() == reflect.Ptr {
+		rv = rv.Elem()
+	}
+
+	if rv.Kind() == reflect.Struct {
+		// Extract value if val implements Selectable
+		selectableType := reflect.TypeOf((*Selectable)(nil)).Elem()
+		if rv.Type().Implements(selectableType) {
+			return x.(Selectable).SelectValue()
+		}
+	}
+
+	return x
 }
