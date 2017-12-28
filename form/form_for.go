@@ -77,6 +77,12 @@ func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	return f.Form.InputTag(opts)
 }
 
+func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
+	f.buildOptions(field, opts)
+	f.addFormatTag(field, opts)
+	return f.Form.FileTag(opts)
+}
+
 func (f FormFor) DateTimeTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	f.addFormatTag(field, opts)

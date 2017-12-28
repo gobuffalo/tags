@@ -25,6 +25,12 @@ func (f Form) InputTag(opts tags.Options) *tags.Tag {
 	})
 }
 
+func (f Form) FileTag(opts tags.Options) *tags.Tag {
+	return divWrapper(opts, func(o tags.Options) tags.Body {
+		return f.Form.FileTag(o)
+	})
+}
+
 func (f Form) RadioButton(opts tags.Options) *tags.Tag {
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.Form.RadioButton(o)

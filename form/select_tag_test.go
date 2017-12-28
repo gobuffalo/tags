@@ -113,6 +113,21 @@ func Test_SelectTag_WithSlice_Selectable(t *testing.T) {
 	r.Contains(s, `<option value="2">Peter</option>`)
 }
 
+func Test_SelectTag_WithSlice_Selectable_Interface(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"options": []SelectableModel{
+			{"John", "1"},
+			{"Peter", "2"},
+		},
+		"value": SelectableModel{"John", "1"},
+	})
+	s := st.String()
+	r.Contains(s, `<option value="1" selected>John</option>`)
+	r.Contains(s, `<option value="2">Peter</option>`)
+}
+
 func Test_SelectTag_WithUUID_Selected(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
