@@ -4,22 +4,6 @@ Easily build HTML tags in Go! This package is especially useful when using [http
 
 ## Form Building w/ Buffalo
 
-### Install the View Helpers
-
-```go
-r = render.New(render.Options{
-	HTMLLayout:   "application.html",
-	TemplatesBox: packr.NewBox("../templates"),
-	Helpers: render.Helpers{
-		// import the helpers you want:
-		"form":               plush.FormHelper,
-		"form_for":           plush.FormForHelper,
-		"bootstrap_form":     plush.BootstrapFormHelper,
-		"bootstrap_form_for": plush.BootstrapFormForHelper,
-	},
-})
-```
-
 ### Form
 
 The `form.Form` type can be used to generate HTML forms.
@@ -32,7 +16,7 @@ So given this template:
   <div class="col-md-12">
     <%= f.InputTag({name:"Title", value: talk.Title }) %>
   </div>
-  
+
   <div class="col-md-6">
     <%= f.TextArea({value: talk.Abstract, hide_label: true }) %>
   </div>

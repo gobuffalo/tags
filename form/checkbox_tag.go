@@ -45,7 +45,7 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 	if opts["label"] != nil && hl == nil {
 		label := fmt.Sprint(opts["label"])
 		delete(opts, "label")
-		tag.Append(label)
+		tag.Append(" " + label)
 	}
 	return tag
 }

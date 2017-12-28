@@ -10,6 +10,7 @@ import (
 	"github.com/gobuffalo/tags"
 	"github.com/markbates/inflect"
 	"github.com/markbates/validate"
+	"github.com/satori/go.uuid"
 )
 
 type FormFor struct {
@@ -73,8 +74,19 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	f.addFormatTag(field, opts)
-
 	return f.Form.InputTag(opts)
+}
+
+func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
+	f.buildOptions(field, opts)
+	f.addFormatTag(field, opts)
+	return f.Form.FileTag(opts)
+}
+
+func (f FormFor) DateTimeTag(field string, opts tags.Options) *tags.Tag {
+	f.buildOptions(field, opts)
+	f.addFormatTag(field, opts)
+	return f.Form.DateTimeTag(opts)
 }
 
 func (f FormFor) addFormatTag(field string, opts tags.Options) {
@@ -131,12 +143,16 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	}
 
 	if opts["id"] == nil {
-		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, field)
+		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, opts["name"])
 	}
 }
 
 type interfacer interface {
 	Interface() interface{}
+}
+
+type tagValuer interface {
+	TagValue() string
 }
 
 func (f FormFor) value(field string) interface{} {
@@ -145,6 +161,9 @@ func (f FormFor) value(field string) interface{} {
 	if fn.IsValid() == false {
 		dots := strings.Split(field, ".")
 		if len(dots) == 1 {
+			if !strings.HasSuffix(field, "ID") {
+				return f.value(field + "ID")
+			}
 			return ""
 		}
 		fn = f.reflection.FieldByName(dots[0])
@@ -155,11 +174,13 @@ func (f FormFor) value(field string) interface{} {
 	}
 
 	fn = reflect.Indirect(fn)
-	if fn.Kind() == reflect.Struct {
-	}
 
 	i := fn.Interface()
 	switch t := i.(type) {
+	case uuid.UUID:
+		return t.String()
+	case tagValuer:
+		return t.TagValue()
 	case driver.Valuer:
 		value, _ := t.Value()
 
@@ -181,7 +202,13 @@ func (f FormFor) findFieldNameFor(field string) string {
 		ty = ty.Elem()
 	}
 
-	rf, _ := ty.FieldByName(field)
+	rf, ok := ty.FieldByName(field)
+	if !ok {
+		if rf, ok = ty.FieldByName(field + "ID"); !ok {
+			return field
+		}
+		field = field + "ID"
+	}
 
 	formDefined := string(rf.Tag.Get("form"))
 	if formDefined != "" && formDefined != "-" {

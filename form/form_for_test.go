@@ -35,6 +35,17 @@ func Test_FormFor_InputValue(t *testing.T) {
 	r.Equal(`<input id="talk-Name" name="Name" type="text" value="Something" />`, l.String())
 }
 
+func Test_FormFor_File(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{
+		"action": "/users/1",
+	})
+
+	l := f.FileTag("Name", tags.Options{"value": "Something"})
+
+	r.Equal(`<input id="talk-Name" name="Name" type="file" value="Something" />`, l.String())
+}
+
 func Test_FormFor_InputValueFormat(t *testing.T) {
 	r := require.New(t)
 	f := form.NewFormFor(Talk{}, tags.Options{
@@ -134,4 +145,21 @@ func Test_FormFor_Nested_Struct(t *testing.T) {
 
 	exp := `<input id="person-Address.State" name="Address.State" type="text" value="MA" />`
 	r.Equal(exp, tag.String())
+}
+
+func Test_FormFor_DateTimeTag(t *testing.T) {
+	r := require.New(t)
+
+	date, err := time.Parse("2006-01-02T03:04", "1976-08-24T06:17")
+	r.NoError(err)
+
+	p := struct {
+		BirthDate time.Time
+	}{
+		BirthDate: date,
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	i := f.DateTimeTag("BirthDate", tags.Options{})
+	r.Equal(`<input id="-BirthDate" name="BirthDate" type="datetime-local" value="1976-08-24T06:17" />`, i.String())
 }

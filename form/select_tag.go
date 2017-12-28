@@ -47,10 +47,22 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 		return SelectOptions{}
 	}
 
+	allowBlank := opts["allow_blank"]
+	delete(opts, "allow_blank")
+
 	sopts := opts["options"]
 	delete(opts, "options")
 
+	so := SelectOptions{}
+	if aw, ok := allowBlank.(bool); ok && aw {
+		so = append(so, SelectOption{
+			Value: "",
+			Label: "",
+		})
+	}
+
 	if x, ok := sopts.(SelectOptions); ok {
+		x = append(so, x...) // prepend blank SelectOption if present
 		return x
 	}
 
@@ -59,7 +71,6 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 		rv = rv.Elem()
 	}
 
-	so := SelectOptions{}
 	switch rv.Kind() {
 	case reflect.Slice, reflect.Array:
 		selectableType := reflect.TypeOf((*Selectable)(nil)).Elem()
