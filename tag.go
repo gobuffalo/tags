@@ -13,8 +13,10 @@ import (
 // void tags https://www.w3.org/TR/html5/syntax.html#void-elements
 const voidTags = " area base br col embed hr img input keygen link meta param source track wbr "
 
+// Body is a Tag inner content.
 type Body interface{}
 
+// Tag describes a HTML tag meta data.
 type Tag struct {
 	Name     string
 	Options  Options
@@ -23,10 +25,12 @@ type Tag struct {
 	Body     []Body
 }
 
+// Append adds new Body part(s) after the current Tag inner contents.
 func (t *Tag) Append(b ...Body) {
 	t.Body = append(t.Body, b...)
 }
 
+// Prepend adds new Body part(s) before the current Tag inner contents.
 func (t *Tag) Prepend(b ...Body) {
 	t.Body = append(b, t.Body...)
 }
@@ -87,10 +91,12 @@ func (t Tag) String() string {
 	return bb.String()
 }
 
+// HTML gets the Tag string representation as a HTML template.
 func (t Tag) HTML() template.HTML {
 	return template.HTML(t.String())
 }
 
+// New creates a new Tag with given name and options.
 func New(name string, opts Options) *Tag {
 	tag := &Tag{
 		Name:    name,

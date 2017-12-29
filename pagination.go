@@ -10,6 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Paginator describes a pagination meta data
 type Paginator struct {
 	// Current page you're on
 	Page int `json:"page"`

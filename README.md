@@ -241,6 +241,12 @@ type Selectable interface {
 
 By implementing this interface tags will call `SelectValue` and `SelectLabel` to get the option Value and Label from implementer.
 
+This interface is also known by the `value` attribute:
+
+```erb
+<%= f.SelectTag({name: "Soda", value: mySoda, options: selectableSodaList}) %>
+```
+
 #### Selected
 
 Tags will add the `selected` attribute to the option that has the same value than the one it receives on the `value` option of the `form.SelectTag`, so you don't have to look for the option that has equal value than the selected one manually, p.e:
