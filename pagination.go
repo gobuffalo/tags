@@ -32,22 +32,10 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 		return New("div", Options{}), nil
 	}
 
-	var path string
-	if p, ok := opts["path"]; ok {
-		path = p.(string)
-		delete(opts, "path")
-	}
-	if _, ok := opts["class"]; !ok {
-		opts["class"] = ""
-	}
-	opts["class"] = strings.Join([]string{opts["class"].(string), "pagination"}, " ")
+	path, class, wing := extractBaseOptions(opts)
+	opts["class"] = strings.Join([]string{class, "pagination"}, " ")
 	t := New("ul", opts)
 
-	wing := 5
-	if w, ok := opts["wingLength"]; ok {
-		wing = w.(int)
-		delete(opts, "wingLength")
-	}
 	barLength := wing*2 + 1
 	center := wing + 1
 	loopStart := 1
@@ -146,6 +134,28 @@ func (pagination Paginator) addNext(opts Options, path string) (*Tag, error) {
 	}
 
 	return pageLI(nextContent, page, path, pagination)
+}
+
+func extractBaseOptions(opts Options) (string, string, int) {
+	var path string
+	if p, ok := opts["path"]; ok {
+		path = p.(string)
+		delete(opts, "path")
+	}
+
+	var class string
+	if cl, ok := opts["class"]; ok {
+		class = cl.(string)
+		delete(opts, "path")
+	}
+
+	wing := 5
+	if w, ok := opts["wingLength"]; ok {
+		wing = w.(int)
+		delete(opts, "wingLength")
+	}
+
+	return path, class, wing
 }
 
 func Pagination(pagination interface{}, opts Options) (*Tag, error) {
