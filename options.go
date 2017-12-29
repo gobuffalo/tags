@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Options is a map used to configure tags
 type Options map[string]interface{}
 
 func (o Options) String() string {
