@@ -31,6 +31,7 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	if pagination.TotalPages <= 1 {
 		return New("div", Options{}), nil
 	}
+
 	var path string
 	if p, ok := opts["path"]; ok {
 		path = p.(string)
@@ -52,24 +53,11 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	loopStart := 1
 	loopEnd := pagination.TotalPages
 
-	showPrev := true
-	if b, ok := opts["showPrev"].(bool); ok {
-		showPrev = b
-		delete(opts, "showPrev")
+	li, err := pagination.addPrev(opts, path)
+	if err != nil {
+		return t, errors.WithStack(err)
 	}
-	if showPrev {
-		page := pagination.Page - 1
-		prevContent := "&laquo;"
-		if opts["previousContent"] != nil {
-			prevContent = opts["previousContent"].(string)
-		}
-
-		li, err := pageLI(prevContent, page, path, pagination)
-		if err != nil {
-			return t, errors.WithStack(err)
-		}
-		t.Append(li)
-	}
+	t.Append(li)
 
 	if pagination.TotalPages > barLength {
 		loopEnd = barLength - 2       // range 1 ~ center
@@ -107,27 +95,57 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 		t.Append(li)
 	}
 
+	li, err = pagination.addNext(opts, path)
+	if err != nil {
+		return t, errors.WithStack(err)
+	}
+	t.Append(li)
+
+	return t, nil
+}
+
+func (pagination Paginator) addPrev(opts Options, path string) (*Tag, error) {
+	showPrev := true
+
+	if b, ok := opts["showPrev"].(bool); ok {
+		showPrev = b
+		delete(opts, "showPrev")
+	}
+
+	if !showPrev {
+		return nil, nil
+	}
+
+	page := pagination.Page - 1
+	prevContent := "&laquo;"
+
+	if opts["previousContent"] != nil {
+		prevContent = opts["previousContent"].(string)
+	}
+
+	return pageLI(prevContent, page, path, pagination)
+}
+
+func (pagination Paginator) addNext(opts Options, path string) (*Tag, error) {
 	showNext := true
+
 	if b, ok := opts["showNext"].(bool); ok {
 		showNext = b
 		delete(opts, "showNext")
 	}
-	if showNext {
-		page := pagination.Page + 1
-		nextContent := "&raquo;"
-		if opts["nextContent"] != nil {
-			nextContent = opts["nextContent"].(string)
-		}
 
-		li, err := pageLI(nextContent, page, path, pagination)
-
-		if err != nil {
-			return t, errors.WithStack(err)
-		}
-		t.Append(li)
+	if !showNext {
+		return nil, nil
 	}
 
-	return t, nil
+	page := pagination.Page + 1
+	nextContent := "&raquo;"
+
+	if opts["nextContent"] != nil {
+		nextContent = opts["nextContent"].(string)
+	}
+
+	return pageLI(nextContent, page, path, pagination)
 }
 
 func Pagination(pagination interface{}, opts Options) (*Tag, error) {
