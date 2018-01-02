@@ -202,6 +202,70 @@ func Test_SelectTag_WithUUID_Selected_withoutBlankSelectOptions(t *testing.T) {
 	r.Contains(s, fmt.Sprintf(`<option value="%s" selected>Peter</option>`, pid))
 }
 
+func Test_SelectTag_Multiple(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"multiple": true,
+		"options":  []string{"one", "two"},
+	})
+	s := st.String()
+	r.Contains(s, `<select multiple>`)
+	r.Contains(s, `<option value="one">one</option>`)
+	r.Contains(s, `<option value="two">two</option>`)
+}
+
+func Test_SelectTag_Multiple_SelectOne(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"multiple": true,
+		"options":  []string{"one", "two"},
+		"value":    "one",
+	})
+	s := st.String()
+	r.Contains(s, `<select multiple>`)
+	r.Contains(s, `<option value="one" selected>one</option>`)
+	r.Contains(s, `<option value="two">two</option>`)
+}
+
+func Test_SelectTag_Multiple_SelectMultiple(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"multiple": true,
+		"options":  []string{"one", "two", "three"},
+		"value":    []string{"one", "two"},
+	})
+	s := st.String()
+	r.Contains(s, `<select multiple>`)
+	r.Contains(s, `<option value="one" selected>one</option>`)
+	r.Contains(s, `<option value="two" selected>two</option>`)
+	r.Contains(s, `<option value="three">three</option>`)
+}
+
+func Test_SelectTag_Multiple_SelectMultiple_Selectable_Interface(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"multiple": true,
+		"options": []SelectableModel{
+			{"John", "1"},
+			{"Peter", "2"},
+			{"Mark", "3"},
+		},
+		"value": []SelectableModel{
+			{"John", "1"},
+			{"Peter", "2"},
+		},
+	})
+	s := st.String()
+	r.Contains(s, `<select multiple>`)
+	r.Contains(s, `<option value="1" selected>John</option>`)
+	r.Contains(s, `<option value="2" selected>Peter</option>`)
+	r.Contains(s, `<option value="3">Mark</option>`)
+}
+
 type SelectableModel struct {
 	Name string
 	ID   string
