@@ -8,11 +8,16 @@ import (
 	"github.com/markbates/inflect"
 )
 
-func buildOptions(opts tags.Options) {
+func buildOptions(opts tags.Options, err bool) {
 	if opts["class"] == nil {
 		opts["class"] = ""
 	}
 	opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-control"}, " ")
+
+	if err {
+		opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "is-invalid"}, " ")
+	}
+
 	delete(opts, "hide_label")
 }
 
@@ -22,7 +27,6 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	errors := []string{}
 
 	if opts["errors"] != nil && len(opts["errors"].([]string)) > 0 {
-		divClass = "form-group has-error"
 		hasErrors = true
 		errors = opts["errors"].([]string)
 		delete(opts, "errors")
@@ -49,19 +53,17 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		delete(opts, "label")
 	}
 
-	buildOptions(opts)
+	buildOptions(opts, hasErrors)
 
 	div.Append(fn(opts))
 
 	if hasErrors {
 		for _, err := range errors {
-			div.Append(tags.New("span", tags.Options{
-				"class": "help-block",
+			div.Append(tags.New("div", tags.Options{
+				"class": "invalid-feedback",
 				"body":  err,
 			}))
 		}
-
 	}
-
 	return div
 }
