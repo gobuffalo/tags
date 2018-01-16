@@ -27,6 +27,7 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	errors := []string{}
 
 	if opts["errors"] != nil && len(opts["errors"].([]string)) > 0 {
+		divClass = "form-group has-error"
 		hasErrors = true
 		errors = opts["errors"].([]string)
 		delete(opts, "errors")
@@ -60,7 +61,7 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	if hasErrors {
 		for _, err := range errors {
 			div.Append(tags.New("div", tags.Options{
-				"class": "invalid-feedback",
+				"class": "invalid-feedback help-block",
 				"body":  err,
 			}))
 		}
