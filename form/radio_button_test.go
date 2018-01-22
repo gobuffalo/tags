@@ -43,3 +43,14 @@ func Test_Form_RadioButton_WithLabel(t *testing.T) {
 	})
 	r.Equal(`<label><input type="radio" value="1" /> check me</label>`, ct.String())
 }
+
+func Test_Form_RadioButton_WithId(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	ct := f.RadioButton(tags.Options{
+		"label": "Water",
+		"id":    "radio-drink-water",
+		"value": "water",
+	})
+	r.Equal(`<label for="radio-drink-water"><input id="radio-drink-water" type="radio" value="water" /> Water</label>`, ct.String())
+}

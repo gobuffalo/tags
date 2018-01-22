@@ -84,7 +84,7 @@ func Test_RadioButton(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.RadioButton("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><label><input class=" form-control" id="-Name" name="Name" type="radio" value="" /> </label></div>`, l.String())
+	r.Equal(`<div class="form-group"><label>Custom</label><label for="-Name"><input class=" form-control" id="-Name" name="Name" type="radio" value="" /> </label></div>`, l.String())
 }
 func Test_TextArea(t *testing.T) {
 	r := require.New(t)
