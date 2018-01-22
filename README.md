@@ -2,6 +2,8 @@
 
 Easily build HTML tags in Go! This package is especially useful when using [http://gobuffalo.io](http://gobuffalo.io).
 
+NOTE: Tags has a minimum Go dependency of 1.8.1.
+
 ## Form Building w/ Buffalo
 
 ### Form
