@@ -131,8 +131,8 @@ func Test_SelectTag_WithSlice_Selectable_Interface(t *testing.T) {
 func Test_SelectTag_WithUUID_Selected(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	jid := uuid.NewV4()
-	pid := uuid.NewV4()
+	jid, _ := uuid.NewV4()
+	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
 		"options": []SelectableUUIDModel{
 			{"John", jid},
@@ -148,8 +148,8 @@ func Test_SelectTag_WithUUID_Selected(t *testing.T) {
 func Test_SelectTag_WithUUID_Selected_withBlank(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	jid := uuid.NewV4()
-	pid := uuid.NewV4()
+	jid, _ := uuid.NewV4()
+	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
 		"options": []SelectableUUIDModel{
 			{"John", jid},
@@ -167,8 +167,8 @@ func Test_SelectTag_WithUUID_Selected_withBlank(t *testing.T) {
 func Test_SelectTag_WithUUID_Selected_withBlankSelectOptions(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	jid := uuid.NewV4()
-	pid := uuid.NewV4()
+	jid, _ := uuid.NewV4()
+	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
 		"options": form.SelectOptions{
 			form.SelectOption{Label: "John", Value: jid},
@@ -186,8 +186,8 @@ func Test_SelectTag_WithUUID_Selected_withBlankSelectOptions(t *testing.T) {
 func Test_SelectTag_WithUUID_Selected_withoutBlankSelectOptions(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
-	jid := uuid.NewV4()
-	pid := uuid.NewV4()
+	jid, _ := uuid.NewV4()
+	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
 		"options": form.SelectOptions{
 			form.SelectOption{Label: "John", Value: jid},
