@@ -5,4 +5,6 @@ go:
   - 1.8
   - master
 
-script: go test -race $(go list ./... | grep -v /vendor/)
+script: 
+- rm -rf $HOME/gopath/src/github.com/cockroachdb
+- go test -race $(go list ./... | grep -v /vendor/)
