@@ -45,6 +45,16 @@ type htmler interface {
 
 func (t Tag) String() string {
 	bb := &bytes.Buffer{}
+
+	if bt := t.Options["before_tag"]; bt != nil {
+		bb.WriteString(bt.(string))
+		delete(t.Options, "before_tag")
+	}
+
+	at := t.Options["after_tag"]
+	if at != nil {
+		delete(t.Options, "after_tag")
+	}
 	bb.WriteString("<")
 	bb.WriteString(t.Name)
 	if len(t.Options) > 0 {
@@ -79,15 +89,25 @@ func (t Tag) String() string {
 		bb.WriteString("</")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
+		if at != nil {
+			bb.WriteString(at.(string))
+		}
 		return bb.String()
 	}
 	if !strings.Contains(voidTags, " "+t.Name+" ") {
 		bb.WriteString("></")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
+		if at != nil {
+			bb.WriteString(at.(string))
+		}
 		return bb.String()
 	}
 	bb.WriteString(" />")
+
+	if at != nil {
+		bb.WriteString(at.(string))
+	}
 	return bb.String()
 }
 

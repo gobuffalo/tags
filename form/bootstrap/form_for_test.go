@@ -80,6 +80,22 @@ func Test_SelectLabel(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Custom</label><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
+func Test_Select_With_BeforeTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+	b := `<span>Test</span>`
+	l := f.SelectTag("Name", tags.Options{"before_tag": b})
+	r.Equal(`<div class="form-group"><label>Name</label><span>Test</span><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
+}
+
+func Test_Select_With_AfterTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+	b := `<button type="button">Button Name</button>`
+	l := f.SelectTag("Name", tags.Options{"after_tag": b})
+	r.Equal(`<div class="form-group"><label>Name</label><select class=" form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
+}
+
 func Test_RadioButton(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})

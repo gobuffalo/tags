@@ -67,6 +67,30 @@ func Test_Tag_WithBody(t *testing.T) {
 	r.Nil(tag.Options["body"])
 }
 
+func Test_Tag_WithBody_And_BeforeTag(t *testing.T) {
+	r := require.New(t)
+	s := `<span>Test</span>`
+
+	tag := tags.New("div", tags.Options{
+		"body":       "hi there!",
+		"before_tag": s,
+	})
+	r.Equal(`<span>Test</span><div>hi there!</div>`, tag.String())
+	r.Nil(tag.Options["body"])
+}
+
+func Test_Tag_WithBody_And_AfterTag(t *testing.T) {
+	r := require.New(t)
+	s := `<span>Test</span>`
+
+	tag := tags.New("div", tags.Options{
+		"body":      "hi there!",
+		"after_tag": s,
+	})
+	r.Equal(`<div>hi there!</div><span>Test</span>`, tag.String())
+	r.Nil(tag.Options["body"])
+}
+
 func Test_Tag_String(t *testing.T) {
 	r := require.New(t)
 
@@ -95,4 +119,26 @@ func Test_Tag_String_SubTag(t *testing.T) {
 		}),
 	})
 	r.Equal(`<div><p>hi!</p></div>`, tag.String())
+}
+
+func Test_Tag_String_With_BeforeTag_Opt(t *testing.T) {
+	r := require.New(t)
+	s := `<span>Test</span>`
+
+	tag := tags.New("div", tags.Options{
+		"before_tag": s,
+	})
+
+	r.Equal(`<span>Test</span><div></div>`, tag.String())
+}
+
+func Test_Tag_String_With_AfterTag_Opt(t *testing.T) {
+	r := require.New(t)
+	s := `<span>Test</span>`
+
+	tag := tags.New("div", tags.Options{
+		"after_tag": s,
+	})
+
+	r.Equal(`<div></div><span>Test</span>`, tag.String())
 }
