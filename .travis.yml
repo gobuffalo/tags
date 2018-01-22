@@ -4,5 +4,4 @@ go:
   - 1.7
   - master
 
-script:
-  - go test -race $(go list ./... | grep -v /vendor/)
+script: go test -race $(go list ./... | grep -v /vendor/)
