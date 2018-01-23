@@ -4,14 +4,13 @@ import (
 	"html/template"
 	"testing"
 
-	"github.com/markbates/pop"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Pagination(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       2,
 		TotalPages: 3,
 	}, Options{
@@ -25,7 +24,7 @@ func Test_Pagination(t *testing.T) {
 func Test_Pagination_Page1(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       1,
 		TotalPages: 3,
 	}, Options{
@@ -39,7 +38,7 @@ func Test_Pagination_Page1(t *testing.T) {
 func Test_Pagination_Page3(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       3,
 		TotalPages: 3,
 	}, Options{
@@ -53,7 +52,7 @@ func Test_Pagination_Page3(t *testing.T) {
 func Test_Pagination_LongPageStart(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       1,
 		TotalPages: 29,
 	}, Options{
@@ -67,7 +66,7 @@ func Test_Pagination_LongPageStart(t *testing.T) {
 func Test_Pagination_LongPageStartPoint1(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       6,
 		TotalPages: 29,
 	}, Options{
@@ -81,7 +80,7 @@ func Test_Pagination_LongPageStartPoint1(t *testing.T) {
 func Test_Pagination_LongPagePoint2(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       23,
 		TotalPages: 29,
 	}, Options{
@@ -95,7 +94,7 @@ func Test_Pagination_LongPagePoint2(t *testing.T) {
 func Test_Pagination_LongPageEnd(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       24,
 		TotalPages: 29,
 	}, Options{
@@ -109,7 +108,7 @@ func Test_Pagination_LongPageEnd(t *testing.T) {
 func Test_Pagination_NextPrevContent(t *testing.T) {
 	r := require.New(t)
 
-	tag, err := Pagination(&pop.Paginator{
+	tag, err := Pagination(&Paginator{
 		Page:       2,
 		TotalPages: 3,
 	}, Options{
