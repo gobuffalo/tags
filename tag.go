@@ -16,13 +16,21 @@ const voidTags = " area base br col embed hr img input keygen link meta param so
 // Body is a Tag inner content.
 type Body interface{}
 
+// BeforeTag is content placed right before the Tag
+type BeforeTag interface{}
+
+// AfterTag is content placed right after the Tag
+type AfterTag interface{}
+
 // Tag describes a HTML tag meta data.
 type Tag struct {
-	Name     string
-	Options  Options
-	Selected bool
-	Checked  bool
-	Body     []Body
+	Name      string
+	Options   Options
+	Selected  bool
+	Checked   bool
+	BeforeTag []BeforeTag
+	Body      []Body
+	AfterTag  []AfterTag
 }
 
 // Append adds new Body part(s) after the current Tag inner contents.
@@ -43,18 +51,34 @@ type htmler interface {
 	HTML() template.HTML
 }
 
+func parseTagEmbed(b interface{}, bb *bytes.Buffer) {
+	switch tb := b.(type) {
+	case htmler:
+		bb.Write([]byte(tb.HTML()))
+	case fmt.Stringer:
+		bb.WriteString(tb.String())
+	case interfacer:
+		val := tb.Interface()
+		if tb.Interface() == nil {
+			val = ""
+		}
+
+		bb.WriteString(fmt.Sprint(val))
+	default:
+		bb.WriteString(fmt.Sprint(tb))
+	}
+}
+
 func (t Tag) String() string {
 	bb := &bytes.Buffer{}
 
-	if bt := t.Options["before_tag"]; bt != nil {
-		bb.WriteString(bt.(string))
-		delete(t.Options, "before_tag")
+	if len(t.BeforeTag) > 0 {
+		for _, bt := range t.BeforeTag {
+			parseTagEmbed(bt, bb)
+		}
 	}
 
-	at := t.Options["after_tag"]
-	if at != nil {
-		delete(t.Options, "after_tag")
-	}
+	// Function for opening tag BEGIN
 	bb.WriteString("<")
 	bb.WriteString(t.Name)
 	if len(t.Options) > 0 {
@@ -69,45 +93,45 @@ func (t Tag) String() string {
 	}
 	if len(t.Body) > 0 {
 		bb.WriteString(">")
+		// Function for opening tag END - if body
 		for _, b := range t.Body {
-			switch tb := b.(type) {
-			case htmler:
-				bb.Write([]byte(tb.HTML()))
-			case fmt.Stringer:
-				bb.WriteString(tb.String())
-			case interfacer:
-				val := tb.Interface()
-				if tb.Interface() == nil {
-					val = ""
-				}
-
-				bb.WriteString(fmt.Sprint(val))
-			default:
-				bb.WriteString(fmt.Sprint(tb))
-			}
+			parseTagEmbed(b, bb)
 		}
+
 		bb.WriteString("</")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
-		if at != nil {
-			bb.WriteString(at.(string))
+
+		if len(t.AfterTag) > 0 {
+			for _, at := range t.AfterTag {
+				parseTagEmbed(at, bb)
+			}
 		}
+
 		return bb.String()
 	}
 	if !strings.Contains(voidTags, " "+t.Name+" ") {
+		// Function for opening tag END - if no body
 		bb.WriteString("></")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
-		if at != nil {
-			bb.WriteString(at.(string))
+
+		if len(t.AfterTag) > 0 {
+			for _, at := range t.AfterTag {
+				parseTagEmbed(at, bb)
+			}
 		}
+
 		return bb.String()
 	}
 	bb.WriteString(" />")
 
-	if at != nil {
-		bb.WriteString(at.(string))
+	if len(t.AfterTag) > 0 {
+		for _, at := range t.AfterTag {
+			parseTagEmbed(at, bb)
+		}
 	}
+
 	return bb.String()
 }
 
@@ -125,6 +149,15 @@ func New(name string, opts Options) *Tag {
 	if tag.Options["body"] != nil {
 		tag.Body = []Body{tag.Options["body"]}
 		delete(tag.Options, "body")
+	}
+	if tag.Options["before_tag"] != nil {
+		tag.BeforeTag = []BeforeTag{tag.Options["before_tag"]}
+		delete(tag.Options, "before_tag")
+	}
+
+	if tag.Options["after_tag"] != nil {
+		tag.AfterTag = []AfterTag{tag.Options["after_tag"]}
+		delete(tag.Options, "after_tag")
 	}
 
 	if tag.Options["value"] != nil {

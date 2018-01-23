@@ -142,3 +142,21 @@ func Test_Tag_String_With_AfterTag_Opt(t *testing.T) {
 
 	r.Equal(`<div></div><span>Test</span>`, tag.String())
 }
+
+func Test_Tag_With_Another_Tag_As_BeforeTag(t *testing.T) {
+	r := require.New(t)
+	s := tags.New("span", tags.Options{"body": "Test"})
+
+	tag := tags.New("div", tags.Options{"before_tag": s})
+
+	r.Equal(`<span>Test</span><div></div>`, tag.String())
+}
+
+func Test_Tag_With_Another_Tag_As_AfterTag(t *testing.T) {
+	r := require.New(t)
+	s := tags.New("span", tags.Options{"body": "Test"})
+
+	tag := tags.New("div", tags.Options{"after_tag": s})
+
+	r.Equal(`<div></div><span>Test</span>`, tag.String())
+}
