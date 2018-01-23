@@ -1,12 +1,12 @@
 package form_test
 
 import (
+	"database/sql"
 	"testing"
 	"time"
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
-	"github.com/markbates/pop/nulls"
 	"github.com/stretchr/testify/require"
 )
 
@@ -99,11 +99,11 @@ func Test_FormFor_NullableField(t *testing.T) {
 	r := require.New(t)
 	model := struct {
 		Name       string
-		CreditCard nulls.String
-		Floater    nulls.Float64
-		Other      nulls.Bool
+		CreditCard nullString
+		Floater    sql.NullFloat64
+		Other      sql.NullBool
 	}{
-		CreditCard: nulls.NewString("Hello"),
+		CreditCard: NewNullString("Hello"),
 	}
 
 	f := form.NewFormFor(model, tags.Options{})

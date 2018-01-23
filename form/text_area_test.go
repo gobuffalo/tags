@@ -7,7 +7,6 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
-	"github.com/markbates/pop/nulls"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +32,7 @@ func Test_Form_TextArea_nullsString_empty(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
 	ta := f.TextArea(tags.Options{
-		"value": nulls.String{},
+		"value": nullString{},
 	})
 	r.Equal(`<textarea></textarea>`, ta.String())
 }
