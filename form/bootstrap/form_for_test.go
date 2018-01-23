@@ -80,19 +80,46 @@ func Test_SelectLabel(t *testing.T) {
 	r.Equal(`<div class="form-group"><label>Custom</label><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
-func Test_Select_With_BeforeTag_Opt(t *testing.T) {
+func Test_Select_With_String_As_BeforeTag_Opt(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
-	b := `<span>Test</span>`
-	l := f.SelectTag("Name", tags.Options{"before_tag": b})
+
+	s := `<span>Test</span>`
+	l := f.SelectTag("Name", tags.Options{"before_tag": s})
+
 	r.Equal(`<div class="form-group"><label>Name</label><span>Test</span><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
-func Test_Select_With_AfterTag_Opt(t *testing.T) {
+func Test_Select_With_Nested_Tag_As_BeforeTag_Opt(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+
+	s := tags.New("span", tags.Options{"body": "Test"})
+	l := f.SelectTag("Name", tags.Options{"before_tag": s})
+
+	r.Equal(`<div class="form-group"><label>Name</label><span>Test</span><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
+}
+
+func Test_Select_With_String_As_AfterTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+
 	b := `<button type="button">Button Name</button>`
 	l := f.SelectTag("Name", tags.Options{"after_tag": b})
+
+	r.Equal(`<div class="form-group"><label>Name</label><select class=" form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
+}
+
+func Test_Select_With_Nested_Tag_As_AfterTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+
+	b := tags.New("button", tags.Options{
+		"body": "Button Name",
+		"type": "button",
+	})
+	l := f.SelectTag("Name", tags.Options{"after_tag": b})
+
 	r.Equal(`<div class="form-group"><label>Name</label><select class=" form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
 }
 
