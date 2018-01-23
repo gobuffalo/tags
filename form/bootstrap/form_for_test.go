@@ -151,7 +151,7 @@ func Test_InputError(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputError_Map(t *testing.T) {
@@ -163,7 +163,7 @@ func Test_InputError_Map(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputError_InvalidMap(t *testing.T) {
@@ -187,7 +187,7 @@ func Test_InputMultipleError(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /><span class="help-block">Name shoud be AJ.</span><span class="help-block">Name shoud start with A.</span></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div><div class="invalid-feedback help-block">Name shoud start with A.</div></div>`, l.String())
 }
 
 func Test_CheckBoxError(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_CheckBoxError(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label><span class="help-block">Name shoud be AJ.</span></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label><input class=" is-invalid" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 type Person struct {
