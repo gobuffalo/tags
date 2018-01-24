@@ -76,7 +76,6 @@ func (t Tag) String() string {
 		bb.WriteString(parseTagEmbed(bt))
 	}
 
-	// Function for opening tag BEGIN
 	bb.WriteString("<")
 	bb.WriteString(t.Name)
 	if len(t.Options) > 0 {
@@ -91,7 +90,7 @@ func (t Tag) String() string {
 	}
 	if len(t.Body) > 0 {
 		bb.WriteString(">")
-		// Function for opening tag END - if body
+
 		for _, b := range t.Body {
 			bb.WriteString(parseTagEmbed(b))
 		}
@@ -107,7 +106,6 @@ func (t Tag) String() string {
 		return bb.String()
 	}
 	if !strings.Contains(voidTags, " "+t.Name+" ") {
-		// Function for opening tag END - if no body
 		bb.WriteString("></")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
