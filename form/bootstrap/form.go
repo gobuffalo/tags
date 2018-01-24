@@ -48,3 +48,8 @@ func (f Form) TextArea(opts tags.Options) *tags.Tag {
 		return f.Form.TextArea(o)
 	})
 }
+
+//HiddenTag adds a hidden input to the form
+func (f Form) HiddenTag(opts tags.Options) *tags.Tag {
+	return f.Form.HiddenTag(opts)
+}
