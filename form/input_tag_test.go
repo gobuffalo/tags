@@ -36,3 +36,10 @@ func Test_Form_InputTag_File(t *testing.T) {
 	r.Equal(`<input type="file" />`, i.String())
 	r.Equal(f.Options["enctype"], "multipart/form-data")
 }
+
+func Test_Form_HiddenTag_File(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	i := f.HiddenTag(tags.Options{})
+	r.Equal(`<input type="hidden" />`, i.String())
+}
