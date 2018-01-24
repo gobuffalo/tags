@@ -1,4 +1,7 @@
-# Tags [![Build Status](https://travis-ci.org/gobuffalo/tags.svg?branch=master)](https://travis-ci.org/gobuffalo/tags)
+ [![Build Status](https://travis-ci.org/gobuffalo/tags.svg?branch=master)](https://travis-ci.org/gobuffalo/tags)
+ [![Go Report Card](https://goreportcard.com/badge/github.com/gobuffalo/tags)](https://goreportcard.com/report/github.com/gobuffalo/tags)
+
+# Tags
 
 Easily build HTML tags in Go! This package is especially useful when using [http://gobuffalo.io](http://gobuffalo.io).
 
@@ -31,7 +34,7 @@ If you want to contribute, please read this article first: [Contributing to Open
 
 ^ Taken from [gobuffalo.io](https://https://gobuffalo.io/docs/contributing)
 
-### PR to development branch
+### ⚠️ Send PRs to development branch
 
 The way we release in Tags is:
 
