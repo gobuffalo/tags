@@ -27,3 +27,6 @@ Documentation is currently in [this repository Wiki](https://github.com/gobuffal
 
 ## Contributing
 
+If you want to contribute, please read this article first: [Contributing to Open Source Git Repositories in Go](https://splice.com/blog/contributing-open-source-git-repositories-go/). It shows how to configure your git environment to avoid common pitfalls. This article is recommended to all those who are looking to contribute to any Go projects.
+
+^ Taken from [gobuffalo.io](https://https://gobuffalo.io/docs/contributing)
