@@ -49,9 +49,19 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
+	if opts["type"] == "hidden" {
+		return f.HiddenTag(field, opts)
+	}
+
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.InputTag(field, opts)
 	})
+}
+
+//HiddenTag adds a input[type=hidden] to the form
+func (f FormFor) HiddenTag(field string, opts tags.Options) *tags.Tag {
+	opts = f.buildOptions(field, opts)
+	return f.FormFor.HiddenTag(field, opts)
 }
 
 func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
