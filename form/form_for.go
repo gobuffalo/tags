@@ -77,6 +77,12 @@ func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	return f.Form.InputTag(opts)
 }
 
+//HiddenTag adds a wrappter for input type hidden on the form
+func (f FormFor) HiddenTag(field string, opts tags.Options) *tags.Tag {
+	f.buildOptions(field, opts)
+	return f.Form.HiddenTag(opts)
+}
+
 func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	f.addFormatTag(field, opts)
