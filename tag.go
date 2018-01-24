@@ -51,31 +51,29 @@ type htmler interface {
 	HTML() template.HTML
 }
 
-func parseTagEmbed(b interface{}, bb *bytes.Buffer) {
+func parseTagEmbed(b interface{}) string {
 	switch tb := b.(type) {
 	case htmler:
-		bb.Write([]byte(tb.HTML()))
+		return fmt.Sprint(tb.HTML())
 	case fmt.Stringer:
-		bb.WriteString(tb.String())
+		return tb.String()
 	case interfacer:
 		val := tb.Interface()
 		if tb.Interface() == nil {
 			val = ""
 		}
 
-		bb.WriteString(fmt.Sprint(val))
+		return fmt.Sprint(val)
 	default:
-		bb.WriteString(fmt.Sprint(tb))
+		return fmt.Sprint(tb)
 	}
 }
 
 func (t Tag) String() string {
 	bb := &bytes.Buffer{}
 
-	if len(t.BeforeTag) > 0 {
-		for _, bt := range t.BeforeTag {
-			parseTagEmbed(bt, bb)
-		}
+	for _, bt := range t.BeforeTag {
+		bb.WriteString(parseTagEmbed(bt))
 	}
 
 	// Function for opening tag BEGIN
@@ -95,17 +93,15 @@ func (t Tag) String() string {
 		bb.WriteString(">")
 		// Function for opening tag END - if body
 		for _, b := range t.Body {
-			parseTagEmbed(b, bb)
+			bb.WriteString(parseTagEmbed(b))
 		}
 
 		bb.WriteString("</")
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
 
-		if len(t.AfterTag) > 0 {
-			for _, at := range t.AfterTag {
-				parseTagEmbed(at, bb)
-			}
+		for _, at := range t.AfterTag {
+			bb.WriteString(parseTagEmbed(at))
 		}
 
 		return bb.String()
@@ -116,20 +112,16 @@ func (t Tag) String() string {
 		bb.WriteString(t.Name)
 		bb.WriteString(">")
 
-		if len(t.AfterTag) > 0 {
-			for _, at := range t.AfterTag {
-				parseTagEmbed(at, bb)
-			}
+		for _, at := range t.AfterTag {
+			bb.WriteString(parseTagEmbed(at))
 		}
 
 		return bb.String()
 	}
 	bb.WriteString(" />")
 
-	if len(t.AfterTag) > 0 {
-		for _, at := range t.AfterTag {
-			parseTagEmbed(at, bb)
-		}
+	for _, at := range t.AfterTag {
+		bb.WriteString(parseTagEmbed(at))
 	}
 
 	return bb.String()
