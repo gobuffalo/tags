@@ -46,6 +46,26 @@ func Test_FormFor_InputHiddenValue(t *testing.T) {
 	r.Equal(`<input id="talk-Name" name="Name" type="hidden" value="Something" />`, l.String())
 }
 
+func Test_FormFor_Input_BeforeTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{})
+
+	s := `<span>Content</span>`
+	l := f.InputTag("Test", tags.Options{"before_tag": s})
+
+	r.Equal(`<span>Content</span><input id="talk-Test" name="Test" type="text" value="" />`, l.String())
+}
+
+func Test_FormFor_Input_AfterTag_Opt(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{})
+
+	b := `<button>Button</button>`
+	l := f.InputTag("Test", tags.Options{"after_tag": b})
+
+	r.Equal(`<input id="talk-Test" name="Test" type="text" value="" /><button>Button</button>`, l.String())
+}
+
 func Test_FormFor_File(t *testing.T) {
 	r := require.New(t)
 	f := form.NewFormFor(Talk{}, tags.Options{
