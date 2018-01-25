@@ -154,6 +154,20 @@ func Test_InputError(t *testing.T) {
 	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
+func Test_InputHidden(t *testing.T) {
+	r := require.New(t)
+
+	errors := validate.NewErrors()
+	errors.Add("name", "Name shoud be AJ.")
+
+	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"type": "hidden"})
+	r.Equal(`<input errors="[Name shoud be AJ.]" id="-Name" name="Name" tags-field="Name" type="hidden" value="" />`, l.String())
+
+	l = f.HiddenTag("Name", tags.Options{})
+	r.Equal(`<input errors="[Name shoud be AJ.]" id="-Name" name="Name" tags-field="Name" type="hidden" value="" />`, l.String())
+}
+
 func Test_InputError_Map(t *testing.T) {
 	r := require.New(t)
 

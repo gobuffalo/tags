@@ -43,3 +43,10 @@ func Test_Form_HiddenTag_File(t *testing.T) {
 	i := f.HiddenTag(tags.Options{})
 	r.Equal(`<input type="hidden" />`, i.String())
 }
+
+func Test_Form_InputTag_Hidden(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	i := f.InputTag(tags.Options{"type": "hidden"})
+	r.Equal(`<input type="hidden" />`, i.String())
+}
