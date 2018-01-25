@@ -4,9 +4,14 @@ import "github.com/gobuffalo/tags"
 
 //InputTag generates an input tag with passed options, by default will be type=text.
 func (f Form) InputTag(opts tags.Options) *tags.Tag {
+	if opts["type"] == "hidden" {
+		return f.HiddenTag(opts)
+	}
+
 	if opts["type"] == nil {
 		opts["type"] = "text"
 	}
+
 	if opts["type"] == "file" {
 		f.Options["enctype"] = "multipart/form-data"
 	}
