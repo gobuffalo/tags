@@ -6,6 +6,7 @@ import (
 	"github.com/gobuffalo/tags"
 )
 
+//Form is the html form tag, this will hold other tags inside it.
 type Form struct {
 	*tags.Tag
 }
