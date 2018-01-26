@@ -126,6 +126,13 @@ func Test_FormFor_FieldDoesntExist(t *testing.T) {
 	r.Equal(`<input id="talk-IDontExist" name="IDontExist" type="text" value="" />`, l.String())
 }
 
+func Test_FormFor_HiddenTag(t *testing.T) {
+	r := require.New(t)
+	f := form.NewFormFor(Talk{}, tags.Options{})
+	l := f.HiddenTag("Name", tags.Options{})
+	r.Equal(`<input id="talk-Name" name="Name" type="hidden" value="" />`, l.String())
+}
+
 func Test_FormFor_NullableField(t *testing.T) {
 	r := require.New(t)
 	model := struct {
