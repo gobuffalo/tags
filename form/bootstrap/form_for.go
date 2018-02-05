@@ -15,6 +15,7 @@ type FormFor struct {
 
 //CheckboxTag adds a checkbox to a form
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
+
 	label := field
 	if opts["label"] != nil {
 		label = fmt.Sprint(opts["label"])

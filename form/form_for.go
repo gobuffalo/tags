@@ -160,6 +160,7 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	if opts["id"] == nil {
 		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, opts["name"])
 	}
+
 }
 
 type interfacer interface {
