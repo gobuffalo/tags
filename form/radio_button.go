@@ -25,6 +25,13 @@ func (f Form) RadioButton(opts tags.Options) *tags.Tag {
 	value := opts["value"]
 	checked := opts["checked"]
 	delete(opts, "checked")
+
+	if opts["tag_only"] == true {
+		ct := f.InputTag(opts)
+		ct.Checked = template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+		return ct
+	}
+
 	ct := f.InputTag(opts)
 	ct.Checked = template.HTMLEscaper(value) == template.HTMLEscaper(checked)
 	labelOptions := tags.Options{

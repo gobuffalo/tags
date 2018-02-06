@@ -8,5 +8,7 @@ func (f Form) TextArea(opts tags.Options) *tags.Tag {
 		opts["body"] = opts["value"]
 		delete(opts, "value")
 	}
+
+	delete(opts, "tag_only")
 	return tags.New("textarea", opts)
 }
