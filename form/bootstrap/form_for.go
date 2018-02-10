@@ -6,7 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
-	"github.com/markbates/validate/validators"
+	"github.com/gobuffalo/validate/validators"
 )
 
 type FormFor struct {

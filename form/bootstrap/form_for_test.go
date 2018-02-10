@@ -5,7 +5,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form/bootstrap"
-	"github.com/markbates/validate"
+	"github.com/gobuffalo/validate"
 	"github.com/stretchr/testify/require"
 )
 
