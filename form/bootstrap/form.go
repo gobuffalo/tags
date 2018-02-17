@@ -5,10 +5,12 @@ import (
 	"github.com/gobuffalo/tags/form"
 )
 
+//Form is the bootstrap extension of Form
 type Form struct {
 	*form.Form
 }
 
+//New builds a new bootstrap form from passed options
 func New(opts tags.Options) *Form {
 	return &Form{form.New(opts)}
 }

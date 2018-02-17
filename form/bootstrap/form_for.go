@@ -9,6 +9,7 @@ import (
 	"github.com/markbates/validate/validators"
 )
 
+//FormFor is the bootstrap version of FormFor
 type FormFor struct {
 	*form.FormFor
 }
