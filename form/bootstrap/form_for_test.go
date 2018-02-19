@@ -18,10 +18,19 @@ func Test_InputFieldLabel(t *testing.T) {
 }
 
 func Test_InputFieldLabelWithAchronym(t *testing.T) {
+	cases := map[string]string{
+		"URL":            "URL",
+		"MyURL":          "My URL",
+		"SimpleURIAdded": "Simple URI Added",
+		"GaveAThing":     "Gave A Thing",
+	}
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ URL string }{}, tags.Options{})
-	l := f.InputTag("URL", tags.Options{})
-	r.Equal(`<div class="form-group"><label>URL</label><input class=" form-control" id="-URL" name="URL" type="text" value="" /></div>`, l.String())
+
+	for key, expectedLabel := range cases {
+		l := f.InputTag(key, tags.Options{})
+		r.Equal(`<div class="form-group"><label>`+expectedLabel+`</label><input class=" form-control" id="-`+key+`" name="`+key+`" type="text" value="" /></div>`, l.String())
+	}
 }
 
 func Test_InputFieldLabel_Humanized(t *testing.T) {
