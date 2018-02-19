@@ -9,11 +9,12 @@ import (
 	"github.com/markbates/validate/validators"
 )
 
+//FormFor is the bootstrap version of FormFor
 type FormFor struct {
 	*form.FormFor
 }
 
-//CheckboxTag adds a checkbox to a form
+//CheckboxTag adds a checkbox to a formFor
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 
 	label := field
@@ -49,6 +50,7 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+//InputTag adds an input to the formFor, by default it adds type=text
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	if opts["type"] == "hidden" {
@@ -60,12 +62,13 @@ func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
-//HiddenTag adds a input[type=hidden] to the form
+//HiddenTag adds an input[type=hidden] to the formFor
 func (f FormFor) HiddenTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return f.FormFor.HiddenTag(field, opts)
 }
 
+//FileTag adds an input type=file to the formFor
 func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
@@ -73,6 +76,7 @@ func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+//RadioButton adds an input type=radio to the formFor
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
@@ -80,6 +84,7 @@ func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+//SelectTag adds a select tag to the formFor
 func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
@@ -87,6 +92,7 @@ func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
+//TextArea adds a texarea tag to the formFor
 func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
