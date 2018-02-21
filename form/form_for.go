@@ -126,6 +126,11 @@ func (f FormFor) addFormatTag(field string, opts tags.Options) {
 
 //RadioButton creates a radio button for a struct field
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
+	return f.RadioButton(field, opts)
+}
+
+//RadioButtonTag creates a radio button for a struct field
+func (f FormFor) RadioButtonTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	return f.Form.RadioButton(opts)
 }
@@ -138,6 +143,11 @@ func (f FormFor) SelectTag(field string, opts tags.Options) *SelectTag {
 
 //TextArea creates text area for the specified struct field
 func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
+	return f.TextAreaTag(field, opts)
+}
+
+//TextAreaTag creates text area for the specified struct field
+func (f FormFor) TextAreaTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
 	return f.Form.TextArea(opts)
 }
@@ -160,6 +170,7 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	if opts["id"] == nil {
 		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, opts["name"])
 	}
+
 }
 
 type interfacer interface {

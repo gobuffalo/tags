@@ -1,6 +1,7 @@
 package bootstrap_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/gobuffalo/tags"
@@ -14,6 +15,22 @@ func Test_InputFieldLabel(t *testing.T) {
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
 	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+}
+
+func Test_InputFieldLabelWithAchronym(t *testing.T) {
+	cases := map[string]string{
+		"URL":            "URL",
+		"MyURL":          "My URL",
+		"SimpleURIAdded": "Simple URI Added",
+		"GaveAThing":     "Gave A Thing",
+	}
+	r := require.New(t)
+	f := bootstrap.NewFormFor(struct{ URL string }{}, tags.Options{})
+
+	for key, expectedLabel := range cases {
+		l := f.InputTag(key, tags.Options{})
+		r.Equal(`<div class="form-group"><label>`+expectedLabel+`</label><input class=" form-control" id="-`+key+`" name="`+key+`" type="text" value="" /></div>`, l.String())
+	}
 }
 
 func Test_InputFieldLabel_Humanized(t *testing.T) {
@@ -240,4 +257,71 @@ func Test_FormFor_Nested_Struct(t *testing.T) {
 
 	exp := `<div class="form-group"><label>Address State</label><input class=" form-control" id="person-Address.State" name="Address.State" type="text" value="MA" /></div>`
 	r.Equal(exp, tag.String())
+}
+
+func Test_Field_TagOnly(t *testing.T) {
+	f := bootstrap.NewFormFor(struct {
+		Name string `schema:"-"`
+	}{}, tags.Options{})
+
+	cases := []struct {
+		f      func(field string, opt tags.Options) *tags.Tag
+		name   string
+		opts   tags.Options
+		output string
+	}{
+		{
+			f:    f.InputTag,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+				"class":    "custom-input",
+			},
+			output: `<input class="custom-input" id="-Name" name="Name" type="text" value="" />`,
+		},
+
+		{
+			f:    f.TextArea,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+			},
+			output: `<textarea class="" id="-Name" name="Name"></textarea>`,
+		},
+
+		{
+			f:    f.RadioButton,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+			},
+			output: `<input class="" id="-Name" name="Name" type="radio" value="" />`,
+		},
+
+		{
+			f:    f.CheckboxTag,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+			},
+			output: `<input class="" id="-Name" name="Name" type="checkbox" value="true" />`,
+		},
+
+		{
+			f:    f.FileTag,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+			},
+			output: `<input class="" id="-Name" name="Name" type="file" value="" />`,
+		},
+	}
+
+	for index, tcase := range cases {
+		t.Run(fmt.Sprintf("%v", index), func(tt *testing.T) {
+			r := require.New(tt)
+			l := tcase.f(tcase.name, tcase.opts)
+			r.Equal(tcase.output, l.String())
+		})
+	}
 }
