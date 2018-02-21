@@ -12,7 +12,10 @@ func buildOptions(opts tags.Options, err bool) {
 	if opts["class"] == nil {
 		opts["class"] = ""
 	}
-	opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-control"}, " ")
+
+	if opts["tag_only"] != true {
+		opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-control"}, " ")
+	}
 
 	if err {
 		opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "is-invalid"}, " ")
@@ -55,6 +58,10 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	}
 
 	buildOptions(opts, hasErrors)
+
+	if opts["tag_only"] == true {
+		return fn(opts).(*tags.Tag)
+	}
 
 	div.Append(fn(opts))
 
