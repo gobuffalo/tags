@@ -9,12 +9,12 @@ import (
 	"github.com/markbates/validate/validators"
 )
 
-//FormFor is the bootstrap version of FormFor
+//FormFor is the FormFor version for bootstrap
 type FormFor struct {
 	*form.FormFor
 }
 
-//CheckboxTag adds a checkbox to a formFor
+//CheckboxTag adds a checkbox to a form wrapped with a form-control and a label
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 
 	label := field
@@ -50,7 +50,7 @@ func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
-//InputTag adds an input to the formFor, by default it adds type=text
+//InputTag builds an input[type=text] by default wrapped with a form-control and a label
 func (f FormFor) InputTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	if opts["type"] == "hidden" {
@@ -68,7 +68,7 @@ func (f FormFor) HiddenTag(field string, opts tags.Options) *tags.Tag {
 	return f.FormFor.HiddenTag(field, opts)
 }
 
-//FileTag adds an input type=file to the formFor
+//FileTag adds a bootstrap input[type=file] wrapped with a form-control and a label
 func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
@@ -76,15 +76,20 @@ func (f FormFor) FileTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
-//RadioButton adds an input type=radio to the formFor
+//RadioButton adds a bootstrap input[type=radio] wrapped with a form-control and a label
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
+	return f.RadioButtonTag(field, opts)
+}
+
+//RadioButtonTag adds a bootstrap input[type=radio] wrapped with a form-control and a label
+func (f FormFor) RadioButtonTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.RadioButton(field, opts)
 	})
 }
 
-//SelectTag adds a select tag to the formFor
+//SelectTag adds a bootstrap select tag wrapped with a form-control and a label
 func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
@@ -92,8 +97,13 @@ func (f FormFor) SelectTag(field string, opts tags.Options) *tags.Tag {
 	})
 }
 
-//TextArea adds a texarea tag to the formFor
+//TextArea adds a bootstrap textarea tag wrapped with a form-control and a label
 func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
+	return f.TextAreaTag(field, opts)
+}
+
+//TextAreaTag adds a bootstrap textarea tag wrapped with a form-control and a label
+func (f FormFor) TextAreaTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
 		return f.FormFor.TextArea(field, opts)
