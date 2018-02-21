@@ -85,7 +85,7 @@ func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
 func (f FormFor) RadioButtonTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
-		return f.FormFor.RadioButton(field, opts)
+		return f.FormFor.RadioButtonTag(field, opts)
 	})
 }
 
@@ -106,7 +106,7 @@ func (f FormFor) TextArea(field string, opts tags.Options) *tags.Tag {
 func (f FormFor) TextAreaTag(field string, opts tags.Options) *tags.Tag {
 	opts = f.buildOptions(field, opts)
 	return divWrapper(opts, func(o tags.Options) tags.Body {
-		return f.FormFor.TextArea(field, opts)
+		return f.FormFor.TextAreaTag(field, opts)
 	})
 }
 
