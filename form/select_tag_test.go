@@ -17,20 +17,6 @@ func Test_SelectTag(t *testing.T) {
 	r.Equal(`<select></select>`, s.String())
 }
 
-func Test_SelectTagWithOptions(t *testing.T) {
-	r := require.New(t)
-	f := form.New(tags.Options{})
-	s := f.SelectTag(tags.Options{
-		"options": []map[string]interface{}{
-			{"1/2 day": 1},
-			{"1-2 days": 2},
-			{"1 week": 7},
-			{"1-2 weeks": 14},
-		},
-	})
-	r.Equal(`<select><option value="1">1/2 day</option><option value="2">1-2 days</option><option value="7">1 week</option><option value="14">1-2 weeks</option></select>`, s.String())
-}
-
 func Test_SelectTag_WithSelectOptions(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
