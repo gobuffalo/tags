@@ -2,6 +2,7 @@ package form
 
 import (
 	"html/template"
+	"log"
 	"reflect"
 
 	"github.com/gobuffalo/tags"
@@ -95,6 +96,8 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 	sopts := opts["options"]
 	delete(opts, "options")
 
+	log.Println(sopts)
+
 	so := SelectOptions{}
 	if aw, ok := allowBlank.(bool); ok && aw {
 		so = append(so, SelectOption{
@@ -122,6 +125,14 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 
 			if rv.Index(i).Type().Implements(selectableType) {
 				so = append(so, SelectOption{Value: x.(Selectable).SelectValue(), Label: x.(Selectable).SelectLabel()})
+				continue
+			}
+
+			if m, ok := rv.Index(i).Interface().(map[string]interface{}); ok {
+				for k, v := range m {
+					so = append(so, SelectOption{Value: v, Label: k})
+				}
+
 				continue
 			}
 
