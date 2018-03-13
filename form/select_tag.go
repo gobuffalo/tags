@@ -126,7 +126,11 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 			}
 
 			if m, ok := rv.Index(i).Interface().(map[string]interface{}); ok {
-				so = append(so, SelectOption{Value: m["value"], Label: m["label"]})
+				for _, k := range rv.Index(i).MapKeys() {
+					label := k.Interface().(string)
+					so = append(so, SelectOption{Value: m[label], Label: label})
+				}
+
 				continue
 			}
 

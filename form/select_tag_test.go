@@ -22,11 +22,13 @@ func Test_SelectTagWithOptions(t *testing.T) {
 	f := form.New(tags.Options{})
 	s := f.SelectTag(tags.Options{
 		"options": []map[string]interface{}{
-			{"label": "A", "value": 1},
-			{"label": "B", "value": 2},
+			{"1/2 day": 1},
+			{"1-2 days": 2},
+			{"1 week": 7},
+			{"1-2 weeks": 14},
 		},
 	})
-	r.Equal(`<select><option value="1">A</option><option value="2">B</option></select>`, s.String())
+	r.Equal(`<select><option value="1">1/2 day</option><option value="2">1-2 days</option><option value="7">1 week</option><option value="14">1-2 weeks</option></select>`, s.String())
 }
 
 func Test_SelectTag_WithSelectOptions(t *testing.T) {
