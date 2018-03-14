@@ -2,7 +2,6 @@ package form
 
 import (
 	"html/template"
-	"log"
 	"reflect"
 
 	"github.com/gobuffalo/tags"
@@ -95,8 +94,6 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 
 	sopts := opts["options"]
 	delete(opts, "options")
-
-	log.Println(sopts)
 
 	so := SelectOptions{}
 	if aw, ok := allowBlank.(bool); ok && aw {
