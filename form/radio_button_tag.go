@@ -3,6 +3,7 @@ package form
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"strings"
 
 	"github.com/gobuffalo/tags"
@@ -10,6 +11,7 @@ import (
 
 //RadioButton creates a radio button for a form with the passed options
 func (f Form) RadioButton(opts tags.Options) *tags.Tag {
+	log.Println("[Warning] RadioButton is deprecated and may be removed in the future, use RadioButtonTag instead")
 	return f.RadioButtonTag(opts)
 }
 
