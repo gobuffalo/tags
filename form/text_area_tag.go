@@ -6,7 +6,6 @@ import (
 
 //TextArea creates a textarea for a form with passed options
 func (f Form) TextArea(opts tags.Options) *tags.Tag {
-	// log.Println("[Warning] TextArea is deprecated and may be removed in the future, use TextAreaTag instead")
 	return f.TextAreaTag(opts)
 }
 
