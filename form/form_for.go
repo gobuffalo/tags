@@ -127,7 +127,7 @@ func (f FormFor) addFormatTag(field string, opts tags.Options) {
 
 //RadioButton creates a radio button for a struct field
 func (f FormFor) RadioButton(field string, opts tags.Options) *tags.Tag {
-	log.Println("[Warning] RadioButton is deprecated and may be removed in the future, use RadioButtonTag instead")
+	// log.Println("[Warning] RadioButton is deprecated and may be removed in the future, use RadioButtonTag instead")
 	return f.RadioButton(field, opts)
 }
 
