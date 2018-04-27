@@ -201,3 +201,21 @@ func Test_FormFor_DateTimeTag(t *testing.T) {
 	i := f.DateTimeTag("BirthDate", tags.Options{})
 	r.Equal(`<input id="-BirthDate" name="BirthDate" type="datetime-local" value="1976-08-24T06:17" />`, i.String())
 }
+
+func Test_FormFor_FieldNameResolver(t *testing.T) {
+	r := require.New(t)
+	type Car struct {
+		Brand string
+		Year  int
+	}
+
+	p := Car{}
+	f := form.NewFormFor(p, tags.Options{
+		"fieldNameResolver": func(name string) string {
+			return "AA-" + name
+		},
+	})
+	i := f.InputTag("Name", tags.Options{})
+
+	r.Equal(`<input id="car-AA-Name" name="AA-Name" type="text" value="" />`, i.String())
+}
