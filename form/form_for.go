@@ -27,6 +27,8 @@ type FormFor struct {
 	FieldNameResolver FieldNameResolver
 }
 
+//FieldNameResolver is a function that will be called (if provided) when
+//the field name is going to be assigned on the tag.
 type FieldNameResolver func(string) string
 
 //NewFormFor creates a new Formfor with passed options, it also creates the id of the form from the struct name and adds errors if present.
