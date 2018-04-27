@@ -21,7 +21,13 @@ type FormFor struct {
 	dashedName string
 	reflection reflect.Value
 	Errors     *validate.Errors
+
+	// FieldNameResolver allows to provide a custom field name
+	// definition function.s
+	FieldNameResolver FieldNameResolver
 }
+
+type FieldNameResolver func(string) string
 
 //NewFormFor creates a new Formfor with passed options, it also creates the id of the form from the struct name and adds errors if present.
 func NewFormFor(model interface{}, opts tags.Options) *FormFor {
@@ -36,6 +42,12 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 		opts["id"] = fmt.Sprintf("%s-form", dashedName)
 	}
 
+	var nameResolver func(string) string
+
+	if opts["fieldNameResolver"] != nil {
+		nameResolver = opts["fieldNameResolver"].(func(string) string)
+	}
+
 	errors := loadErrors(opts)
 	delete(opts, "errors")
 
@@ -46,6 +58,8 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 		dashedName: dashedName,
 		reflection: rv,
 		Errors:     errors,
+
+		FieldNameResolver: nameResolver,
 	}
 }
 
@@ -165,6 +179,10 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 
 	if opts["name"] == nil {
 		opts["name"] = f.findFieldNameFor(field)
+	}
+
+	if f.FieldNameResolver != nil {
+		opts["name"] = f.FieldNameResolver(opts["name"].(string))
 	}
 
 	if opts["id"] == nil {
