@@ -233,7 +233,8 @@ func pageLI(text string, page int, path string, pagination Paginator) (*Tag, err
 	if page == 0 || page > pagination.TotalPages {
 		li.Options["class"] = strings.Join([]string{lio["class"].(string), "disabled"}, " ")
 		li.Append(New("span", Options{
-			"body": text,
+			"body":  text,
+			"class": "page-link",
 		}))
 		return li, nil
 	}

@@ -32,7 +32,7 @@ func Test_Pagination_Page1(t *testing.T) {
 	})
 	r.NoError(err)
 
-	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item disabled"><span>&laquo;</span></li><li class="page-item active"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">&raquo;</a></li></ul>`), tag.HTML())
+	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item disabled"><span class="page-link">&laquo;</span></li><li class="page-item active"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">&raquo;</a></li></ul>`), tag.HTML())
 }
 
 func Test_Pagination_Page3(t *testing.T) {
@@ -46,7 +46,7 @@ func Test_Pagination_Page3(t *testing.T) {
 	})
 	r.NoError(err)
 
-	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item"><a class="page-link" href="/foo?page=2">&laquo;</a></li><li class="page-item"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item active"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item disabled"><span>&raquo;</span></li></ul>`), tag.HTML())
+	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item"><a class="page-link" href="/foo?page=2">&laquo;</a></li><li class="page-item"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item active"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item disabled"><span class="page-link">&raquo;</span></li></ul>`), tag.HTML())
 }
 
 func Test_Pagination_LongPageStart(t *testing.T) {
@@ -60,7 +60,7 @@ func Test_Pagination_LongPageStart(t *testing.T) {
 	})
 	r.NoError(err)
 
-	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item disabled"><span>&laquo;</span></li><li class="page-item active"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item"><a class="page-link" href="/foo?page=4">4</a></li><li class="page-item"><a class="page-link" href="/foo?page=5">5</a></li><li class="page-item"><a class="page-link" href="/foo?page=6">6</a></li><li class="page-item"><a class="page-link" href="/foo?page=7">7</a></li><li class="page-item"><a class="page-link" href="/foo?page=8">8</a></li><li class="page-item"><a class="page-link" href="/foo?page=9">9</a></li><li class="page-item disabled"><a>...</a></li><li class="page-item"><a class="page-link" href="/foo?page=29">29</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">&raquo;</a></li></ul>`), tag.HTML())
+	r.Equal(template.HTML(`<ul class=" pagination"><li class="page-item disabled"><span class="page-link">&laquo;</span></li><li class="page-item active"><a class="page-link" href="/foo?page=1">1</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">2</a></li><li class="page-item"><a class="page-link" href="/foo?page=3">3</a></li><li class="page-item"><a class="page-link" href="/foo?page=4">4</a></li><li class="page-item"><a class="page-link" href="/foo?page=5">5</a></li><li class="page-item"><a class="page-link" href="/foo?page=6">6</a></li><li class="page-item"><a class="page-link" href="/foo?page=7">7</a></li><li class="page-item"><a class="page-link" href="/foo?page=8">8</a></li><li class="page-item"><a class="page-link" href="/foo?page=9">9</a></li><li class="page-item disabled"><a>...</a></li><li class="page-item"><a class="page-link" href="/foo?page=29">29</a></li><li class="page-item"><a class="page-link" href="/foo?page=2">&raquo;</a></li></ul>`), tag.HTML())
 }
 
 func Test_Pagination_LongPageStartPoint1(t *testing.T) {
