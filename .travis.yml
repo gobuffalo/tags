@@ -6,5 +6,5 @@ go:
   - master
 
 script:
-- go get -u github.com/golang/x/vgo
+- go get -u golang.org/x/vgo
 - vgo test -race $(go list ./... | grep -v /vendor/)
