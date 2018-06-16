@@ -139,6 +139,7 @@ func (p Paginator) Tag(opts Options) (*Tag, error) {
 	return t, nil
 }
 
+//Pagination builds pagination Tag based on a passed pagintation interface
 func Pagination(pagination interface{}, opts Options) (*Tag, error) {
 	if p, ok := pagination.(Paginator); ok {
 		return p.Tag(opts)
