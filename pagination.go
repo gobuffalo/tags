@@ -26,6 +26,49 @@ type Paginator struct {
 	TotalPages int `json:"total_pages"`
 }
 
+func (p Paginator) TagFromPagination(pagination interface{}, opts Options) (*Tag, error) {
+	rv := reflect.ValueOf(pagination)
+	if rv.Kind() == reflect.Ptr {
+		rv = rv.Elem()
+	}
+
+	if rv.Kind() != reflect.Struct {
+		return nil, errors.Errorf("can't build a Paginator from %T", pagination)
+	}
+
+	s := structs.New(rv.Interface())
+
+	if f, ok := s.FieldOk("Page"); ok {
+		p.Page = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("PerPage"); ok {
+		p.PerPage = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("Offset"); ok {
+		p.Offset = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
+		p.TotalEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
+		p.TotalEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("CurrentEntriesSize"); ok {
+		p.CurrentEntriesSize = f.Value().(int)
+	}
+
+	if f, ok := s.FieldOk("TotalPages"); ok {
+		p.TotalPages = f.Value().(int)
+	}
+
+	return p.Tag(opts)
+}
+
 func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	// return an empty div if there is only 1 page
 	if pagination.TotalPages <= 1 {
@@ -34,6 +77,7 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 
 	path, class, wing := extractBaseOptions(opts)
 	opts["class"] = strings.Join([]string{class, "pagination"}, " ")
+
 	t := New("ul", opts)
 
 	barLength := wing*2 + 1
@@ -162,86 +206,63 @@ func Pagination(pagination interface{}, opts Options) (*Tag, error) {
 	if p, ok := pagination.(Paginator); ok {
 		return p.Tag(opts)
 	}
-	rv := reflect.ValueOf(pagination)
-	if rv.Kind() == reflect.Ptr {
-		rv = rv.Elem()
-	}
-
-	if rv.Kind() != reflect.Struct {
-		return nil, errors.Errorf("can't build a Paginator from %T", pagination)
-	}
-
-	s := structs.New(rv.Interface())
 
 	p := Paginator{
 		Page:    1,
 		PerPage: 20,
 	}
 
-	if f, ok := s.FieldOk("Page"); ok {
-		p.Page = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("PerPage"); ok {
-		p.PerPage = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("Offset"); ok {
-		p.Offset = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
-		p.TotalEntriesSize = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("TotalEntriesSize"); ok {
-		p.TotalEntriesSize = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("CurrentEntriesSize"); ok {
-		p.CurrentEntriesSize = f.Value().(int)
-	}
-
-	if f, ok := s.FieldOk("TotalPages"); ok {
-		p.TotalPages = f.Value().(int)
-	}
-
-	return p.Tag(opts)
+	return p.TagFromPagination(pagination, opts)
 }
 
 func pageLI(text string, page int, path string, pagination Paginator) (*Tag, error) {
 
-	lio := Options{}
-	if page == pagination.Page {
-		lio["class"] = "active"
+	lio := Options{
+		"class": "page-item",
 	}
+
+	if page == pagination.Page {
+		lio["class"] = strings.Join([]string{lio["class"].(string), "active"}, " ")
+	}
+
 	li := New("li", lio)
 	if page == 0 || page > pagination.TotalPages {
-		li.Options["class"] = "disabled"
+		li.Options["class"] = strings.Join([]string{lio["class"].(string), "disabled"}, " ")
 		li.Append(New("span", Options{
 			"body": text,
 		}))
 		return li, nil
 	}
 
-	u, err := url.Parse(path)
-	q := u.Query()
-	q.Set("page", strconv.Itoa(page))
-	u.RawQuery = q.Encode()
-	ao := Options{
-		"href": u.String(),
-	}
-	a := New("a", ao)
-	a.Append(text)
-	li.Append(a)
+	url, err := urlFor(path, page)
 	if err != nil {
 		return li, errors.WithStack(err)
 	}
+
+	li.Append(New("a", Options{
+		"href":  url,
+		"class": "page-link",
+		"body":  text,
+	}))
+
 	return li, nil
 }
 
+func urlFor(path string, page int) (string, error) {
+	u, err := url.Parse(path)
+	if err != nil {
+		return "", err
+	}
+
+	q := u.Query()
+	q.Set("page", strconv.Itoa(page))
+	u.RawQuery = q.Encode()
+
+	return u.String(), err
+}
+
 func pageLIDummy() *Tag {
-	li := New("li", Options{"class": "disabled"})
+	li := New("li", Options{"class": "page-item disabled"})
 	a := New("a", Options{"body": "..."})
 	li.Append(a)
 	return li
