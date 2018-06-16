@@ -26,6 +26,8 @@ type Paginator struct {
 	TotalPages int `json:"total_pages"`
 }
 
+//TagFromPagination receives a pagination interface{} and attempts to get
+//Paginator properties from it before generating the tag.
 func (p Paginator) TagFromPagination(pagination interface{}, opts Options) (*Tag, error) {
 	rv := reflect.ValueOf(pagination)
 	if rv.Kind() == reflect.Ptr {
@@ -69,9 +71,10 @@ func (p Paginator) TagFromPagination(pagination interface{}, opts Options) (*Tag
 	return p.Tag(opts)
 }
 
-func (pagination Paginator) Tag(opts Options) (*Tag, error) {
+//Tag generates the pagination html Tag
+func (p Paginator) Tag(opts Options) (*Tag, error) {
 	// return an empty div if there is only 1 page
-	if pagination.TotalPages <= 1 {
+	if p.TotalPages <= 1 {
 		return New("div", Options{}), nil
 	}
 
@@ -83,51 +86,51 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	barLength := wing*2 + 1
 	center := wing + 1
 	loopStart := 1
-	loopEnd := pagination.TotalPages
+	loopEnd := p.TotalPages
 
-	li, err := pagination.addPrev(opts, path)
+	li, err := p.addPrev(opts, path)
 	if err != nil {
 		return t, errors.WithStack(err)
 	}
 	t.Append(li)
 
-	if pagination.TotalPages > barLength {
-		loopEnd = barLength - 2       // range 1 ~ center
-		if pagination.Page > center { /// range center
-			loopStart = pagination.Page - wing + 2
+	if p.TotalPages > barLength {
+		loopEnd = barLength - 2 // range 1 ~ center
+		if p.Page > center {    /// range center
+			loopStart = p.Page - wing + 2
 			loopEnd = loopStart + barLength - 5
-			li, err := pageLI("1", 1, path, pagination)
+			li, err := pageLI("1", 1, path, p)
 			if err != nil {
 				return t, errors.WithStack(err)
 			}
 			t.Append(li)
 			t.Append(pageLIDummy())
 		}
-		if pagination.Page > (pagination.TotalPages - wing - 1) {
-			loopEnd = pagination.TotalPages
-			loopStart = pagination.TotalPages - barLength + 3
+		if p.Page > (p.TotalPages - wing - 1) {
+			loopEnd = p.TotalPages
+			loopStart = p.TotalPages - barLength + 3
 		}
 	}
 
 	for i := loopStart; i <= loopEnd; i++ {
-		li, err := pageLI(strconv.Itoa(i), i, path, pagination)
+		li, err := pageLI(strconv.Itoa(i), i, path, p)
 		if err != nil {
 			return t, errors.WithStack(err)
 		}
 		t.Append(li)
 	}
 
-	if pagination.TotalPages > loopEnd {
+	if p.TotalPages > loopEnd {
 		t.Append(pageLIDummy())
-		label := strconv.Itoa(pagination.TotalPages)
-		li, err := pageLI(label, pagination.TotalPages, path, pagination)
+		label := strconv.Itoa(p.TotalPages)
+		li, err := pageLI(label, p.TotalPages, path, p)
 		if err != nil {
 			return t, errors.WithStack(err)
 		}
 		t.Append(li)
 	}
 
-	li, err = pagination.addNext(opts, path)
+	li, err = p.addNext(opts, path)
 	if err != nil {
 		return t, errors.WithStack(err)
 	}
@@ -136,7 +139,20 @@ func (pagination Paginator) Tag(opts Options) (*Tag, error) {
 	return t, nil
 }
 
-func (pagination Paginator) addPrev(opts Options, path string) (*Tag, error) {
+func Pagination(pagination interface{}, opts Options) (*Tag, error) {
+	if p, ok := pagination.(Paginator); ok {
+		return p.Tag(opts)
+	}
+
+	p := Paginator{
+		Page:    1,
+		PerPage: 20,
+	}
+
+	return p.TagFromPagination(pagination, opts)
+}
+
+func (p Paginator) addPrev(opts Options, path string) (*Tag, error) {
 	showPrev := true
 
 	if b, ok := opts["showPrev"].(bool); ok {
@@ -148,17 +164,17 @@ func (pagination Paginator) addPrev(opts Options, path string) (*Tag, error) {
 		return nil, nil
 	}
 
-	page := pagination.Page - 1
+	page := p.Page - 1
 	prevContent := "&laquo;"
 
 	if opts["previousContent"] != nil {
 		prevContent = opts["previousContent"].(string)
 	}
 
-	return pageLI(prevContent, page, path, pagination)
+	return pageLI(prevContent, page, path, p)
 }
 
-func (pagination Paginator) addNext(opts Options, path string) (*Tag, error) {
+func (p Paginator) addNext(opts Options, path string) (*Tag, error) {
 	showNext := true
 
 	if b, ok := opts["showNext"].(bool); ok {
@@ -170,14 +186,14 @@ func (pagination Paginator) addNext(opts Options, path string) (*Tag, error) {
 		return nil, nil
 	}
 
-	page := pagination.Page + 1
+	page := p.Page + 1
 	nextContent := "&raquo;"
 
 	if opts["nextContent"] != nil {
 		nextContent = opts["nextContent"].(string)
 	}
 
-	return pageLI(nextContent, page, path, pagination)
+	return pageLI(nextContent, page, path, p)
 }
 
 func extractBaseOptions(opts Options) (string, string, int) {
@@ -200,19 +216,6 @@ func extractBaseOptions(opts Options) (string, string, int) {
 	}
 
 	return path, class, wing
-}
-
-func Pagination(pagination interface{}, opts Options) (*Tag, error) {
-	if p, ok := pagination.(Paginator); ok {
-		return p.Tag(opts)
-	}
-
-	p := Paginator{
-		Page:    1,
-		PerPage: 20,
-	}
-
-	return p.TagFromPagination(pagination, opts)
 }
 
 func pageLI(text string, page int, path string, pagination Paginator) (*Tag, error) {
