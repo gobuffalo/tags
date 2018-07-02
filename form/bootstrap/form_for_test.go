@@ -308,6 +308,15 @@ func Test_Field_TagOnly(t *testing.T) {
 		},
 
 		{
+			f:    f.SelectTag,
+			name: "Name",
+			opts: tags.Options{
+				"tag_only": true,
+			},
+			output: `<select class="" id="-Name" name="Name"></select>`,
+		},
+
+		{
 			f:    f.FileTag,
 			name: "Name",
 			opts: tags.Options{
