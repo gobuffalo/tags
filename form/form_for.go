@@ -4,6 +4,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"reflect"
+	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -12,6 +14,8 @@ import (
 	"github.com/gobuffalo/validate"
 	"github.com/markbates/inflect"
 )
+
+var arrayFieldRegExp = regexp.MustCompile("(.+)\\[(\\d+)\\](\\..+)")
 
 //FormFor is a form made for a struct
 type FormFor struct {
@@ -182,6 +186,11 @@ type tagValuer interface {
 }
 
 func (f FormFor) value(field string) interface{} {
+	matches := arrayFieldRegExp.FindStringSubmatch(field)
+	if len(matches) != 0 {
+		field = matches[1] + matches[3]
+	}
+
 	fn := f.reflection.FieldByName(field)
 
 	if fn.IsValid() == false {
@@ -194,6 +203,11 @@ func (f FormFor) value(field string) interface{} {
 		}
 		fn = f.reflection.FieldByName(dots[0])
 		if fn.IsValid() {
+			if fn.Kind() == reflect.Slice || fn.Kind() == reflect.Array {
+				index, _ := strconv.Atoi(matches[2])
+				fn = fn.Index(index)
+			}
+
 			ff := NewFormFor(fn.Interface(), f.Options)
 			return ff.value(strings.Join(dots[1:], "."))
 		}

@@ -159,8 +159,9 @@ func Test_FormFor_NullableField(t *testing.T) {
 }
 
 type Person struct {
-	Name    string
-	Address Address
+	Name       string
+	Address    Address
+	References []Address
 }
 
 type Address struct {
@@ -182,6 +183,25 @@ func Test_FormFor_Nested_Struct(t *testing.T) {
 	tag := f.InputTag("Address.State", tags.Options{})
 
 	exp := `<input id="person-Address.State" name="Address.State" type="text" value="MA" />`
+	r.Equal(exp, tag.String())
+}
+
+func Test_FormFor_Nested_Slice_Struct(t *testing.T) {
+	r := require.New(t)
+	p := Person{
+		Name: "Mark",
+		Address: Address{
+			City:  "Boston",
+			State: "MA",
+		},
+	}
+	p.References = []Address{p.Address}
+
+	f := form.NewFormFor(p, tags.Options{})
+
+	tag := f.InputTag("References[0].State", tags.Options{})
+
+	exp := `<input id="person-References[0].State" name="References[0].State" type="text" value="MA" />`
 	r.Equal(exp, tag.String())
 }
 
