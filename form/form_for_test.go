@@ -162,6 +162,7 @@ type Person struct {
 	Name       string
 	Address    Address
 	References []Address
+	Contacts   []string
 }
 
 type Address struct {
@@ -198,10 +199,25 @@ func Test_FormFor_Nested_Slice_Struct(t *testing.T) {
 	p.References = []Address{p.Address}
 
 	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("References[0].City", tags.Options{})
 
-	tag := f.InputTag("References[0].State", tags.Options{})
+	exp := `<input id="person-References[0].City" name="References[0].City" type="text" value="Boston" />`
+	r.Equal(exp, tag.String())
+}
 
-	exp := `<input id="person-References[0].State" name="References[0].State" type="text" value="MA" />`
+func Test_FormFor_Nested_Slice_String(t *testing.T) {
+	r := require.New(t)
+	p := Person{
+		Contacts: []string{
+			"Contact 1",
+			"Contact 2",
+		},
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Contacts[0]", tags.Options{})
+
+	exp := `<input id="person-Contacts[0]" name="Contacts[0]" type="text" value="Contact 1" />`
 	r.Equal(exp, tag.String())
 }
 
