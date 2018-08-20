@@ -204,10 +204,13 @@ func (f FormFor) value(field string) interface{} {
 		}
 
 		fn = f.reflection.FieldByName(dots[0])
+
 		if fn.IsValid() {
+			fn = reflect.Indirect(fn)
+
 			if fn.Kind() == reflect.Slice || fn.Kind() == reflect.Array {
 				index, _ := strconv.Atoi(matches[2])
-				fn = fn.Index(index)
+				fn = reflect.Indirect(fn.Index(index))
 			}
 
 			if fn.Kind() == reflect.Struct {

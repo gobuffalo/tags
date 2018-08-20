@@ -221,6 +221,53 @@ func Test_FormFor_Nested_Slice_String(t *testing.T) {
 	r.Equal(exp, tag.String())
 }
 
+func Test_FormFor_Nested_Slice_String_Pointer(t *testing.T) {
+	r := require.New(t)
+	p := struct {
+		Contacts *[]string
+	}{
+		&[]string{"Contact 1", "Contact 2"},
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Contacts[0]", tags.Options{})
+
+	exp := `<input id="-Contacts[0]" name="Contacts[0]" type="text" value="Contact 1" />`
+	r.Equal(exp, tag.String())
+}
+
+func Test_FormFor_Nested_Slice_Pointer(t *testing.T) {
+	r := require.New(t)
+	p := struct {
+		Persons *[]Person
+	}{
+		&[]Person{{Name: "Mark"}},
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Persons[0].Name", tags.Options{})
+
+	exp := `<input id="-Persons[0].Name" name="Persons[0].Name" type="text" value="Mark" />`
+	r.Equal(exp, tag.String())
+}
+
+func Test_FormFor_Nested_Slice_Pointer_Elements(t *testing.T) {
+	r := require.New(t)
+	p := struct {
+		Persons []*Person
+	}{
+		[]*Person{
+			&Person{Name: "Mark"},
+		},
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	tag := f.InputTag("Persons[0].Name", tags.Options{})
+
+	exp := `<input id="-Persons[0].Name" name="Persons[0].Name" type="text" value="Mark" />`
+	r.Equal(exp, tag.String())
+}
+
 func Test_FormFor_DateTimeTag(t *testing.T) {
 	r := require.New(t)
 
