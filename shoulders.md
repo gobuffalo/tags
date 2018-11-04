@@ -9,6 +9,8 @@ Thank you to the following **GIANTS**:
 
 * [github.com/gobuffalo/envy](https://godoc.org/github.com/gobuffalo/envy)
 
+* [github.com/gobuffalo/flect](https://godoc.org/github.com/gobuffalo/flect)
+
 * [github.com/gobuffalo/uuid](https://godoc.org/github.com/gobuffalo/uuid)
 
 * [github.com/gobuffalo/validate](https://godoc.org/github.com/gobuffalo/validate)
@@ -18,8 +20,6 @@ Thank you to the following **GIANTS**:
 * [github.com/kr/pretty](https://godoc.org/github.com/kr/pretty)
 
 * [github.com/kr/text](https://godoc.org/github.com/kr/text)
-
-* [github.com/markbates/inflect](https://godoc.org/github.com/markbates/inflect)
 
 * [github.com/pkg/errors](https://godoc.org/github.com/pkg/errors)
 
