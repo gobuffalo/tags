@@ -22,7 +22,7 @@ func Test_InputFieldLabelWithAchronym(t *testing.T) {
 		"URL":            "URL",
 		"MyURL":          "My URL",
 		"SimpleURIAdded": "Simple URI Added",
-		"GaveAThing":     "Gave A Thing",
+		"GaveAnExample":  "Gave An Example",
 	}
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ URL string }{}, tags.Options{})
