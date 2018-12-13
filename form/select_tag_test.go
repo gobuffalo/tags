@@ -104,6 +104,60 @@ func Test_SelectTag_WithMap_Selected(t *testing.T) {
 	r.Contains(s, `<option value="2">two</option>`)
 }
 
+func Test_SelectTag_WithMap_Selected_Withplaceholder(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"placeholder": "Select a country",
+		"options": []map[string]interface{}{
+			{"Colombia": "CO"},
+			{"France": "FR"},
+			{"United States": "US"},
+		},
+	})
+	s := st.String()
+	r.Contains(s, `<option value="" hidden disabled>Select a country</option>`)
+	r.Contains(s, `<option value="CO">Colombia</option>`)
+	r.Contains(s, `<option value="FR">France</option>`)
+	r.Contains(s, `<option value="US">United States</option>`)
+}
+
+func Test_SelectTag_WithMap_Selected_Withoutplaceholder(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"options": []map[string]interface{}{
+			{"Colombia": "CO"},
+			{"France": "FR"},
+			{"United States": "US"},
+		},
+	})
+	s := st.String()
+	r.NotContains(s, `<option value="" hidden disabled></option>`)
+	r.Contains(s, `<option value="CO">Colombia</option>`)
+	r.Contains(s, `<option value="FR">France</option>`)
+	r.Contains(s, `<option value="US">United States</option>`)
+}
+
+func Test_SelectTag_WithMap_Selected_Withplaceholder_Selected(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"placeholder": "Select a country",
+		"options": []map[string]interface{}{
+			{"Colombia": "CO"},
+			{"France": "FR"},
+			{"United States": "US"},
+		},
+		"value": "CO",
+	})
+	s := st.String()
+	r.Contains(s, `<option value="" hidden disabled>Select a country</option>`)
+	r.Contains(s, `<option value="CO" selected>Colombia</option>`)
+	r.Contains(s, `<option value="FR">France</option>`)
+	r.Contains(s, `<option value="US">United States</option>`)
+}
+
 func Test_SelectTag_WithSlice(t *testing.T) {
 	r := require.New(t)
 	f := form.New(tags.Options{})
