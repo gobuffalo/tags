@@ -6,7 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/tags/form"
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 	"github.com/stretchr/testify/require"
 )
 
