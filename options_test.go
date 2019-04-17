@@ -36,3 +36,18 @@ func Test_Options_String_Empty_Attribute(t *testing.T) {
 	s := o.String()
 	r.Equal(`checked value="Mark"`, s)
 }
+
+func Test_Options_Data_Map(t *testing.T) {
+	r := require.New(t)
+	o := tags.Options{
+		"value": "Mark",
+		"id":    "foo-bar",
+		"class": "foo bar baz",
+		"data": map[string]interface{}{
+			"remote": true,
+			"method": "PUT",
+		},
+	}
+	s := o.String()
+	r.Equal(`class="foo bar baz" data-method="PUT" data-remote="true" id="foo-bar" value="Mark"`, s)
+}
