@@ -354,7 +354,7 @@ func Test_SelectTag_Multiple_SelectMultiple_SelectableMultiple_Interface(t *test
 	f := form.New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
-		"options": []SelectableModel{
+		"options": []SelectableMultipleModel{
 			{"John", "1"},
 			{"Peter", "2"},
 			{"Mark", "3"},
@@ -380,13 +380,25 @@ func (sm SelectableModel) SelectValue() interface{} {
 	return sm.ID
 }
 
-func (sm SelectableModel) IsSelected() bool {
+type SelectableMultipleModel struct {
+	Name string
+	ID   string
+}
+
+func (sm SelectableMultipleModel) SelectLabel() string {
+	return sm.Name
+}
+
+func (sm SelectableMultipleModel) SelectValue() interface{} {
+	return sm.ID
+}
+
+func (sm SelectableMultipleModel) IsSelected() bool {
 	if sm.Name == "Mark" {
 		return true
 	}
 	return false
 }
-
 
 type SelectableUUIDModel struct {
 	Name string
