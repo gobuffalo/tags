@@ -349,6 +349,24 @@ func Test_SelectTag_Multiple_SelectMultiple_Selectable_Interface(t *testing.T) {
 	r.Contains(s, `<option value="3">Mark</option>`)
 }
 
+func Test_SelectTag_Multiple_SelectMultiple_SelectableMultiple_Interface(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	st := f.SelectTag(tags.Options{
+		"multiple": true,
+		"options": []SelectableModel{
+			{"John", "1"},
+			{"Peter", "2"},
+			{"Mark", "3"},
+		},
+	})
+	s := st.String()
+	r.Contains(s, `<select multiple>`)
+	r.Contains(s, `<option value="1">John</option>`)
+	r.Contains(s, `<option value="2">Peter</option>`)
+	r.Contains(s, `<option value="3" selected>Mark</option>`)
+}
+
 type SelectableModel struct {
 	Name string
 	ID   string
@@ -361,6 +379,14 @@ func (sm SelectableModel) SelectLabel() string {
 func (sm SelectableModel) SelectValue() interface{} {
 	return sm.ID
 }
+
+func (sm SelectableModel) IsSelected() bool {
+	if sm.Name == "Mark" {
+		return true
+	}
+	return false
+}
+
 
 type SelectableUUIDModel struct {
 	Name string

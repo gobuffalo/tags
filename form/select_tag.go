@@ -136,7 +136,12 @@ func parseSelectOptions(opts tags.Options) SelectOptions {
 			x := rv.Index(i).Interface()
 
 			if rv.Index(i).Type().Implements(selectableType) {
-				so = append(so, SelectOption{Value: x.(Selectable).SelectValue(), Label: x.(Selectable).SelectLabel()})
+				isSelected := false
+				selectableMultipleType := reflect.TypeOf((*SelectableMultiple)(nil)).Elem()
+				if rv.Index(i).Type().Implements(selectableMultipleType) {
+					isSelected = x.(SelectableMultiple).IsSelected()
+				}
+				so = append(so, SelectOption{Value: x.(Selectable).SelectValue(), Label: x.(Selectable).SelectLabel(), Selected: isSelected})
 				continue
 			}
 
