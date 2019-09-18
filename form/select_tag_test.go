@@ -349,6 +349,17 @@ func Test_SelectTag_Multiple_SelectMultiple_Selectable_Interface(t *testing.T) {
 	r.Contains(s, `<option value="3">Mark</option>`)
 }
 
+func Test_SelectTagWithHTML(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	s := f.SelectTag(tags.Options{
+		"options": []map[string]interface{}{
+			{"<b>Not Bold</b>": "<u>Not Underlined</u>"},
+		},
+	})
+	r.Equal(`<select><option value="&lt;u&gt;Not Underlined&lt;/u&gt;">&lt;b&gt;Not Bold&lt;/b&gt;</option></select>`, s.String())
+}
+
 type SelectableModel struct {
 	Name string
 	ID   string
