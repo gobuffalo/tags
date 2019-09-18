@@ -37,6 +37,15 @@ func Test_Form_TextArea_nullsString_empty(t *testing.T) {
 	r.Equal(`<textarea></textarea>`, ta.String())
 }
 
+func Test_Form_TextArea_Escaped(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	ta := f.TextArea(tags.Options{
+		"value": "<b>This should not be bold</b>",
+	})
+	r.Equal(`<textarea>&lt;b&gt;This should not be bold&lt;/b&gt;</textarea>`, ta.String())
+}
+
 type nullString sql.NullString
 
 func (ns nullString) Value() (driver.Value, error) {

@@ -16,6 +16,9 @@ const voidTags = " area base br col embed hr img input keygen link meta param so
 // Body is a Tag inner content.
 type Body interface{}
 
+// EncodedBody is a Tag inner text content (HTML encoded).
+type EncodedBody interface{}
+
 // BeforeTag is content placed right before the Tag
 type BeforeTag interface{}
 
@@ -24,13 +27,14 @@ type AfterTag interface{}
 
 // Tag describes a HTML tag meta data.
 type Tag struct {
-	Name      string
-	Options   Options
-	Selected  bool
-	Checked   bool
-	BeforeTag []BeforeTag
-	Body      []Body
-	AfterTag  []AfterTag
+	Name        string
+	Options     Options
+	Selected    bool
+	Checked     bool
+	BeforeTag   []BeforeTag
+	Body        []Body
+	EncodedBody []EncodedBody
+	AfterTag    []AfterTag
 }
 
 // Append adds new Body part(s) after the current Tag inner contents.
@@ -105,6 +109,24 @@ func (t Tag) String() string {
 
 		return bb.String()
 	}
+	// EncodedBody is like Body but must be encoded
+	if len(t.EncodedBody) > 0 {
+		bb.WriteString(">")
+
+		for _, b := range t.EncodedBody {
+			bb.WriteString(template.HTMLEscapeString(parseTagEmbed(b)))
+		}
+
+		bb.WriteString("</")
+		bb.WriteString(t.Name)
+		bb.WriteString(">")
+
+		for _, at := range t.AfterTag {
+			bb.WriteString(parseTagEmbed(at))
+		}
+
+		return bb.String()
+	}
 	if !strings.Contains(voidTags, " "+t.Name+" ") {
 		bb.WriteString("></")
 		bb.WriteString(t.Name)
@@ -139,6 +161,10 @@ func New(name string, opts Options) *Tag {
 	if tag.Options["body"] != nil {
 		tag.Body = []Body{tag.Options["body"]}
 		delete(tag.Options, "body")
+	}
+	if tag.Options["encoded_body"] != nil {
+		tag.EncodedBody = []EncodedBody{tag.Options["encoded_body"]}
+		delete(tag.Options, "encoded_body")
 	}
 	if tag.Options["before_tag"] != nil {
 		tag.BeforeTag = []BeforeTag{tag.Options["before_tag"]}
