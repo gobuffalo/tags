@@ -316,3 +316,80 @@ func Test_FormFor_DateTimeTag(t *testing.T) {
 	i := f.DateTimeTag("BirthDate", tags.Options{})
 	r.Equal(`<input id="-BirthDate" name="BirthDate" type="datetime-local" value="1976-08-24T06:17" />`, i.String())
 }
+
+func Test_FormFor_CheckboxTag(t *testing.T) {
+	r := require.New(t)
+
+	p := struct {
+		IsAdmin bool
+	}{
+		IsAdmin: true,
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	i := f.CheckboxTag("IsAdmin", tags.Options{})
+	r.Equal(`<label><input id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" checked /></label>`, i.String())
+}
+
+func Test_FormFor_CheckboxTag_With_Value(t *testing.T) {
+	r := require.New(t)
+
+	p := struct {
+		UserType string
+	}{
+		UserType: "ADMIN",
+	}
+
+	f := form.NewFormFor(p, tags.Options{})
+	i := f.CheckboxTag("UserType", tags.Options{})
+	r.Equal(`<label><input id="-UserType" name="UserType" type="checkbox" value="ADMIN" checked /></label>`, i.String())
+}
+
+type testObject struct {
+	Field interface{}
+}
+
+func Test_FormFor_CheckboxTag_Cases(t *testing.T) {
+	r := require.New(t)
+
+	cases := []struct {
+		Object   testObject
+		Options  tags.Options
+		Expected string
+	}{
+		{
+			Object:   testObject{1},
+			Options:  tags.Options{},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="1" checked /></label>`,
+		},
+		{
+			Object:   testObject{"Text"},
+			Options:  tags.Options{},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="Text" checked /></label>`,
+		},
+		{
+			Object:   testObject{true},
+			Options:  tags.Options{},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="true" checked /></label>`,
+		},
+		{
+			Object:   testObject{""},
+			Options:  tags.Options{},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="" /><input name="Field" type="hidden" value="" /></label>`,
+		},
+		{
+			Object: testObject{1},
+			Options: tags.Options{
+				"unchecked": 1,
+			},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" /><input name="Field" type="hidden" value="1" /></label>`,
+		},
+	}
+
+	for idx, c := range cases {
+		f := form.NewFormFor(c.Object, tags.Options{})
+		i := f.CheckboxTag("Field", c.Options)
+		r.Equalf(c.Expected, i.String(), "Loop %d", idx+1)
+	}
+
+}
