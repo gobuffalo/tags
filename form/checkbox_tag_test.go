@@ -74,7 +74,7 @@ func Test_Form_CheckboxTag_With_Empty_Text_Value(t *testing.T) {
 		"value": "",
 		"name":  "Chubby",
 	})
-	r.Equal(`<label><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_TagOnly_With_CustomValue(t *testing.T) {

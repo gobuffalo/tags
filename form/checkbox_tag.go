@@ -13,18 +13,19 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 
 	value := opts["value"]
 	delete(opts, "value")
-	if value == nil || value == "" {
-		value = "true"
-	}
-	opts["value"] = value
 
 	checked := opts["checked"]
 	delete(opts, "checked")
-
-	isChecked := checked != nil
-	if !isChecked {
+	if checked == nil {
 		checked = "true"
 	}
+
+	isChecked := template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+	if isChecked || value == nil {
+		value = checked
+	}
+
+	opts["value"] = value
 
 	unchecked := opts["unchecked"]
 	delete(opts, "unchecked")
