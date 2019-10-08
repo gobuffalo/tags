@@ -157,7 +157,7 @@ func Test_CheckBox(t *testing.T) {
 	r := require.New(t)
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label></div>`, l.String())
+	r.Equal(`<div class="form-group"><label><input class="" id="-Name" name="Name" type="checkbox" value="" /><input name="Name" type="hidden" value="" /> Custom</label></div>`, l.String())
 }
 
 func Test_InputError(t *testing.T) {
@@ -229,7 +229,7 @@ func Test_CheckBoxError(t *testing.T) {
 
 	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label><input class=" is-invalid" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label><input class=" is-invalid" id="-Name" name="Name" type="checkbox" value="" /><input name="Name" type="hidden" value="" /> Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 type Person struct {
@@ -304,7 +304,7 @@ func Test_Field_TagOnly(t *testing.T) {
 			opts: tags.Options{
 				"tag_only": true,
 			},
-			output: `<input class="" id="-Name" name="Name" type="checkbox" value="true" />`,
+			output: `<input class="" id="-Name" name="Name" type="checkbox" value="" />`,
 		},
 
 		{

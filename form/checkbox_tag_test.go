@@ -74,7 +74,18 @@ func Test_Form_CheckboxTag_With_Empty_Text_Value(t *testing.T) {
 		"value": "",
 		"name":  "Chubby",
 	})
-	r.Equal(`<label><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="" /></label>`, ct.String())
+}
+
+func Test_Form_CheckboxTag_With_Empty_Text_Value_Unchecked(t *testing.T) {
+	r := require.New(t)
+	f := form.New(tags.Options{})
+	ct := f.CheckboxTag(tags.Options{
+		"name":      "Chubby",
+		"value":     "",
+		"unchecked": "",
+	})
+	r.Equal(`<label><input name="Chubby" type="checkbox" value="" /><input name="Chubby" type="hidden" value="" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_TagOnly_With_CustomValue(t *testing.T) {

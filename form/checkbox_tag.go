@@ -13,21 +13,35 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 
 	value := opts["value"]
 	delete(opts, "value")
-	if value == nil || value == "" {
-		value = "true"
+	if value != nil {
+		opts["value"] = value
 	}
-	opts["value"] = value
 
 	checked := opts["checked"]
 	delete(opts, "checked")
-
-	isChecked := checked != nil
-	if !isChecked {
+	if checked == nil {
 		checked = "true"
 	}
 
+	if value == nil {
+		opts["value"] = checked
+	}
+
+	isChecked := template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+
 	unchecked := opts["unchecked"]
 	delete(opts, "unchecked")
+	if unchecked != nil {
+		isUnchecked := template.HTMLEscaper(value) == template.HTMLEscaper(unchecked)
+		if isUnchecked {
+			isChecked = false
+
+			if value != "" {
+				delete(opts, "value")
+
+			}
+		}
+	}
 
 	hl := opts["hide_label"]
 	delete(opts, "hide_label")
@@ -35,13 +49,13 @@ func (f Form) CheckboxTag(opts tags.Options) *tags.Tag {
 	if opts["tag_only"] == true {
 		delete(opts, "label")
 		ct := f.InputTag(opts)
-		ct.Checked = isChecked && template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+		ct.Checked = isChecked
 		return ct
 	}
 
 	tag := tags.New("label", tags.Options{})
 	ct := f.InputTag(opts)
-	ct.Checked = isChecked && template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+	ct.Checked = isChecked
 	tag.Append(ct)
 
 	if opts["name"] != nil && unchecked != nil {
