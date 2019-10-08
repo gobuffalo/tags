@@ -342,7 +342,7 @@ func Test_FormFor_CheckboxTag_With_Value(t *testing.T) {
 
 	f := form.NewFormFor(p, tags.Options{})
 	i := f.CheckboxTag("UserType", tags.Options{})
-	r.Equal(`<label><input id="-UserType" name="UserType" type="checkbox" value="ADMIN" checked /></label>`, i.String())
+	r.Equal(`<label><input id="-UserType" name="UserType" type="checkbox" value="ADMIN" /></label>`, i.String())
 }
 
 type testObject struct {
@@ -360,12 +360,12 @@ func Test_FormFor_CheckboxTag_Cases(t *testing.T) {
 		{
 			Object:   testObject{1},
 			Options:  tags.Options{},
-			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="1" checked /></label>`,
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="1" /></label>`,
 		},
 		{
 			Object:   testObject{"Text"},
 			Options:  tags.Options{},
-			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="Text" checked /></label>`,
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="Text" /></label>`,
 		},
 		{
 			Object:   testObject{true},
@@ -373,16 +373,38 @@ func Test_FormFor_CheckboxTag_Cases(t *testing.T) {
 			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="true" checked /></label>`,
 		},
 		{
-			Object:   testObject{""},
+			Object:   testObject{},
 			Options:  tags.Options{},
-			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="" /><input name="Field" type="hidden" value="" /></label>`,
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="true" /></label>`,
+		},
+		{
+			Object: testObject{},
+			Options: tags.Options{
+				"tag_only": true,
+			},
+			Expected: `<input id="test-object-Field" name="Field" type="checkbox" value="true" />`,
+		},
+		{
+			Object: testObject{},
+			Options: tags.Options{
+				"tag_only": true,
+			},
+			Expected: `<input id="test-object-Field" name="Field" type="checkbox" value="true" />`,
+		},
+		{
+			Object: testObject{},
+			Options: tags.Options{
+				"checked":   false,
+				"unchecked": true,
+			},
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="false" /><input name="Field" type="hidden" value="true" /></label>`,
 		},
 		{
 			Object: testObject{1},
 			Options: tags.Options{
 				"unchecked": 1,
 			},
-			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" /><input name="Field" type="hidden" value="1" /></label>`,
+			Expected: `<label><input id="test-object-Field" name="Field" type="checkbox" value="1" /><input name="Field" type="hidden" value="1" /></label>`,
 		},
 	}
 
