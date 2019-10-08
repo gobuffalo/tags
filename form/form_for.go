@@ -75,20 +75,7 @@ func loadErrors(opts tags.Options) *validate.Errors {
 // CheckboxTag creates a checkbox for a field on the form Struct
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
 	f.buildOptions(field, opts)
-	f.validateCheck(field, opts)
-
 	return f.Form.CheckboxTag(opts)
-}
-
-func (f FormFor) validateCheck(field string, opts tags.Options) {
-	fv := f.value(field)
-	if fv != nil && fv != "" {
-		opts["checked"] = fv
-		return
-	}
-
-	opts["unchecked"] = fv
-	delete(opts, "checked")
 }
 
 // InputTag creates an input for a field on the form Struct
