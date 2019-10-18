@@ -355,7 +355,6 @@ func Test_Field_Boolean(t *testing.T) {
 			},
 			output: `<input class="custom-input" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" />`,
 		},
-
 		{
 			Value: true,
 			name:  "IsAdmin",
@@ -364,6 +363,26 @@ func Test_Field_Boolean(t *testing.T) {
 				"class":    "custom-input",
 			},
 			output: `<input class="custom-input" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" checked />`,
+		},
+		{
+			Value:  false,
+			name:   "IsAdmin",
+			opts:   tags.Options{},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" /> IsAdmin</label></div>`,
+		},
+		{
+			Value:  true,
+			name:   "IsAdmin",
+			opts:   tags.Options{},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" checked /> IsAdmin</label></div>`,
+		},
+		{
+			Value: false,
+			name:  "IsAdmin",
+			opts: tags.Options{
+				"unchecked": false,
+			},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" /><input name="IsAdmin" type="hidden" value="false" /> IsAdmin</label></div>`,
 		},
 	}
 
