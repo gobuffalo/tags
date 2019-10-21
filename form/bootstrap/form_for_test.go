@@ -334,3 +334,67 @@ func Test_Field_TagOnly(t *testing.T) {
 		})
 	}
 }
+
+func Test_Field_Boolean(t *testing.T) {
+	model := struct {
+		IsAdmin bool `schema:"-"`
+	}{}
+	cases := []struct {
+		f      func(field string, opt tags.Options) *tags.Tag
+		Value  bool
+		name   string
+		opts   tags.Options
+		output string
+	}{
+		{
+			Value: false,
+			name:  "IsAdmin",
+			opts: tags.Options{
+				"tag_only": true,
+				"class":    "custom-input",
+			},
+			output: `<input class="custom-input" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" />`,
+		},
+		{
+			Value: true,
+			name:  "IsAdmin",
+			opts: tags.Options{
+				"tag_only": true,
+				"class":    "custom-input",
+			},
+			output: `<input class="custom-input" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" checked />`,
+		},
+		{
+			Value:  false,
+			name:   "IsAdmin",
+			opts:   tags.Options{},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" /> IsAdmin</label></div>`,
+		},
+		{
+			Value:  true,
+			name:   "IsAdmin",
+			opts:   tags.Options{},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" checked /> IsAdmin</label></div>`,
+		},
+		{
+			Value: false,
+			name:  "IsAdmin",
+			opts: tags.Options{
+				"unchecked": false,
+			},
+			output: `<div class="form-group"><label><input class="" id="-IsAdmin" name="IsAdmin" type="checkbox" value="true" /><input name="IsAdmin" type="hidden" value="false" /> IsAdmin</label></div>`,
+		},
+	}
+
+	for index, tcase := range cases {
+		t.Run(fmt.Sprintf("%v", index), func(tt *testing.T) {
+			r := require.New(tt)
+
+			model.IsAdmin = tcase.Value
+			f := bootstrap.NewFormFor(model, tags.Options{})
+
+			l := f.CheckboxTag(tcase.name, tcase.opts)
+			r.Equal(tcase.output, l.String())
+		})
+	}
+}

@@ -96,10 +96,10 @@ func (f FormFor) buildCheckboxOptions(field string, opts tags.Options) {
 	if fn.Kind() == reflect.Bool {
 		if ov == nil {
 			opts["value"] = true
+		}
 
-			if opts["checked"] == nil && !fn.Bool() {
-				opts["checked"] = fn.Bool()
-			}
+		if opts["checked"] == nil && !fn.Bool() {
+			opts["checked"] = fn.Bool()
 		}
 	}
 }
