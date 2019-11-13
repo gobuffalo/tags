@@ -74,34 +74,8 @@ func loadErrors(opts tags.Options) *validate.Errors {
 
 // CheckboxTag creates a checkbox for a field on the form Struct
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
-	f.buildCheckboxOptions(field, opts)
 	f.buildOptions(field, opts)
-
 	return f.Form.CheckboxTag(opts)
-}
-
-func (f FormFor) buildCheckboxOptions(field string, opts tags.Options) {
-	fn := f.reflection.FieldByName(field)
-	ov := opts["value"]
-	if fn.Kind() == reflect.Slice || fn.Kind() == reflect.Array && ov != nil {
-		s := reflect.ValueOf(fn.Interface())
-		for i := 0; i < s.Len(); i++ {
-			if reflect.DeepEqual(s.Index(i).Interface(), ov) {
-				opts["checked"] = s.Index(i)
-				break
-			}
-		}
-	}
-
-	if fn.Kind() == reflect.Bool {
-		if ov == nil {
-			opts["value"] = true
-		}
-
-		if opts["checked"] == nil && !fn.Bool() {
-			opts["checked"] = fn.Bool()
-		}
-	}
 }
 
 // InputTag creates an input for a field on the form Struct
