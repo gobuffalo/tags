@@ -36,15 +36,6 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		delete(opts, "errors")
 	}
 
-	if opts["bootstrap"] != nil {
-		bopts, ok := opts["bootstrap"].(map[string]interface{})
-		if ok {
-			divClass = bopts["form-group-class"].(string)
-		}
-
-		delete(opts, "bootstrap")
-	}
-
 	div := tags.New("div", tags.Options{
 		"class": divClass,
 	})
