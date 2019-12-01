@@ -1,4 +1,4 @@
- [![Test Status](https://github.com/gobuffalo/tags/workflows/Test/badge.svg)](https://github.com/gobuffalo/tags/actions)
+ [![Test Status](https://github.com/gobuffalo/tags/workflows/Tests/badge.svg)](https://github.com/gobuffalo/tags/actions)
  [![Go Report Card](https://goreportcard.com/badge/github.com/gobuffalo/tags)](https://goreportcard.com/report/github.com/gobuffalo/tags)
 
 # Tags
