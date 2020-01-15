@@ -1,37 +1,36 @@
-package tags_test
+package tags
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
-	"github.com/gobuffalo/tags"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Tag(t *testing.T) {
 	r := require.New(t)
-	tag := tags.New("input", tags.Options{})
+	tag := New("input", Options{})
 	r.Equal("input", tag.Name)
 }
 
 func Test_Tag_WithName(t *testing.T) {
 	r := require.New(t)
-	tag := tags.New("br", tags.Options{})
+	tag := New("br", Options{})
 	r.Equal("br", tag.Name)
 	r.Equal(`<br />`, tag.String())
 }
 
 func Test_Tag_NonVoid(t *testing.T) {
 	r := require.New(t)
-	tag := tags.New("div", tags.Options{})
+	tag := New("div", Options{})
 	r.Equal("div", tag.Name)
 	r.Equal(`<div></div>`, tag.String())
 }
 
 func Test_Tag_WithValue(t *testing.T) {
 	r := require.New(t)
-	tag := tags.New("input", tags.Options{
+	tag := New("input", Options{
 		"value": "Mark",
 	})
 	r.Equal(`<input value="Mark" />`, tag.String())
@@ -47,7 +46,7 @@ func Test_Tag_WithTimeValue(t *testing.T) {
 	}
 
 	for format, expected := range cases {
-		tag := tags.New("input", tags.Options{
+		tag := New("input", Options{
 			"value":  time.Time{},
 			"format": format,
 		})
@@ -60,7 +59,7 @@ func Test_Tag_WithTimeValue(t *testing.T) {
 func Test_Tag_WithBody(t *testing.T) {
 	r := require.New(t)
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"body": "hi there!",
 	})
 	r.Equal(`<div>hi there!</div>`, tag.String())
@@ -71,7 +70,7 @@ func Test_Tag_WithBody_And_BeforeTag(t *testing.T) {
 	r := require.New(t)
 	s := `<span>Test</span>`
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"body":       "hi there!",
 		"before_tag": s,
 	})
@@ -83,7 +82,7 @@ func Test_Tag_WithBody_And_AfterTag(t *testing.T) {
 	r := require.New(t)
 	s := `<span>Test</span>`
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"body":      "hi there!",
 		"after_tag": s,
 	})
@@ -94,7 +93,7 @@ func Test_Tag_WithBody_And_AfterTag(t *testing.T) {
 func Test_Tag_String(t *testing.T) {
 	r := require.New(t)
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"body": "hi there!",
 	})
 	r.Equal(`<div>hi there!</div>`, tag.String())
@@ -103,7 +102,7 @@ func Test_Tag_String(t *testing.T) {
 func Test_Tag_String_WithOpts(t *testing.T) {
 	r := require.New(t)
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"body":  "hi there!",
 		"class": "foo bar baz",
 	})
@@ -113,8 +112,8 @@ func Test_Tag_String_WithOpts(t *testing.T) {
 func Test_Tag_String_SubTag(t *testing.T) {
 	r := require.New(t)
 
-	tag := tags.New("div", tags.Options{
-		"body": tags.New("p", tags.Options{
+	tag := New("div", Options{
+		"body": New("p", Options{
 			"body": "hi!",
 		}),
 	})
@@ -125,7 +124,7 @@ func Test_Tag_String_With_BeforeTag_Opt(t *testing.T) {
 	r := require.New(t)
 	s := `<span>Test</span>`
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"before_tag": s,
 	})
 
@@ -136,7 +135,7 @@ func Test_Tag_String_With_AfterTag_Opt(t *testing.T) {
 	r := require.New(t)
 	s := `<span>Test</span>`
 
-	tag := tags.New("div", tags.Options{
+	tag := New("div", Options{
 		"after_tag": s,
 	})
 
@@ -145,18 +144,18 @@ func Test_Tag_String_With_AfterTag_Opt(t *testing.T) {
 
 func Test_Tag_With_Another_Tag_As_BeforeTag(t *testing.T) {
 	r := require.New(t)
-	s := tags.New("span", tags.Options{"body": "Test"})
+	s := New("span", Options{"body": "Test"})
 
-	tag := tags.New("div", tags.Options{"before_tag": s})
+	tag := New("div", Options{"before_tag": s})
 
 	r.Equal(`<span>Test</span><div></div>`, tag.String())
 }
 
 func Test_Tag_With_Another_Tag_As_AfterTag(t *testing.T) {
 	r := require.New(t)
-	s := tags.New("span", tags.Options{"body": "Test"})
+	s := New("span", Options{"body": "Test"})
 
-	tag := tags.New("div", tags.Options{"after_tag": s})
+	tag := New("div", Options{"after_tag": s})
 
 	r.Equal(`<div></div><span>Test</span>`, tag.String())
 }

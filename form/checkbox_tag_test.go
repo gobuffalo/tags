@@ -1,23 +1,22 @@
-package form_test
+package form
 
 import (
 	"testing"
 
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form"
+	"github.com/gobuffalo/tags/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Form_CheckboxTag(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{"name": "Chubby"})
 	r.Equal(`<label><input name="Chubby" type="checkbox" value="true" /></label>`, ct.String())
 }
 
 func Test_Form_CheckboxTag_WithValue(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{
 		"value":     1,
 		"checked":   "1",
@@ -29,7 +28,7 @@ func Test_Form_CheckboxTag_WithValue(t *testing.T) {
 
 func Test_Form_CheckboxTag_Checked(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{
 		"checked": true,
 		"value":   true,
@@ -39,7 +38,7 @@ func Test_Form_CheckboxTag_Checked(t *testing.T) {
 
 func Test_Form_CheckboxTag_WithLabel(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ct := f.CheckboxTag(tags.Options{
 		"label": "check me",
 		"name":  "Chubby",

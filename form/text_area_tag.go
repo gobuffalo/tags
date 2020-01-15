@@ -1,7 +1,7 @@
 package form
 
 import (
-	"github.com/gobuffalo/tags"
+	"github.com/gobuffalo/tags/v3"
 )
 
 //TextArea creates a textarea for a form with passed options

@@ -1,6 +1,6 @@
 package form
 
-import "github.com/gobuffalo/tags"
+import "github.com/gobuffalo/tags/v3"
 
 //InputTag generates an input tag with passed options, by default will be type=text.
 func (f Form) InputTag(opts tags.Options) *tags.Tag {

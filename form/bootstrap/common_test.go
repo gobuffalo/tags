@@ -1,16 +1,15 @@
-package bootstrap_test
+package bootstrap
 
 import (
 	"testing"
 
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form/bootstrap"
+	"github.com/gobuffalo/tags/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_BootstrapFormGroupClass(t *testing.T) {
 	r := require.New(t)
-	f := bootstrap.NewFormFor(struct{ Name string }{}, tags.Options{})
+	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 
 	tcases := []struct {
 		options  tags.Options

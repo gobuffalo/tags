@@ -1,15 +1,14 @@
-package tags_test
+package tags
 
 import (
 	"testing"
 
-	"github.com/gobuffalo/tags"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Options_String(t *testing.T) {
 	r := require.New(t)
-	o := tags.Options{
+	o := Options{
 		"value": "Mark",
 		"id":    "foo-bar",
 		"class": "foo bar baz",
@@ -20,7 +19,7 @@ func Test_Options_String(t *testing.T) {
 
 func Test_Options_String_Escaped(t *testing.T) {
 	r := require.New(t)
-	o := tags.Options{
+	o := Options{
 		"<b>": "<p>",
 	}
 	s := o.String()
@@ -29,7 +28,7 @@ func Test_Options_String_Escaped(t *testing.T) {
 
 func Test_Options_String_Empty_Attribute(t *testing.T) {
 	r := require.New(t)
-	o := tags.Options{
+	o := Options{
 		"value":   "Mark",
 		"checked": nil,
 	}
@@ -39,7 +38,7 @@ func Test_Options_String_Empty_Attribute(t *testing.T) {
 
 func Test_Options_Data_Map(t *testing.T) {
 	r := require.New(t)
-	o := tags.Options{
+	o := Options{
 		"value": "Mark",
 		"id":    "foo-bar",
 		"class": "foo bar baz",

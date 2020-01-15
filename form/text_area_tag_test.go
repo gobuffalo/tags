@@ -1,18 +1,17 @@
-package form_test
+package form
 
 import (
 	"database/sql"
 	"database/sql/driver"
 	"testing"
 
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form"
+	"github.com/gobuffalo/tags/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Form_TextArea(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ta := f.TextArea(tags.Options{
 		"value": "hi",
 	})
@@ -21,7 +20,7 @@ func Test_Form_TextArea(t *testing.T) {
 
 func Test_Form_TextArea_nullsString(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ta := f.TextArea(tags.Options{
 		"value": NewNullString("hi"),
 	})
@@ -30,7 +29,7 @@ func Test_Form_TextArea_nullsString(t *testing.T) {
 
 func Test_Form_TextArea_nullsString_empty(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ta := f.TextArea(tags.Options{
 		"value": nullString{},
 	})
@@ -39,7 +38,7 @@ func Test_Form_TextArea_nullsString_empty(t *testing.T) {
 
 func Test_Form_TextArea_Escaped(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	ta := f.TextArea(tags.Options{
 		"value": "<b>This should not be bold</b>",
 	})
