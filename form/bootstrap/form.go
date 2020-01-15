@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form"
+	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags/v3/form"
 )
 
 //Form is the bootstrap version of Form

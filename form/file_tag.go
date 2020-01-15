@@ -1,6 +1,6 @@
 package form
 
-import "github.com/gobuffalo/tags"
+import "github.com/gobuffalo/tags/v3"
 
 //FileTag builds an input[type=file] from the options passed, it also sets the form enctype to be "multipart/form-data"
 func (f Form) FileTag(opts tags.Options) *tags.Tag {

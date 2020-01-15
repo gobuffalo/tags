@@ -1,4 +1,4 @@
-package form_test
+package form
 
 import (
 	"database/sql"
@@ -6,8 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form"
+	"github.com/gobuffalo/tags/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +17,7 @@ type Talk struct {
 func Test_NewFormFor(t *testing.T) {
 	r := require.New(t)
 
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 	r.Equal("form", f.Name)
@@ -27,7 +26,7 @@ func Test_NewFormFor(t *testing.T) {
 
 func Test_FormFor_InputValue(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 
@@ -38,7 +37,7 @@ func Test_FormFor_InputValue(t *testing.T) {
 
 func Test_FormFor_InputHiddenValue(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 
@@ -49,7 +48,7 @@ func Test_FormFor_InputHiddenValue(t *testing.T) {
 
 func Test_FormFor_Input_BeforeTag_Opt(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{})
+	f := NewFormFor(Talk{}, tags.Options{})
 
 	s := `<span>Content</span>`
 	l := f.InputTag("Test", tags.Options{"before_tag": s})
@@ -59,7 +58,7 @@ func Test_FormFor_Input_BeforeTag_Opt(t *testing.T) {
 
 func Test_FormFor_Input_AfterTag_Opt(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{})
+	f := NewFormFor(Talk{}, tags.Options{})
 
 	b := `<button>Button</button>`
 	l := f.InputTag("Test", tags.Options{"after_tag": b})
@@ -69,7 +68,7 @@ func Test_FormFor_Input_AfterTag_Opt(t *testing.T) {
 
 func Test_FormFor_File(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 
@@ -80,7 +79,7 @@ func Test_FormFor_File(t *testing.T) {
 
 func Test_FormFor_InputValueFormat(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 
@@ -94,7 +93,7 @@ func Test_FormFor_InputValueFormat(t *testing.T) {
 func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {
 	r := require.New(t)
 
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 	})
 	f.SetAuthenticityToken("12345")
@@ -105,7 +104,7 @@ func Test_NewFormFor_With_AuthenticityToken(t *testing.T) {
 func Test_NewFormFor_With_NotPostMethod(t *testing.T) {
 	r := require.New(t)
 
-	f := form.NewFormFor(Talk{}, tags.Options{
+	f := NewFormFor(Talk{}, tags.Options{
 		"action": "/users/1",
 		"method": "put",
 	})
@@ -115,21 +114,21 @@ func Test_NewFormFor_With_NotPostMethod(t *testing.T) {
 
 func Test_FormFor_Label(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{})
+	f := NewFormFor(Talk{}, tags.Options{})
 	l := f.Label("Name", tags.Options{})
 	r.Equal(`<label>Name</label>`, l.String())
 }
 
 func Test_FormFor_FieldDoesntExist(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{})
+	f := NewFormFor(Talk{}, tags.Options{})
 	l := f.InputTag("IDontExist", tags.Options{})
 	r.Equal(`<input id="talk-IDontExist" name="IDontExist" type="text" value="" />`, l.String())
 }
 
 func Test_FormFor_HiddenTag(t *testing.T) {
 	r := require.New(t)
-	f := form.NewFormFor(Talk{}, tags.Options{})
+	f := NewFormFor(Talk{}, tags.Options{})
 	l := f.HiddenTag("Name", tags.Options{})
 	r.Equal(`<input id="talk-Name" name="Name" type="hidden" value="" />`, l.String())
 }
@@ -145,7 +144,7 @@ func Test_FormFor_NullableField(t *testing.T) {
 		CreditCard: NewNullString("Hello"),
 	}
 
-	f := form.NewFormFor(model, tags.Options{})
+	f := NewFormFor(model, tags.Options{})
 
 	cases := map[string][]string{
 		"CreditCard": {`<input id="-CreditCard" name="CreditCard" type="text" value="Hello" />`},
@@ -181,7 +180,7 @@ func Test_FormFor_Nested_Struct(t *testing.T) {
 		},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("Address.State", tags.Options{})
 
 	exp := `<input id="person-Address.State" name="Address.State" type="text" value="MA" />`
@@ -199,7 +198,7 @@ func Test_FormFor_Nested_Slice_Struct(t *testing.T) {
 	}
 	p.References = []Address{p.Address}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("References[0].City", tags.Options{})
 
 	exp := `<input id="person-References[0].City" name="References[0].City" type="text" value="Boston" />`
@@ -216,7 +215,7 @@ func Test_FormFor_Nested_Slice_String(t *testing.T) {
 		},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 
 	for i := 0; i < len(p.Contacts); i++ {
 		expectedValue := p.Contacts[i]
@@ -235,7 +234,7 @@ func Test_FormFor_Nested_Slice_String_Pointer(t *testing.T) {
 		&[]string{"Contact 1", "Contact 2"},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("Contacts[0]", tags.Options{})
 
 	exp := `<input id="-Contacts[0]" name="Contacts[0]" type="text" value="Contact 1" />`
@@ -250,7 +249,7 @@ func Test_FormFor_Nested_Slice_Pointer(t *testing.T) {
 		&[]Person{{Name: "Mark"}, {Name: "Clayton"}, {Name: "Iain"}},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 
 	for i := 0; i < len(*p.Persons); i++ {
 		expectedValue := (*p.Persons)[i].Name
@@ -271,7 +270,7 @@ func Test_FormFor_Nested_Slice_Pointer_Elements(t *testing.T) {
 		},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("Persons[0].Name", tags.Options{})
 
 	exp := `<input id="-Persons[0].Name" name="Persons[0].Name" type="text" value="Mark" />`
@@ -293,7 +292,7 @@ func Test_FormFor_Nested_Slice_With_Sub_Slices(t *testing.T) {
 		},
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("Persons[0].References[0].City", tags.Options{})
 
 	exp := `<input id="-Persons[0].References[0].City" name="Persons[0].References[0].City" type="text" value="Boston" />`
@@ -312,7 +311,7 @@ func Test_FormFor_DateTimeTag(t *testing.T) {
 		BirthDate: date,
 	}
 
-	f := form.NewFormFor(p, tags.Options{})
+	f := NewFormFor(p, tags.Options{})
 	i := f.DateTimeTag("BirthDate", tags.Options{})
 	r.Equal(`<input id="-BirthDate" name="BirthDate" type="datetime-local" value="1976-08-24T06:17" />`, i.String())
 }

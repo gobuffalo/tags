@@ -1,13 +1,13 @@
 package tags
 
 import (
+	"fmt"
 	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
 
 	"github.com/fatih/structs"
-	"github.com/pkg/errors"
 )
 
 // Paginator describes a pagination meta data
@@ -35,7 +35,7 @@ func (p Paginator) TagFromPagination(pagination interface{}, opts Options) (*Tag
 	}
 
 	if rv.Kind() != reflect.Struct {
-		return nil, errors.Errorf("can't build a Paginator from %T", pagination)
+		return nil, fmt.Errorf("can't build a Paginator from %T", pagination)
 	}
 
 	s := structs.New(rv.Interface())
@@ -90,7 +90,7 @@ func (p Paginator) Tag(opts Options) (*Tag, error) {
 
 	li, err := p.addPrev(opts, path)
 	if err != nil {
-		return t, errors.WithStack(err)
+		return t, err
 	}
 	t.Append(li)
 
@@ -101,7 +101,7 @@ func (p Paginator) Tag(opts Options) (*Tag, error) {
 			loopEnd = loopStart + barLength - 5
 			li, err := pageLI("1", 1, path, p)
 			if err != nil {
-				return t, errors.WithStack(err)
+				return t, err
 			}
 			t.Append(li)
 			t.Append(pageLIDummy())
@@ -115,7 +115,7 @@ func (p Paginator) Tag(opts Options) (*Tag, error) {
 	for i := loopStart; i <= loopEnd; i++ {
 		li, err := pageLI(strconv.Itoa(i), i, path, p)
 		if err != nil {
-			return t, errors.WithStack(err)
+			return t, err
 		}
 		t.Append(li)
 	}
@@ -125,14 +125,14 @@ func (p Paginator) Tag(opts Options) (*Tag, error) {
 		label := strconv.Itoa(p.TotalPages)
 		li, err := pageLI(label, p.TotalPages, path, p)
 		if err != nil {
-			return t, errors.WithStack(err)
+			return t, err
 		}
 		t.Append(li)
 	}
 
 	li, err = p.addNext(opts, path)
 	if err != nil {
-		return t, errors.WithStack(err)
+		return t, err
 	}
 	t.Append(li)
 
@@ -243,7 +243,7 @@ func pageLI(text string, page int, path string, pagination Paginator) (*Tag, err
 
 	url, err := urlFor(path, page)
 	if err != nil {
-		return li, errors.WithStack(err)
+		return li, err
 	}
 
 	li.Append(New("a", Options{

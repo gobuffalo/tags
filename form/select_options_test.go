@@ -1,15 +1,14 @@
-package form_test
+package form
 
 import (
 	"testing"
 
-	"github.com/gobuffalo/tags/form"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_SelectionOption_String(t *testing.T) {
 	r := require.New(t)
-	so := form.SelectOption{
+	so := SelectOption{
 		Value: 1,
 		Label: "one",
 	}
@@ -18,7 +17,7 @@ func Test_SelectionOption_String(t *testing.T) {
 
 func Test_SelectionOption_Selected_String(t *testing.T) {
 	r := require.New(t)
-	so := form.SelectOption{
+	so := SelectOption{
 		Value:    1,
 		Label:    "one",
 		Selected: true,

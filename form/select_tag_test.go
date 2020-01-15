@@ -1,25 +1,24 @@
-package form_test
+package form
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/gobuffalo/tags"
-	"github.com/gobuffalo/tags/form"
+	"github.com/gobuffalo/tags/v3"
 	"github.com/gofrs/uuid"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_SelectTag(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	s := f.SelectTag(tags.Options{})
 	r.Equal(`<select></select>`, s.String())
 }
 
 func Test_SelectTagWithOptions(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	s := f.SelectTag(tags.Options{
 		"options": []map[string]interface{}{
 			{"1/2 day": 1},
@@ -33,7 +32,7 @@ func Test_SelectTagWithOptions(t *testing.T) {
 
 func Test_SelectTagWithOptionsSelected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	s := f.SelectTag(tags.Options{
 		"options": []map[string]interface{}{
 			{"1/2 day": 1},
@@ -48,9 +47,9 @@ func Test_SelectTagWithOptionsSelected(t *testing.T) {
 
 func Test_SelectTag_WithSelectOptions(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
-		"options": form.SelectOptions{
+		"options": SelectOptions{
 			{Value: 1, Label: "one"},
 			{Value: 2, Label: "two"},
 		},
@@ -62,9 +61,9 @@ func Test_SelectTag_WithSelectOptions(t *testing.T) {
 
 func Test_SelectTag_WithSelectOptions_Selected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
-		"options": form.SelectOptions{
+		"options": SelectOptions{
 			{Value: 3, Label: "three"},
 			{Value: 2, Label: "two"},
 		},
@@ -77,7 +76,7 @@ func Test_SelectTag_WithSelectOptions_Selected(t *testing.T) {
 
 func Test_SelectTag_WithMap(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": map[string]interface{}{
 			"one": 1,
@@ -91,7 +90,7 @@ func Test_SelectTag_WithMap(t *testing.T) {
 
 func Test_SelectTag_WithMap_Selected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": map[string]interface{}{
 			"three": 3,
@@ -106,7 +105,7 @@ func Test_SelectTag_WithMap_Selected(t *testing.T) {
 
 func Test_SelectTag_WithMap_Selected_Withplaceholder(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"placeholder": "Select a country",
 		"options": []map[string]interface{}{
@@ -124,7 +123,7 @@ func Test_SelectTag_WithMap_Selected_Withplaceholder(t *testing.T) {
 
 func Test_SelectTag_WithMap_Selected_Withoutplaceholder(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": []map[string]interface{}{
 			{"Colombia": "CO"},
@@ -141,7 +140,7 @@ func Test_SelectTag_WithMap_Selected_Withoutplaceholder(t *testing.T) {
 
 func Test_SelectTag_WithMap_Selected_Withplaceholder_Selected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"placeholder": "Select a country",
 		"options": []map[string]interface{}{
@@ -160,7 +159,7 @@ func Test_SelectTag_WithMap_Selected_Withplaceholder_Selected(t *testing.T) {
 
 func Test_SelectTag_WithSlice(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": []string{"one", "two"},
 	})
@@ -171,7 +170,7 @@ func Test_SelectTag_WithSlice(t *testing.T) {
 
 func Test_SelectTag_WithSlice_Selected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": []string{"one", "two"},
 		"value":   "two",
@@ -183,7 +182,7 @@ func Test_SelectTag_WithSlice_Selected(t *testing.T) {
 
 func Test_SelectTag_WithSlice_Selectable(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": []SelectableModel{
 			{"John", "1"},
@@ -198,7 +197,7 @@ func Test_SelectTag_WithSlice_Selectable(t *testing.T) {
 
 func Test_SelectTag_WithSlice_Selectable_Interface(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"options": []SelectableModel{
 			{"John", "1"},
@@ -213,7 +212,7 @@ func Test_SelectTag_WithSlice_Selectable_Interface(t *testing.T) {
 
 func Test_SelectTag_WithUUID_Selected(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	jid, _ := uuid.NewV4()
 	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
@@ -230,7 +229,7 @@ func Test_SelectTag_WithUUID_Selected(t *testing.T) {
 
 func Test_SelectTag_WithUUID_Selected_withBlank(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	jid, _ := uuid.NewV4()
 	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
@@ -249,13 +248,13 @@ func Test_SelectTag_WithUUID_Selected_withBlank(t *testing.T) {
 
 func Test_SelectTag_WithUUID_Selected_withBlankSelectOptions(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	jid, _ := uuid.NewV4()
 	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
-		"options": form.SelectOptions{
-			form.SelectOption{Label: "John", Value: jid},
-			form.SelectOption{Label: "Peter", Value: pid},
+		"options": SelectOptions{
+			SelectOption{Label: "John", Value: jid},
+			SelectOption{Label: "Peter", Value: pid},
 		},
 		"value":       pid,
 		"allow_blank": true,
@@ -268,13 +267,13 @@ func Test_SelectTag_WithUUID_Selected_withBlankSelectOptions(t *testing.T) {
 
 func Test_SelectTag_WithUUID_Selected_withoutBlankSelectOptions(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	jid, _ := uuid.NewV4()
 	pid, _ := uuid.NewV4()
 	st := f.SelectTag(tags.Options{
-		"options": form.SelectOptions{
-			form.SelectOption{Label: "John", Value: jid},
-			form.SelectOption{Label: "Peter", Value: pid},
+		"options": SelectOptions{
+			SelectOption{Label: "John", Value: jid},
+			SelectOption{Label: "Peter", Value: pid},
 		},
 		"value":       pid,
 		"allow_blank": false,
@@ -287,7 +286,7 @@ func Test_SelectTag_WithUUID_Selected_withoutBlankSelectOptions(t *testing.T) {
 
 func Test_SelectTag_Multiple(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
 		"options":  []string{"one", "two"},
@@ -300,7 +299,7 @@ func Test_SelectTag_Multiple(t *testing.T) {
 
 func Test_SelectTag_Multiple_SelectOne(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
 		"options":  []string{"one", "two"},
@@ -314,7 +313,7 @@ func Test_SelectTag_Multiple_SelectOne(t *testing.T) {
 
 func Test_SelectTag_Multiple_SelectMultiple(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
 		"options":  []string{"one", "two", "three"},
@@ -329,7 +328,7 @@ func Test_SelectTag_Multiple_SelectMultiple(t *testing.T) {
 
 func Test_SelectTag_Multiple_SelectMultiple_Selectable_Interface(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
 		"options": []SelectableModel{
@@ -349,10 +348,9 @@ func Test_SelectTag_Multiple_SelectMultiple_Selectable_Interface(t *testing.T) {
 	r.Contains(s, `<option value="3">Mark</option>`)
 }
 
-
 func Test_SelectTagWithHTML(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	s := f.SelectTag(tags.Options{
 		"options": []map[string]interface{}{
 			{"<b>Not Bold</b>": "<u>Not Underlined</u>"},
@@ -363,7 +361,7 @@ func Test_SelectTagWithHTML(t *testing.T) {
 
 func Test_SelectTag_Multiple_SelectMultiple_SelectableMultiple_Interface(t *testing.T) {
 	r := require.New(t)
-	f := form.New(tags.Options{})
+	f := New(tags.Options{})
 	st := f.SelectTag(tags.Options{
 		"multiple": true,
 		"options": []SelectableMultipleModel{
