@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/gobuffalo/tags/v3"
-	"github.com/gobuffalo/validate"
+	"github.com/gobuffalo/validate/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -157,6 +157,22 @@ func Test_CheckBox(t *testing.T) {
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
 	r.Equal(`<div class="form-group"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label></div>`, l.String())
+}
+
+type CustomError struct{}
+
+func (ce CustomError) Get(key string) []string {
+	return []string{"My Custom Error"}
+}
+
+func Test_InputError_CustomError(t *testing.T) {
+	r := require.New(t)
+
+	errors := CustomError{}
+
+	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
+	l := f.InputTag("Name", tags.Options{"label": "Custom"})
+	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">My Custom Error</div></div>`, l.String())
 }
 
 func Test_InputError(t *testing.T) {
