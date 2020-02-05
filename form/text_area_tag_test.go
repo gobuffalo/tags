@@ -54,6 +54,7 @@ func (ns nullString) Value() (driver.Value, error) {
 	return ns.String, nil
 }
 
+// NewNullString ...
 func NewNullString(data string) nullString {
 	return nullString{
 		String: data,
