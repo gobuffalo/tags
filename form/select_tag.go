@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"reflect"
 
-	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags"
 )
 
 // SelectTag describes a HTML <select> tag meta data.

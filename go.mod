@@ -1,10 +1,11 @@
-module github.com/gobuffalo/tags/v3
+module github.com/gobuffalo/tags
 
 go 1.13
 
 require (
 	github.com/fatih/structs v1.1.0
 	github.com/gobuffalo/flect v0.2.0
+	github.com/gobuffalo/tags/v3 v3.0.2 // indirect
 	github.com/gobuffalo/validate v2.0.4+incompatible
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/onsi/ginkgo v1.12.0 // indirect

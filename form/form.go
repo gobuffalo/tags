@@ -3,7 +3,7 @@ package form
 import (
 	"strings"
 
-	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags"
 )
 
 //Form is the html form tag, this will hold other tags inside it.

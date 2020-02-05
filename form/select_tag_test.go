@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags"
 	"github.com/gofrs/uuid"
 	"github.com/stretchr/testify/require"
 )

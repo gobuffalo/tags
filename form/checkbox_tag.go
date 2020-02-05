@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"html/template"
 
-	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags"
 )
 
 //CheckboxTag builds a checkbox from the options passed

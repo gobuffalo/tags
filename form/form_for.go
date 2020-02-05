@@ -10,7 +10,7 @@ import (
 	"sync"
 
 	"github.com/gobuffalo/flect"
-	"github.com/gobuffalo/tags/v3"
+	"github.com/gobuffalo/tags"
 	"github.com/gobuffalo/validate"
 	"github.com/gofrs/uuid"
 )

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gobuffalo/tags/v3"
-	"github.com/gobuffalo/tags/v3/form"
+	"github.com/gobuffalo/tags"
+	"github.com/gobuffalo/tags/form"
 	"github.com/gobuffalo/validate/validators"
 )
 
