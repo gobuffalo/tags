@@ -11,7 +11,7 @@ import (
 
 	"github.com/gobuffalo/flect"
 	"github.com/gobuffalo/tags/v3"
-	"github.com/gobuffalo/validate"
+	"github.com/gobuffalo/validate/v3"
 	"github.com/gofrs/uuid"
 )
 
@@ -24,7 +24,7 @@ type FormFor struct {
 	name       string
 	dashedName string
 	reflection reflect.Value
-	Errors     *validate.Errors
+	Errors     Errors
 }
 
 // NewFormFor creates a new Formfor with passed options, it also creates the id of the form from the struct name and adds errors if present.
@@ -53,20 +53,23 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 	}
 }
 
-func loadErrors(opts tags.Options) *validate.Errors {
+func loadErrors(opts tags.Options) Errors {
 	errors := validate.NewErrors()
-	if opts["errors"] != nil {
-		switch t := opts["errors"].(type) {
-		default:
-			fmt.Printf("Unexpected errors type %T, please\n", t) // %T prints whatever type t has
-		case map[string][]string:
-			errors = &validate.Errors{
-				Errors: opts["errors"].(map[string][]string),
-				Lock:   new(sync.RWMutex),
-			}
-		case *validate.Errors:
-			errors = opts["errors"].(*validate.Errors)
+
+	if opts["errors"] == nil {
+		return errors
+	}
+
+	switch t := opts["errors"].(type) {
+	default:
+		fmt.Printf("Unexpected errors type %T, please\n", t) // %T prints whatever type t has
+	case map[string][]string:
+		errors = &validate.Errors{
+			Errors: opts["errors"].(map[string][]string),
+			Lock:   new(sync.RWMutex),
 		}
+	case Errors:
+		return opts["errors"].(Errors)
 	}
 
 	return errors
