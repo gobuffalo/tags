@@ -1,5 +1,5 @@
- [![Test Status](https://github.com/gobuffalo/tags/workflows/Tests/badge.svg)](https://github.com/gobuffalo/tags/actions)
- [![Go Report Card](https://goreportcard.com/badge/github.com/gobuffalo/tags)](https://goreportcard.com/report/github.com/gobuffalo/tags)
+ [![Test Status](https://github.com/gobuffalo/tags/v3/workflows/Tests/badge.svg)](https://github.com/gobuffalo/tags/v3/actions)
+ [![Go Report Card](https://goreportcard.com/badge/github.com/gobuffalo/tags/v3)](https://goreportcard.com/report/github.com/gobuffalo/tags/v3)
 
 # Tags
 
@@ -15,7 +15,7 @@ Tags has a minimum Go dependency of 1.8.1.
 To get this lib just get it via `go get`
 
 ```
-go get -u -v github.com/gobuffalo/tags/...
+go get -u -v github.com/gobuffalo/tags/v3/...
 ```
 ## Running the tests
 
@@ -26,7 +26,7 @@ go test ./...
 ```
 ## Documentation
 
-Documentation is currently in [this repository Wiki](https://github.com/gobuffalo/tags/wiki), you can find there instructions on how to use tags within your app.
+Documentation is currently in [this repository Wiki](https://github.com/gobuffalo/tags/v3/wiki), you can find there instructions on how to use tags within your app.
 
 ## Contributing
 

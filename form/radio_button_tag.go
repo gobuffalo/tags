@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"strings"
 
-	"github.com/gobuffalo/tags"
+	"github.com/gobuffalo/tags/v3"
 )
 
 //RadioButton creates a radio button for a form with the passed options
