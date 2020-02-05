@@ -24,7 +24,7 @@ type FormFor struct {
 	name       string
 	dashedName string
 	reflection reflect.Value
-	Errors     Errors
+	Errors     tags.Errors
 }
 
 // NewFormFor creates a new Formfor with passed options, it also creates the id of the form from the struct name and adds errors if present.
@@ -53,7 +53,7 @@ func NewFormFor(model interface{}, opts tags.Options) *FormFor {
 	}
 }
 
-func loadErrors(opts tags.Options) Errors {
+func loadErrors(opts tags.Options) tags.Errors {
 	errors := validate.NewErrors()
 
 	if opts["errors"] == nil {
@@ -68,8 +68,8 @@ func loadErrors(opts tags.Options) Errors {
 			Errors: opts["errors"].(map[string][]string),
 			Lock:   new(sync.RWMutex),
 		}
-	case Errors:
-		return opts["errors"].(Errors)
+	case tags.Errors:
+		return opts["errors"].(tags.Errors)
 	}
 
 	return errors
