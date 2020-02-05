@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/gobuffalo/tags/v3"
-	"github.com/gobuffalo/validate/v3"
+	"github.com/gobuffalo/validate"
 	"github.com/stretchr/testify/require"
 )
 

@@ -8,21 +8,21 @@ Easily build HTML tags in Go! This package is especially useful when using [http
 ## Getting Started
 ### Prerequisites
 
-Tags has a minimum Go dependency of 1.8.1.
+Tags has a minimum Go dependency of 1.12.0 and is being actively tested against go 1.12 and 1.13.
 
 ### Installing
 
 To get this lib just get it via `go get`
 
 ```
-go get -u -v github.com/gobuffalo/tags/...
+go get github.com/gobuffalo/tags/...
 ```
 ## Running the tests
 
-In order to run the tests just do it with a regular
+In order to run the tests you can execute:
 
 ```
-go test ./...
+go test ./...--race
 ```
 ## Documentation
 

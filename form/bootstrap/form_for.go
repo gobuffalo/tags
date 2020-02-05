@@ -6,7 +6,7 @@ import (
 
 	"github.com/gobuffalo/tags/v3"
 	"github.com/gobuffalo/tags/v3/form"
-	"github.com/gobuffalo/validate/v3/validators"
+	"github.com/gobuffalo/validate/validators"
 )
 
 //FormFor is the FormFor version for bootstrap
