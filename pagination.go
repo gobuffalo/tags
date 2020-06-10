@@ -270,7 +270,7 @@ func urlFor(path string, page int) (string, error) {
 
 func pageLIDummy() *Tag {
 	li := New("li", Options{"class": "page-item disabled"})
-	a := New("a", Options{"body": "..."})
+	a := New("a", Options{"class": "page-link", "body": "..."})
 	li.Append(a)
 	return li
 }
