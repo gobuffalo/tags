@@ -61,7 +61,8 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	useLabel := opts["hide_label"] == nil
 	if useLabel && opts["label"] != nil {
 		div.Prepend(tags.New("label", tags.Options{
-			"body": opts["label"],
+			"class": "form-label",
+			"body":  opts["label"],
 		}))
 		delete(opts, "label")
 	}
