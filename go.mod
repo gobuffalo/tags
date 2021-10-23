@@ -1,6 +1,6 @@
 module github.com/gobuffalo/tags/v3
 
-go 1.13
+go 1.16
 
 require (
 	github.com/fatih/structs v1.1.0
