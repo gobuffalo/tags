@@ -13,7 +13,16 @@ func Test_InputFieldLabel(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Custom</label><input class="form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+}
+
+func Test_Input_Floating(t *testing.T) {
+	r := require.New(t)
+	f := NewFormFor(struct{ Name string }{}, tags.Options{})
+	l := f.InputTag("Name", tags.Options{
+		"bootstrap": map[string]interface{}{"form-group-class": "form-floating"},
+	})
+	r.Equal(`<div class="form-floating"><input class="form-control" id="-Name" name="Name" placeholder="Name" type="text" value="" /><label class="form-label" for="-Name">Name</label></div>`, l.String())
 }
 
 func Test_InputFieldLabelWithAchronym(t *testing.T) {
@@ -28,7 +37,7 @@ func Test_InputFieldLabelWithAchronym(t *testing.T) {
 
 	for key, expectedLabel := range cases {
 		l := f.InputTag(key, tags.Options{})
-		r.Equal(`<div class="form-group"><label>`+expectedLabel+`</label><input class=" form-control" id="-`+key+`" name="`+key+`" type="text" value="" /></div>`, l.String())
+		r.Equal(`<div class="form-group"><label class="form-label" for="-`+key+`">`+expectedLabel+`</label><input class="form-control" id="-`+key+`" name="`+key+`" type="text" value="" /></div>`, l.String())
 	}
 }
 
@@ -36,7 +45,7 @@ func Test_InputFieldLabel_Humanized(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ LongName string }{}, tags.Options{})
 	l := f.InputTag("LongName", tags.Options{})
-	r.Equal(`<div class="form-group"><label>Long Name</label><input class=" form-control" id="-LongName" name="LongName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-LongName">Long Name</label><input class="form-control" id="-LongName" name="LongName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldSchema(t *testing.T) {
@@ -46,7 +55,7 @@ func Test_InputFieldSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-notName">Custom</label><input class="form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldFormInsteadOfSchema(t *testing.T) {
@@ -56,7 +65,7 @@ func Test_InputFieldFormInsteadOfSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-notName">Custom</label><input class="form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldFormAndSchema(t *testing.T) {
@@ -66,7 +75,7 @@ func Test_InputFieldFormAndSchema(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-notName">Custom</label><input class="form-control" id="-notName" name="notName" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldSchema_FieldNotPresent(t *testing.T) {
@@ -76,7 +85,7 @@ func Test_InputFieldSchema_FieldNotPresent(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Other", tags.Options{})
-	r.Equal(`<div class="form-group"><label>Other</label><input class=" form-control" id="-Other" name="Other" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Other">Other</label><input class="form-control" id="-Other" name="Other" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputFieldSchema_FieldDash(t *testing.T) {
@@ -86,14 +95,14 @@ func Test_InputFieldSchema_FieldDash(t *testing.T) {
 	}{}, tags.Options{})
 
 	l := f.InputTag("Name", tags.Options{})
-	r.Equal(`<div class="form-group"><label>Name</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Name</label><input class="form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
 }
 
 func Test_SelectLabel(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.SelectTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Custom</label><select class="form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
 func Test_Select_With_String_As_BeforeTag_Opt(t *testing.T) {
@@ -103,7 +112,7 @@ func Test_Select_With_String_As_BeforeTag_Opt(t *testing.T) {
 	s := `<span>Test</span>`
 	l := f.SelectTag("Name", tags.Options{"before_tag": s})
 
-	r.Equal(`<div class="form-group"><label>Name</label><span>Test</span><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Name</label><span>Test</span><select class="form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
 func Test_Select_With_Nested_Tag_As_BeforeTag_Opt(t *testing.T) {
@@ -113,7 +122,7 @@ func Test_Select_With_Nested_Tag_As_BeforeTag_Opt(t *testing.T) {
 	s := tags.New("span", tags.Options{"body": "Test"})
 	l := f.SelectTag("Name", tags.Options{"before_tag": s})
 
-	r.Equal(`<div class="form-group"><label>Name</label><span>Test</span><select class=" form-control" id="-Name" name="Name"></select></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Name</label><span>Test</span><select class="form-control" id="-Name" name="Name"></select></div>`, l.String())
 }
 
 func Test_Select_With_String_As_AfterTag_Opt(t *testing.T) {
@@ -123,7 +132,7 @@ func Test_Select_With_String_As_AfterTag_Opt(t *testing.T) {
 	b := `<button type="button">Button Name</button>`
 	l := f.SelectTag("Name", tags.Options{"after_tag": b})
 
-	r.Equal(`<div class="form-group"><label>Name</label><select class=" form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Name</label><select class="form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
 }
 
 func Test_Select_With_Nested_Tag_As_AfterTag_Opt(t *testing.T) {
@@ -136,27 +145,55 @@ func Test_Select_With_Nested_Tag_As_AfterTag_Opt(t *testing.T) {
 	})
 	l := f.SelectTag("Name", tags.Options{"after_tag": b})
 
-	r.Equal(`<div class="form-group"><label>Name</label><select class=" form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Name</label><select class="form-control" id="-Name" name="Name"></select><button type="button">Button Name</button></div>`, l.String())
 }
 
 func Test_RadioButton(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.RadioButton("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><label for="-Name"><input class=" form-control" id="-Name" name="Name" type="radio" value="" /> </label></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Custom</label><label for="-Name"><input class="form-control" id="-Name" name="Name" type="radio" value="" /> </label></div>`, l.String())
 }
 func Test_TextArea(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.TextArea("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><textarea class=" form-control" id="-Name" name="Name"></textarea></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Custom</label><textarea class="form-control" id="-Name" name="Name"></textarea></div>`, l.String())
+}
+
+func Test_SubmitTag(t *testing.T) {
+	r := require.New(t)
+	f := NewFormFor(struct{ Name string }{}, tags.Options{})
+	i := f.SubmitTag("Send", tags.Options{"class": "btn btn-primary"})
+
+	r.Equal(`<input class="btn btn-primary" type="submit" value="Send" />`, i.String())
 }
 
 func Test_CheckBox(t *testing.T) {
 	r := require.New(t)
 	f := NewFormFor(struct{ Name string }{}, tags.Options{})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label><input class="" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label></div>`, l.String())
+	r.Equal(`<div class="form-check"><input class="form-check-input" id="-Name" name="Name" type="checkbox" value="true" /><label class="form-check-label" for="-Name">Custom</label></div>`, l.String())
+}
+
+func Test_CheckBox_Unchecked(t *testing.T) {
+	r := require.New(t)
+	f := NewFormFor(struct{ Name string }{}, tags.Options{})
+	l := f.CheckboxTag("Name", tags.Options{
+		"label":     "Custom",
+		"unchecked": "false",
+	})
+	r.Equal(`<div class="form-check"><input class="form-check-input" id="-Name" name="Name" type="checkbox" value="true" /><input name="Name" type="hidden" value="false" /><label class="form-check-label" for="-Name">Custom</label></div>`, l.String())
+}
+
+func Test_CheckBox_WithHelp(t *testing.T) {
+	r := require.New(t)
+	f := NewFormFor(struct{ Name string }{}, tags.Options{})
+	l := f.CheckboxTag("Name", tags.Options{
+		"label": "Custom",
+		"help":  "Help message",
+	})
+	r.Equal(`<div class="form-check"><input class="form-check-input" id="-Name" name="Name" type="checkbox" value="true" /><label class="form-check-label" for="-Name">Custom</label><div class="form-text" id="Name-help">Help message</div></div>`, l.String())
 }
 
 type CustomError struct{}
@@ -172,7 +209,7 @@ func Test_InputError_CustomError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">My Custom Error</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">My Custom Error</div></div>`, l.String())
 }
 
 func Test_InputError(t *testing.T) {
@@ -183,7 +220,7 @@ func Test_InputError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputHidden(t *testing.T) {
@@ -209,7 +246,7 @@ func Test_InputError_Map(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputError_InvalidMap(t *testing.T) {
@@ -221,7 +258,7 @@ func Test_InputError_InvalidMap(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group"><label>Custom</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
+	r.Equal(`<div class="form-group"><label class="form-label" for="-Name">Custom</label><input class="form-control" id="-Name" name="Name" type="text" value="" /></div>`, l.String())
 }
 
 func Test_InputMultipleError(t *testing.T) {
@@ -233,7 +270,7 @@ func Test_InputMultipleError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label>Custom</label><input class=" form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div><div class="invalid-feedback help-block">Name shoud start with A.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div><div class="invalid-feedback help-block">Name shoud start with A.</div></div>`, l.String())
 }
 
 func Test_CheckBoxError(t *testing.T) {
@@ -244,7 +281,7 @@ func Test_CheckBoxError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label><input class=" is-invalid" id="-Name" name="Name" type="checkbox" value="true" /> Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-check has-error"><input class="form-check-input is-invalid" id="-Name" name="Name" type="checkbox" value="true" /><label class="form-check-label" for="-Name">Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
 }
 
 type Person struct {
@@ -270,7 +307,7 @@ func Test_FormFor_Nested_Struct(t *testing.T) {
 	f := NewFormFor(p, tags.Options{})
 	tag := f.InputTag("Address.State", tags.Options{})
 
-	exp := `<div class="form-group"><label>Address State</label><input class=" form-control" id="person-Address.State" name="Address.State" type="text" value="MA" /></div>`
+	exp := `<div class="form-group"><label class="form-label" for="person-Address.State">Address State</label><input class="form-control" id="person-Address.State" name="Address.State" type="text" value="MA" /></div>`
 	r.Equal(exp, tag.String())
 }
 
@@ -318,8 +355,9 @@ func Test_Field_TagOnly(t *testing.T) {
 			name: "Name",
 			opts: tags.Options{
 				"tag_only": true,
+				"class":    "custom-input",
 			},
-			output: `<input class="" id="-Name" name="Name" type="checkbox" value="true" />`,
+			output: `<input class="custom-input" id="-Name" name="Name" type="checkbox" value="true" />`,
 		},
 
 		{

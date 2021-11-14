@@ -15,7 +15,7 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-var arrayFieldRegExp = regexp.MustCompile("^([A-Za-z0-9]+)\\[(\\d+)\\]$")
+var arrayFieldRegExp = regexp.MustCompile(`^([A-Za-z0-9]+)\[(\d+)\]$`)
 
 // FormFor is a form made for a struct
 type FormFor struct {
@@ -164,8 +164,11 @@ func (f FormFor) SubmitTag(value string, opts tags.Options) *tags.Tag {
 	return f.Form.SubmitTag(value, opts)
 }
 
-func (f FormFor) buildOptions(field string, opts tags.Options) {
+func (f FormFor) BuildOptions(field string, opts tags.Options) {
+	f.buildOptions(field, opts)
+}
 
+func (f FormFor) buildOptions(field string, opts tags.Options) {
 	if opts["value"] == nil {
 		opts["value"] = f.value(field)
 	}
@@ -177,7 +180,6 @@ func (f FormFor) buildOptions(field string, opts tags.Options) {
 	if opts["id"] == nil {
 		opts["id"] = fmt.Sprintf("%s-%s", f.dashedName, opts["name"])
 	}
-
 }
 
 type interfacer interface {
@@ -191,7 +193,7 @@ type tagValuer interface {
 func (f FormFor) value(field string) interface{} {
 	fn := f.reflection.FieldByName(field)
 
-	if fn.IsValid() == false {
+	if !fn.IsValid() {
 		dots := strings.Split(field, ".")
 
 		if len(dots) == 1 && !arrayFieldRegExp.Match([]byte(dots[0])) {

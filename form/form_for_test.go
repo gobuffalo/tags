@@ -266,7 +266,7 @@ func Test_FormFor_Nested_Slice_Pointer_Elements(t *testing.T) {
 		Persons []*Person
 	}{
 		[]*Person{
-			&Person{Name: "Mark"},
+			{Name: "Mark"},
 		},
 	}
 

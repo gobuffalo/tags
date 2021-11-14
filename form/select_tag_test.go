@@ -404,10 +404,7 @@ func (sm SelectableMultipleModel) SelectValue() interface{} {
 }
 
 func (sm SelectableMultipleModel) IsSelected() bool {
-	if sm.Name == "Mark" {
-		return true
-	}
-	return false
+	return sm.Name == "Mark"
 }
 
 type SelectableUUIDModel struct {

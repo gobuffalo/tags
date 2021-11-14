@@ -16,7 +16,7 @@ func Test_BootstrapFormGroupClass(t *testing.T) {
 		expected string
 	}{
 		{
-			expected: `<div class="form-group row"><label>Name</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`,
+			expected: `<div class="form-group row"><label class="form-label" for="-Name">Name</label><input class="form-control" id="-Name" name="Name" type="text" value="" /></div>`,
 			options: tags.Options{
 				"bootstrap": map[string]interface{}{
 					"form-group-class": "form-group row",
@@ -25,7 +25,7 @@ func Test_BootstrapFormGroupClass(t *testing.T) {
 		},
 
 		{
-			expected: `<div class="form-group"><label>Name</label><input class=" form-control" id="-Name" name="Name" type="text" value="" /></div>`,
+			expected: `<div class="form-group"><label class="form-label" for="-Name">Name</label><input class="form-control" id="-Name" name="Name" type="text" value="" /></div>`,
 			options:  tags.Options{},
 		},
 	}

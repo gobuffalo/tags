@@ -14,26 +14,37 @@ func buildOptions(opts tags.Options, err bool) {
 	}
 
 	if opts["tag_only"] != true {
-		opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-control"}, " ")
+		if opts["type"] == "checkbox" {
+			opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-check-input"}, " ")
+		} else {
+			opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "form-control"}, " ")
+		}
 	}
 
 	if err {
 		opts["class"] = strings.Join([]string{fmt.Sprint(opts["class"]), "is-invalid"}, " ")
 	}
 
+	opts["class"] = strings.TrimSpace(opts["class"].(string))
 	delete(opts, "hide_label")
 }
 
 func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.Tag {
-	divClass := "form-group"
+	divClass := "form-group" // btw, form-group was deprecated in Bootstrap 5
+	labelClass := "form-label"
 	hasErrors := false
 	errors := []string{}
+	hasHelp := false
+	helpMessage := ""
 
-	if opts["errors"] != nil && len(opts["errors"].([]string)) > 0 {
-		divClass = "form-group has-error"
-		hasErrors = true
-		errors = opts["errors"].([]string)
-		delete(opts, "errors")
+	if opts["div_class"] != nil {
+		divClass = opts["div_class"].(string)
+		delete(opts, "div_class")
+	}
+
+	if opts["label_class"] != nil {
+		labelClass = opts["label_class"].(string)
+		delete(opts, "label_class")
 	}
 
 	if opts["bootstrap"] != nil {
@@ -43,6 +54,19 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		}
 
 		delete(opts, "bootstrap")
+	}
+
+	if opts["help"] != nil {
+		hasHelp = true
+		helpMessage = opts["help"].(string)
+		delete(opts, "help")
+	}
+
+	if opts["errors"] != nil && len(opts["errors"].([]string)) > 0 {
+		divClass += " has-error"
+		hasErrors = true
+		errors = opts["errors"].([]string)
+		delete(opts, "errors")
 	}
 
 	div := tags.New("div", tags.Options{
@@ -55,13 +79,14 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 			opts["label"] = flect.Titleize(tf)
 		}
 	}
-
 	delete(opts, "tags-field")
 
 	useLabel := opts["hide_label"] == nil
 	if useLabel && opts["label"] != nil {
 		div.Prepend(tags.New("label", tags.Options{
-			"body": opts["label"],
+			"for":   opts["id"],
+			"body":  opts["label"],
+			"class": labelClass,
 		}))
 		delete(opts, "label")
 	}
@@ -72,7 +97,16 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 		return fn(opts).(*tags.Tag)
 	}
 
-	div.Append(fn(opts))
+	isFloatingLabel := strings.Contains(divClass, "form-floating")
+	if opts["type"] == "checkbox" || isFloatingLabel {
+		if isFloatingLabel && opts["placeholder"] == nil {
+			// bootstrap 5 floating label requires this
+			opts["placeholder"] = opts["name"]
+		}
+		div.Prepend(fn(opts))
+	} else {
+		div.Append(fn(opts))
+	}
 
 	if hasErrors {
 		for _, err := range errors {
@@ -82,5 +116,14 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 			}))
 		}
 	}
+
+	if hasHelp {
+		div.Append(tags.New("div", tags.Options{
+			"id":    fmt.Sprintf("%v-help", opts["name"]),
+			"class": "form-text",
+			"body":  helpMessage,
+		}))
+	}
+
 	return div
 }
