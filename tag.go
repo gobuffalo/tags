@@ -170,7 +170,6 @@ func New(name string, opts Options) *Tag {
 		tag.BeforeTag = []BeforeTag{tag.Options["before_tag"]}
 		delete(tag.Options, "before_tag")
 	}
-
 	if tag.Options["after_tag"] != nil {
 		tag.AfterTag = []AfterTag{tag.Options["after_tag"]}
 		delete(tag.Options, "after_tag")
@@ -189,9 +188,8 @@ func New(name string, opts Options) *Tag {
 			delete(tag.Options, "format")
 			tag.Options["value"] = val.(time.Time).Format(format.(string))
 		default:
-
 			r := reflect.ValueOf(val)
-			if r.IsValid() == false {
+			if !r.IsValid() {
 				tag.Options["value"] = ""
 			}
 
@@ -205,7 +203,6 @@ func New(name string, opts Options) *Tag {
 
 				tag.Options["value"] = fmt.Sprintf("%v", value)
 			}
-
 		}
 	}
 

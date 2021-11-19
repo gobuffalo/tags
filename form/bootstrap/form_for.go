@@ -1,8 +1,7 @@
 package bootstrap
 
 import (
-	"fmt"
-	"strings"
+	"html/template"
 
 	"github.com/gobuffalo/tags/v3"
 	"github.com/gobuffalo/tags/v3/form"
@@ -16,37 +15,43 @@ type FormFor struct {
 
 //CheckboxTag adds a checkbox to a form wrapped with a form-control and a label
 func (f FormFor) CheckboxTag(field string, opts tags.Options) *tags.Tag {
+	opts["type"] = "checkbox"
+	opts = f.buildOptions(field, opts)
 
-	label := field
-	if opts["label"] != nil {
-		label = fmt.Sprint(opts["label"])
-	}
-	hl := opts["hide_label"]
-	delete(opts, "label")
-
-	fieldKey := validators.GenerateKey(field)
-	if err := f.Errors.Get(fieldKey); err != nil {
-		opts["errors"] = err
-	}
+	opts["div_class"] = "form-check"
+	opts["label_class"] = "form-check-label"
 
 	return divWrapper(opts, func(o tags.Options) tags.Body {
-		if o["class"] != nil {
-			cls := strings.Split(o["class"].(string), " ")
-			ncls := make([]string, 0, len(cls))
-			for _, c := range cls {
-				if c != "form-control" {
-					ncls = append(ncls, c)
-				}
-			}
-			o["class"] = strings.Join(ncls, " ")
+		value := opts["value"]
+		delete(opts, "value")
+
+		checked := opts["checked"]
+		delete(opts, "checked")
+		if checked == nil {
+			checked = "true"
 		}
-		if label != "" {
-			o["label"] = label
+		opts["value"] = checked
+
+		unchecked := opts["unchecked"]
+		delete(opts, "unchecked")
+
+		if opts["tag_only"] == true {
+			tag := f.FormFor.InputTag(field, opts)
+			tag.Checked = template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+			return tag
 		}
-		if hl != nil {
-			o["hide_label"] = hl
+
+		tag := f.FormFor.InputTag(field, opts)
+		tag.Checked = template.HTMLEscaper(value) == template.HTMLEscaper(checked)
+
+		if opts["name"] != nil && unchecked != nil {
+			tag.AfterTag = append(tag.AfterTag, tags.New("input", tags.Options{
+				"type":  "hidden",
+				"name":  opts["name"],
+				"value": unchecked,
+			}))
 		}
-		return f.FormFor.CheckboxTag(field, o)
+		return tag
 	})
 }
 
@@ -126,6 +131,6 @@ func (f FormFor) buildOptions(field string, opts tags.Options) tags.Options {
 	if err := f.Errors.Get(fieldName); err != nil {
 		opts["errors"] = err
 	}
-
+	f.FormFor.BuildOptions(field, opts)
 	return opts
 }
