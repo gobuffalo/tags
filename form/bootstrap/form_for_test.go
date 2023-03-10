@@ -209,7 +209,7 @@ func Test_InputError_CustomError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">My Custom Error</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input aria-describedby="error--Name-0" aria-invalid="true" class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block" id="error--Name-0">My Custom Error</div></div>`, l.String())
 }
 
 func Test_InputError(t *testing.T) {
@@ -220,7 +220,7 @@ func Test_InputError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input aria-describedby="error--Name-0" aria-invalid="true" class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block" id="error--Name-0">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputHidden(t *testing.T) {
@@ -246,7 +246,7 @@ func Test_InputError_Map(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input aria-describedby="error--Name-0" aria-invalid="true" class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block" id="error--Name-0">Name shoud be AJ.</div></div>`, l.String())
 }
 
 func Test_InputError_InvalidMap(t *testing.T) {
@@ -270,7 +270,7 @@ func Test_InputMultipleError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.InputTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block">Name shoud be AJ.</div><div class="invalid-feedback help-block">Name shoud start with A.</div></div>`, l.String())
+	r.Equal(`<div class="form-group has-error"><label class="form-label" for="-Name">Custom</label><input aria-describedby="error--Name-0 error--Name-1" aria-invalid="true" class="form-control is-invalid" id="-Name" name="Name" type="text" value="" /><div class="invalid-feedback help-block" id="error--Name-0">Name shoud be AJ.</div><div class="invalid-feedback help-block" id="error--Name-1">Name shoud start with A.</div></div>`, l.String())
 }
 
 func Test_CheckBoxError(t *testing.T) {
@@ -281,7 +281,7 @@ func Test_CheckBoxError(t *testing.T) {
 
 	f := NewFormFor(struct{ Name string }{}, tags.Options{"errors": errors})
 	l := f.CheckboxTag("Name", tags.Options{"label": "Custom"})
-	r.Equal(`<div class="form-check has-error"><input class="form-check-input is-invalid" id="-Name" name="Name" type="checkbox" value="true" /><label class="form-check-label" for="-Name">Custom</label><div class="invalid-feedback help-block">Name shoud be AJ.</div></div>`, l.String())
+	r.Equal(`<div class="form-check has-error"><input aria-describedby="error--Name-0" aria-invalid="true" class="form-check-input is-invalid" id="-Name" name="Name" type="checkbox" value="true" /><label class="form-check-label" for="-Name">Custom</label><div class="invalid-feedback help-block" id="error--Name-0">Name shoud be AJ.</div></div>`, l.String())
 }
 
 type Person struct {

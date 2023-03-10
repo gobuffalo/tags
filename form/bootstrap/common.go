@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/gobuffalo/flect"
@@ -109,12 +110,24 @@ func divWrapper(opts tags.Options, fn func(opts tags.Options) tags.Body) *tags.T
 	}
 
 	if hasErrors {
-		for _, err := range errors {
+		fieldID, _ := opts["id"].(string)
+		errorIDs := make([]string, 0, len(errors))
+		for i, err := range errors {
+			errID := "error-" + fieldID + "-" + strconv.Itoa(i)
 			div.Append(tags.New("div", tags.Options{
 				"class": "invalid-feedback help-block",
 				"body":  err,
+				"id":    errID,
 			}))
+			errorIDs = append(errorIDs, errID)
 		}
+		descBy, _ := opts["aria-describedby"].(string)
+		if descBy != "" {
+			descBy += " "
+		}
+		descBy += strings.Join(errorIDs, " ")
+		opts["aria-describedby"] = descBy
+		opts["aria-invalid"] = "true"
 	}
 
 	if hasHelp {
